@@ -68,13 +68,13 @@
 
     /* ── LOGO ── */
     .logo { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-    .logo-icon {
+    /* .logo-icon {
       width: 36px; height: 36px; background: var(--primary);
       border-radius: 8px; display: flex; align-items: center;
       justify-content: center; color: #fff; font-size: 18px;
       font-weight: 700; overflow: hidden;
-    }
-    .logo-icon img { width: 36px; height: 36px; object-fit: cover; border-radius: 8px; }
+    } */
+    .logo-icon img { width: 200px;  object-fit: cover;  }
     .logo-text { font-size: 20px; font-weight: 700; color: var(--primary); letter-spacing: -0.5px; }
     .logo-text span { color: var(--text-dark); }
 
@@ -178,12 +178,12 @@
       display: block; cursor: pointer;
     }
     .hero-banner-img img {
-      width: 100%; height: 320px;
+      width: 100%; 
       object-fit: cover; display: block;
       border-radius: var(--radius-lg);
     }
     .hero-banner-placeholder {
-      width: 100%; height: 320px;
+      width: 100%; height: 250px;
       background: linear-gradient(135deg, var(--primary) 0%, #03b09f 100%);
       border-radius: var(--radius-lg);
       display: flex; flex-direction: column;
@@ -197,9 +197,9 @@
     /* ── OFFER BANNER ── */
     .offer-banner-section { max-width: 1280px; margin: 0 auto; padding: 16px 20px; }
     .offer-banner-img { width: 100%; border-radius: var(--radius-lg); overflow: hidden; cursor: pointer; }
-    .offer-banner-img img { width: 100%; height: 90px; object-fit: cover; display: block; border-radius: var(--radius-lg); }
+    .offer-banner-img img { width: 100%; height: 100px; object-fit: cover; }
     .offer-banner-placeholder {
-      width: 100%; height: 90px;
+      width: 100%; height: 110px;
       background: linear-gradient(90deg, #e8f5f4 0%, #c3ebe8 50%, #e8f5f4 100%);
       border-radius: var(--radius-lg); border: 2px dashed var(--primary);
       display: flex; align-items: center; justify-content: center;
@@ -420,7 +420,7 @@
       .health-feed { grid-template-columns: repeat(2, 1fr); }
       .footer-grid { grid-template-columns: 1fr 1fr 1fr; }
       .trust-inner { grid-template-columns: repeat(2, 1fr); }
-      .hero-banner-img img, .hero-banner-placeholder { height: 240px; }
+      .hero-banner-img img, .hero-banner-placeholder { height: 140px; }
       .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 768px) {
@@ -468,9 +468,9 @@
       <!-- Logo -->
       <a href="/" class="logo">
         <div class="logo-icon">
-          <img src="assets/image2/logo.png" alt="TrueMeds Pharmacy" />
+          <img src="assets/image2/logo.jpeg" alt="TrueMeds Pharmacy" />
         </div>
-        <div class="logo-text">TrueMeds <span>Pharmacy </span></div>
+        <!-- <div class="logo-text">TrueMeds <span>Pharmacy </span></div> -->
       </a>
 
       <!-- Search Bar -->
@@ -554,9 +554,10 @@
         <!-- Swap the placeholder div for an <img> once you have your banner -->
         <!-- <img src="assets/image2/banner2.png" alt="TrueMeds Pharmacy Banner" /> -->
         <div class="hero-banner-placeholder">
-          <i class="fas fa-image"></i>
+          <!-- <i class="fas fa-image"></i>
           <p>Your Hero Banner Image Goes Here</p>
-          <span>Recommended: 1280 × 320px</span>
+          <span>Recommended: 1280 × 320px</span> -->
+          <img src="./assets/image2/b1.jpeg" alt="">
         </div>
       </a>
     </div>
@@ -620,8 +621,9 @@
     <a href="#" class="offer-banner-img">
       <!-- <img src="assets/offer-banner.jpg" alt="Special Offer" /> -->
       <div class="offer-banner-placeholder">
-        <i class="fas fa-image"></i>
-        <span>Your Offer Banner — Recommended: 1280 × 90px</span>
+        <!-- <i class="fas fa-image"></i>
+        <span>Your Offer Banner — Recommended: 1280 × 90px</span> -->
+        <img src="./assets/image2/b2.png" alt="">
       </div>
     </a>
   </div>
