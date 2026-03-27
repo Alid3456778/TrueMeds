@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 // ── PAGE META ────────────────────────────────────────────────────────────
 function setPageMeta(catID) {
   const cat = CATEGORIES[catID] || CATEGORIES[1];
-  document.title = `${cat.title} – MCland Pharma`;
+  document.title = `${cat.title} – TrueMeds Pharma`;
 
   const titleEl = document.getElementById("categoryTitle");
   if (titleEl) titleEl.innerHTML = `<span>${cat.icon}</span> ${cat.title}`;

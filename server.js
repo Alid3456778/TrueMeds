@@ -348,7 +348,7 @@ app.post("/api/checkout", async (req, res) => {
               </html>
         `;
       const mailOptions = {
-        from: '"McLand Pharma" <orderconfirmation@mclandpharma.com>',
+        from: '" Pharma" <orderconfirmation@mclandpharma.com>',
         to: email,
         subject: "Order Confirmation - Mcland Pharma",
         html: htmlBody,
@@ -2814,239 +2814,239 @@ app.get("/api/backup/info", async (req, res) => {
 });
 
 
-const VPN_DATA_DIR = path.join(__dirname, "vpn-data");
-const VPN_IP_FILE = path.join(VPN_DATA_DIR, "vpn_ips.json");
-const SAFE_IP_FILE = path.join(VPN_DATA_DIR, "safe_ips.json");
+// const VPN_DATA_DIR = path.join(__dirname, "vpn-data");
+// const VPN_IP_FILE = path.join(VPN_DATA_DIR, "vpn_ips.json");
+// const SAFE_IP_FILE = path.join(VPN_DATA_DIR, "safe_ips.json");
 
-// Ensure files exist
-if (!fs.existsSync(VPN_DATA_DIR)) fs.mkdirSync(VPN_DATA_DIR);
-if (!fs.existsSync(VPN_IP_FILE)) fs.writeFileSync(VPN_IP_FILE, "[]");
-if (!fs.existsSync(SAFE_IP_FILE)) fs.writeFileSync(SAFE_IP_FILE, "[]");
+// // Ensure files exist
+// if (!fs.existsSync(VPN_DATA_DIR)) fs.mkdirSync(VPN_DATA_DIR);
+// if (!fs.existsSync(VPN_IP_FILE)) fs.writeFileSync(VPN_IP_FILE, "[]");
+// if (!fs.existsSync(SAFE_IP_FILE)) fs.writeFileSync(SAFE_IP_FILE, "[]");
 
+// // function readJson(file) {
+// //   return JSON.parse(fs.readFileSync(file, "utf8"));
+// // }
 // function readJson(file) {
-//   return JSON.parse(fs.readFileSync(file, "utf8"));
+//   try {
+//     const data = fs.readFileSync(file, "utf8").trim();
+//     if (!data) return [];
+//     return JSON.parse(data);
+//   } catch (err) {
+//     console.error("⚠️ JSON error, resetting:", file);
+//     fs.writeFileSync(file, "[]");
+//     return [];
+//   }
 // }
-function readJson(file) {
-  try {
-    const data = fs.readFileSync(file, "utf8").trim();
-    if (!data) return [];
-    return JSON.parse(data);
-  } catch (err) {
-    console.error("⚠️ JSON error, resetting:", file);
-    fs.writeFileSync(file, "[]");
-    return [];
-  }
-}
 
 
-function writeJson(file, data) {
-  fs.writeFileSync(file, JSON.stringify(data, null, 2));
-}
+// function writeJson(file, data) {
+//   fs.writeFileSync(file, JSON.stringify(data, null, 2));
+// }
 
 
-const API_COOLDOWN = 10 * 60 * 1000; // 10 minutes
+// const API_COOLDOWN = 10 * 60 * 1000; // 10 minutes
 
-const apiHealth = {
-  ipApi: { downUntil: 0 },
-  ipWho: { downUntil: 0 },
-  ipInfo: { downUntil: 0 },
-};
+// const apiHealth = {
+//   ipApi: { downUntil: 0 },
+//   ipWho: { downUntil: 0 },
+//   ipInfo: { downUntil: 0 },
+// };
 
-function apiAvailable(api) {
-  return Date.now() > apiHealth[api].downUntil;
-}
+// function apiAvailable(api) {
+//   return Date.now() > apiHealth[api].downUntil;
+// }
 
-function markApiDown(api) {
-  apiHealth[api].downUntil = Date.now() + API_COOLDOWN;
-  console.warn(`🚫 ${api} marked DOWN for 10 minutes`);
-}
+// function markApiDown(api) {
+//   apiHealth[api].downUntil = Date.now() + API_COOLDOWN;
+//   console.warn(`🚫 ${api} marked DOWN for 10 minutes`);
+// }
 
-async function checkWithApis(ip) {
+// async function checkWithApis(ip) {
 
-  // ============================
-  // API 1: ip-api (PRIMARY)
-  // ============================
-  if (apiAvailable("ipApi")) {
-    try {
-      const r1 = await axios.get(
-        `http://ip-api.com/json/${ip}?fields=proxy,hosting,status`,
-        { timeout: 4000 }
-      );
+//   // ============================
+//   // API 1: ip-api (PRIMARY)
+//   // ============================
+//   if (apiAvailable("ipApi")) {
+//     try {
+//       const r1 = await axios.get(
+//         `http://ip-api.com/json/${ip}?fields=proxy,hosting,status`,
+//         { timeout: 4000 }
+//       );
 
-      if (r1.data.status === "success") {
-        const isVpn = r1.data.proxy === true || r1.data.hosting === true;
-        console.log("✅ ip-api decided:", isVpn);
-        return isVpn;
-      }
-      else{
-        console.log("1st API Fail")
-      }
-    } catch (err) {
-      markApiDown("ipApi");
-    }
-  }
+//       if (r1.data.status === "success") {
+//         const isVpn = r1.data.proxy === true || r1.data.hosting === true;
+//         console.log("✅ ip-api decided:", isVpn);
+//         return isVpn;
+//       }
+//       else{
+//         console.log("1st API Fail")
+//       }
+//     } catch (err) {
+//       markApiDown("ipApi");
+//     }
+//   }
 
-  // ============================
-  // API 2: ipwho.is (BACKUP)
-  // ============================
-  if (apiAvailable("ipWho")) {
-    try {
-      const r2 = await axios.get(
-        `https://ipwho.is/${ip}?fields=proxy,hosting,success`,
-        { timeout: 4000 }
-      );
+//   // ============================
+//   // API 2: ipwho.is (BACKUP)
+//   // ============================
+//   if (apiAvailable("ipWho")) {
+//     try {
+//       const r2 = await axios.get(
+//         `https://ipwho.is/${ip}?fields=proxy,hosting,success`,
+//         { timeout: 4000 }
+//       );
 
-      if (r2.data.success === true) {
-        const isVpn = r2.data.proxy === true || r2.data.hosting === true;
-        console.log("✅ ipwho decided:", isVpn);
-        return isVpn;
-      }
-      else{
-        console.log("2nd API Fail")
-      }
-    } catch (err) {
-      markApiDown("ipWho");
-    }
-  }
+//       if (r2.data.success === true) {
+//         const isVpn = r2.data.proxy === true || r2.data.hosting === true;
+//         console.log("✅ ipwho decided:", isVpn);
+//         return isVpn;
+//       }
+//       else{
+//         console.log("2nd API Fail")
+//       }
+//     } catch (err) {
+//       markApiDown("ipWho");
+//     }
+//   }
 
-  // ============================
-  // API 3: ipinfo.io (LAST RESORT)
-  // ============================
-  if (apiAvailable("ipInfo")) {
-    try {
-      const r3 = await axios.get(
-        `https://ipinfo.io/${ip}/json`,
-        { timeout: 4000 }
-      );
+//   // ============================
+//   // API 3: ipinfo.io (LAST RESORT)
+//   // ============================
+//   if (apiAvailable("ipInfo")) {
+//     try {
+//       const r3 = await axios.get(
+//         `https://ipinfo.io/${ip}/json`,
+//         { timeout: 4000 }
+//       );
 
-      const org = (r3.data.org || "").toLowerCase();
-      const vpnKeywords = [
-        "vpn",
-        "proxy",
-        "hosting",
-        "cloud",
-        "digitalocean",
-        "aws",
-        "google",
-        "azure",
-        "ovh",
-        "vultr",
-      ];
+//       const org = (r3.data.org || "").toLowerCase();
+//       const vpnKeywords = [
+//         "vpn",
+//         "proxy",
+//         "hosting",
+//         "cloud",
+//         "digitalocean",
+//         "aws",
+//         "google",
+//         "azure",
+//         "ovh",
+//         "vultr",
+//       ];
 
-      const isVpn = vpnKeywords.some(k => org.includes(k));
-      console.log("✅ ipinfo decided:", isVpn);
-      return isVpn;
-    } catch (err) {
-      markApiDown("ipInfo");
-    }
-  }
+//       const isVpn = vpnKeywords.some(k => org.includes(k));
+//       console.log("✅ ipinfo decided:", isVpn);
+//       return isVpn;
+//     } catch (err) {
+//       markApiDown("ipInfo");
+//     }
+//   }
 
-  // ============================
-  // FAIL-OPEN (UX SAFE)
-  // ============================
-  console.warn("⚠️ All VPN APIs unavailable → allowing user");
-  return false;
-}
+//   // ============================
+//   // FAIL-OPEN (UX SAFE)
+//   // ============================
+//   console.warn("⚠️ All VPN APIs unavailable → allowing user");
+//   return false;
+// }
 
-function ipToInt(ip) {
-  return ip.split(".").reduce((acc, oct) => (acc << 8) + Number(oct), 0) >>> 0;
-}
+// function ipToInt(ip) {
+//   return ip.split(".").reduce((acc, oct) => (acc << 8) + Number(oct), 0) >>> 0;
+// }
 
-function cidrMatch(ip, cidr) {
-  if (!cidr.includes("/")) return ip === cidr; // 👈 normal IP
-  const [range, bits] = cidr.split("/");
-  const mask = bits == 0 ? 0 : ~((1 << (32 - bits)) - 1);
-  return (ipToInt(ip) & mask) === (ipToInt(range) & mask);
-}
+// function cidrMatch(ip, cidr) {
+//   if (!cidr.includes("/")) return ip === cidr; // 👈 normal IP
+//   const [range, bits] = cidr.split("/");
+//   const mask = bits == 0 ? 0 : ~((1 << (32 - bits)) - 1);
+//   return (ipToInt(ip) & mask) === (ipToInt(range) & mask);
+// }
 
-function isIpInList(ip, list) {
-  for (const entry of list) {
-    if (cidrMatch(ip, entry)) return true;
-  }
-  return false;
-}
+// function isIpInList(ip, list) {
+//   for (const entry of list) {
+//     if (cidrMatch(ip, entry)) return true;
+//   }
+//   return false;
+// }
 
 
-async function blockVPN(req, res, next) {
-  try {
-    const clientIp = (
-      req.headers["x-forwarded-for"]?.split(",")[0] ||
-      req.socket.remoteAddress
-    )
-      .replace("::ffff:", "")
-      .trim();
+// async function blockVPN(req, res, next) {
+//   try {
+//     const clientIp = (
+//       req.headers["x-forwarded-for"]?.split(",")[0] ||
+//       req.socket.remoteAddress
+//     )
+//       .replace("::ffff:", "")
+//       .trim();
 
-    // Allow localhost
-    if (
-      clientIp === "127.0.0.1" ||
-      clientIp === "::1" ||
-      clientIp.startsWith("192.168.")
-    ) {
-      res.cookie("valid_user", "true", { maxAge: 86400000 });
-      return next();
-    }
+//     // Allow localhost
+//     if (
+//       clientIp === "127.0.0.1" ||
+//       clientIp === "::1" ||
+//       clientIp.startsWith("192.168.")
+//     ) {
+//       res.cookie("valid_user", "true", { maxAge: 86400000 });
+//       return next();
+//     }
 
-    // 1️⃣ COOKIE CHECK
-    if (req.cookies.vpn_blocked === "true") {
-      return res
-        .status(403)
-        .sendFile(path.join(__dirname, "public", "restricted.html"));
-    }
+//     // 1️⃣ COOKIE CHECK
+//     if (req.cookies.vpn_blocked === "true") {
+//       return res
+//         .status(403)
+//         .sendFile(path.join(__dirname, "public", "restricted.html"));
+//     }
 
-    if (req.cookies.valid_user === "true") {
-      return next();
-    }
+//     if (req.cookies.valid_user === "true") {
+//       return next();
+//     }
 
-    // 2️⃣ LIBRARY CHECK
-    const vpnIps = readJson(VPN_IP_FILE);
-    const safeIps = readJson(SAFE_IP_FILE);
+//     // 2️⃣ LIBRARY CHECK
+//     const vpnIps = readJson(VPN_IP_FILE);
+//     const safeIps = readJson(SAFE_IP_FILE);
 
-    // if (vpnIps.includes(clientIp)) {
-    if (isIpInList(clientIp, vpnIps)) {
-      res.cookie("vpn_blocked", "true", { maxAge: 86400000 });
-      return res
-        .status(403)
-        .sendFile(path.join(__dirname, "public", "restricted.html"));
-    }
+//     // if (vpnIps.includes(clientIp)) {
+//     if (isIpInList(clientIp, vpnIps)) {
+//       res.cookie("vpn_blocked", "true", { maxAge: 86400000 });
+//       return res
+//         .status(403)
+//         .sendFile(path.join(__dirname, "public", "restricted.html"));
+//     }
 
-    // if (safeIps.includes(clientIp)) {
-    if (isIpInList(clientIp, safeIps)) {
-      res.cookie("valid_user", "true", { maxAge: 86400000 });
-      return next();
-    }
+//     // if (safeIps.includes(clientIp)) {
+//     if (isIpInList(clientIp, safeIps)) {
+//       res.cookie("valid_user", "true", { maxAge: 86400000 });
+//       return next();
+//     }
 
-    // 3️⃣ ONLINE CHECK
-    const isVpn = await checkWithApis(clientIp);
+//     // 3️⃣ ONLINE CHECK
+//     const isVpn = await checkWithApis(clientIp);
 
-    if (isVpn) {
-      vpnIps.push(clientIp);
-      writeJson(VPN_IP_FILE, vpnIps);
+//     if (isVpn) {
+//       vpnIps.push(clientIp);
+//       writeJson(VPN_IP_FILE, vpnIps);
 
-      res.cookie("vpn_blocked", "true", { maxAge: 86400000 });
-      return res
-        .status(403)
-        .sendFile(path.join(__dirname, "public", "restricted.html"));
-    }
+//       res.cookie("vpn_blocked", "true", { maxAge: 86400000 });
+//       return res
+//         .status(403)
+//         .sendFile(path.join(__dirname, "public", "restricted.html"));
+//     }
 
-    // 4️⃣ SAFE USER
-    safeIps.push(clientIp);
-    writeJson(SAFE_IP_FILE, safeIps);
+//     // 4️⃣ SAFE USER
+//     safeIps.push(clientIp);
+//     writeJson(SAFE_IP_FILE, safeIps);
 
-    res.cookie("valid_user", "true", { maxAge: 86400000 });
-    next();
-  } catch (err) {
-    console.error("VPN check error:", err.message);
-    next(); // fail-open
-  }
-}
+//     res.cookie("valid_user", "true", { maxAge: 86400000 });
+//     next();
+//   } catch (err) {
+//     console.error("VPN check error:", err.message);
+//     next(); // fail-open
+//   }
+// }
 
-app.use(blockVPN);
+// app.use(blockVPN);
 
-app.post("/retry", (req, res) => {
-  res.clearCookie("vpn_blocked");
-  res.clearCookie("valid_user");
-  res.redirect("/");
-});
+// app.post("/retry", (req, res) => {
+//   res.clearCookie("vpn_blocked");
+//   res.clearCookie("valid_user");
+//   res.redirect("/");
+// });
 
 // app.post("/api/voice-order-test", async (req, res) => {
 //   try {

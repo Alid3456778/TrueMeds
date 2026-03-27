@@ -125,7 +125,7 @@ function updateProductUI(product, variants) {
   // Name
   const nameEl = document.getElementById("nameing_of_product");
   if (nameEl) nameEl.textContent = product.product_name || "Product";
-  document.title = `${product.product_name || "Product"} – MCland Pharma`;
+  document.title = `${product.product_name || "Product"} – TrueMeds Pharma`;
 
   // Brand
   const brandEl = document.getElementById("product-brand");
@@ -633,10 +633,10 @@ async function loadRelatedProducts(catId, currentId) {
 // ── META TAGS ─────────────────────────────────────────────────────────────
 function updateMetaTags(product) {
   if (!product?.product_name) return;
-  document.title = `${product.product_name} | Order Online – MCland Pharma`;
+  document.title = `${product.product_name} | Order Online – TrueMeds Pharma`;
   let desc = document.querySelector('meta[name="description"]');
   if (!desc) { desc = document.createElement("meta"); desc.name = "description"; document.head.appendChild(desc); }
-  desc.content = `Buy ${product.product_name} from MCland Pharma. ${(product.product_description || "").substring(0, 120)} Secure delivery.`;
+  desc.content = `Buy ${product.product_name} from TrueMeds Pharma. ${(product.product_description || "").substring(0, 120)} Secure delivery.`;
 }
 
 // ── SEARCH ────────────────────────────────────────────────────────────────
