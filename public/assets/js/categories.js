@@ -212,18 +212,8 @@ function renderCards(products) {
               <div class="stars">${starsHtml}</div>
               <span class="rating-value">${rating.toFixed(1)}</span>
             </div>` : ""}
-          <div class="product-price-block">
-            <div class="price-mrp-label">Price</div>
-            <div class="price-row">
-              <span class="price-sale">${price > 0 ? "$" + price.toFixed(2) : "View Price"}</span>
-            </div>
-          </div>
-          <button class="btn-add" id="btn-${id}"
-            onclick="event.stopPropagation();
-                     handleAdd(this,'${id}','${catid}','${safeName}','${price}','${safeImg}')"
-            ${!inStock ? "disabled" : ""}>
-            ${inStock ? "ADD TO CART" : "OUT OF STOCK"}
-          </button>
+          
+         
           <div class="qty-stepper" id="stepper-${id}">
             <button class="qty-btn" onclick="event.stopPropagation(); changeQty('${id}', -1)">−</button>
             <span class="qty-value" id="qty-${id}">1</span>

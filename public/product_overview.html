@@ -9,14 +9,45 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     :root {
-      --primary: #028c7e; --primary-dark: #016d62; --primary-light: #e8f5f4;
-      --green: #059669;   --green-light: #ecfdf5;  --yellow: #f59e0b;
-      --bg: #f4f6f8;      --white: #ffffff;
-      --text: #212121;    --text-md: #555;         --text-lt: #999;
-      --border: #e8e8e8;  --shadow: 0 2px 8px rgba(0,0,0,.07);
-      --shadow-md: 0 4px 20px rgba(0,0,0,.10);
-      --r: 8px; --r-lg: 14px; --font: 'Inter', sans-serif;
-    }
+  /* ── BRAND CORE (Logo Identity) ── */
+  --primary-blue: #1f7ae0;
+  --primary-green: #4caf50;
+  --primary-gradient: linear-gradient(135deg, #1f7ae0, #4caf50);
+
+  /* ── PRIMARY (Used across UI) ── */
+  --primary: #1f7ae0;
+  --primary-dark: #155bb5;
+  --primary-light: #e8f1fc;
+
+  /* ── SEMANTIC COLORS ── */
+    --green: #16a34a;      /* success (stronger + modern) */
+  --green-light: #ecfdf5;
+
+  --yellow: #f59e0b;       /* warning (keep as is, already perfect) */
+
+  /* ── BACKGROUND SYSTEM ── */
+  --bg: #f4f7fb;           /* slightly bluish for premium feel */
+  --white: #ffffff;
+
+  /* ── TEXT SYSTEM ── */
+  --text: #1f2937;         /* slightly refined dark */
+  --text-md: #6b7280;
+  --text-lt: #9ca3af;
+
+  /* ── BORDERS ── */
+  --border: #e5e7eb;
+
+  /* ── SHADOWS (More premium depth) ── */
+  --shadow: 0 2px 10px rgba(0,0,0,.06);
+  --shadow-md: 0 10px 28px rgba(0,0,0,.12);
+
+  /* ── RADIUS ── */
+  --r: 8px;
+  --r-lg: 14px;
+
+  /* ── TYPOGRAPHY ── */
+  --font: 'Inter', sans-serif;
+}
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: var(--font); color: var(--text); background: var(--bg); overflow-x: hidden; }
     a { text-decoration: none; color: inherit; }
@@ -204,7 +235,14 @@
     @media (max-width: 1024px) { .product-grid { grid-template-columns: 360px 1fr; } #related-grid { grid-template-columns: repeat(4,1fr); } }
     @media (max-width: 900px)  { .product-grid { grid-template-columns: 1fr; } .gallery-col { position: static; } #related-grid { grid-template-columns: repeat(3,1fr); } }
     @media (max-width: 768px)  { .nav-actions { display: none; } .menu-toggle { display: flex; } .sticky-bar { display: flex; } .page { padding-bottom: 90px; } #related-grid { grid-template-columns: repeat(2,1fr); } }
-    @media (max-width: 480px)  { .product-name { font-size: 18px; } #related-grid { grid-template-columns: repeat(2,1fr); gap: 10px; } }
+    @media (max-width: 480px)  { 
+       .logo-icon{
+          width: 50px;
+        }
+      .logo-icon img {
+        width: 50px;
+      }
+      .product-name { font-size: 18px; } #related-grid { grid-template-columns: repeat(2,1fr); gap: 10px; } }
   </style>
 </head>
 <body>

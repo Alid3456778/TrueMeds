@@ -400,7 +400,7 @@ async function addToCart() {
         quantity,
         mg         : v ? `${v.unit_value || ""}${v.unit_type || ""}` : null,
         price,
-        imageurl   : currentProduct.image_url || ""
+        image_url   : currentProduct.image_url || ""
       })
     });
     const d = await r.json();
@@ -496,11 +496,11 @@ function renderReviews(reviews, productId) {
             ${r.verified ? `<div style="font-size:11px;color:#059669;font-weight:500">✔ Verified Buyer</div>` : ""}
           </div>
           <span style="font-size:12px;color:#aaa">
-            ${r.createdat ? new Date(r.createdat).toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"}) : ""}
+            ${r.created_at ? new Date(r.created_at).toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"}) : ""}
           </span>
         </div>
         <div style="color:#f59e0b;font-size:14px;margin-bottom:6px">${starsHtml(parseFloat(r.rating || 0))}</div>
-        <p style="font-size:13px;color:#555;line-height:1.65;margin:0">${r.reviewtext || ""}</p>
+        <p style="font-size:13px;color:#555;line-height:1.65;margin:0">${r.review_text || ""}</p>
       </div>`).join("")}
 
     <div style="margin-top:28px;padding:22px;background:#f8f9fa;border-radius:12px;border:1px solid #eee">
@@ -557,10 +557,10 @@ async function submitReview(productId) {
       method : "POST",
       headers: { "Content-Type": "application/json" },
       body   : JSON.stringify({
-        productid : productId,
+        product_id : productId,
         name, email,
         rating    : reviewStarVal,
-        reviewtext: text
+        review_text: text
       })
     });
     const d = await r.json();
@@ -616,14 +616,7 @@ async function loadRelatedProducts(catId, currentId) {
             <div style="font-size:14px;font-weight:700;color:#212121;margin-bottom:8px">
               ${price > 0 ? `$${price.toFixed(2)}` : "—"}
             </div>
-            <button onclick="event.stopPropagation();addRelatedToCart('${pId}','${pCat}','${pName.replace(/'/g,"\\'")}','${price}','${pImg.replace(/'/g,"\\'")}')"
-              style="width:100%;padding:7px;border:1.5px solid #028c7e;border-radius:6px;
-                     background:transparent;color:#028c7e;font-size:12px;font-weight:600;
-                     cursor:pointer;transition:background .2s,color .2s"
-              onmouseover="this.style.background='#028c7e';this.style.color='#fff'"
-              onmouseout="this.style.background='transparent';this.style.color='#028c7e'">
-              ADD
-            </button>
+            
           </div>
         </div>`;
     }).join("");

@@ -21,24 +21,37 @@
 
   <style>
     /* ── GLOBAL ── */
-    :root {
-      --primary: #028c7e;
-      --primary-dark: #016d62;
-      --primary-light: #03b09f;
-      --secondary: #ff6b35;
-      --accent: #00b5ad;
-      --bg-light: #f8f9fa;
-      --bg-white: #ffffff;
-      --text-dark: #212121;
-      --text-medium: #666666;
-      --text-light: #999999;
-      --border: #e8e8e8;
-      --shadow: 0 2px 8px rgba(0,0,0,0.08);
-      --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
-      --radius: 8px;
-      --radius-lg: 12px;
-      --font: 'Inter', sans-serif;
-    }
+:root {
+  /* BRAND */
+  --primary-blue: #1f7ae0;
+  --primary-green: #4caf50;
+  --primary-gradient: linear-gradient(135deg, #1f7ae0, #4caf50);
+
+  --primary: #1f7ae0;
+  --primary-dark: #155bb5;
+  --primary-light: #e8f1fc;
+
+  --secondary: #4caf50;
+  --accent: #36a56a;
+
+  /* UI */
+  --bg-light: #f8fafc;
+  --bg-white: #ffffff;
+
+  --text-dark: #212121;
+  --text-medium: #666666;
+  --text-light: #999999;
+
+  --border: #e5e7eb;
+
+  --shadow: 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.12);
+
+  --radius: 8px;
+  --radius-lg: 14px;
+
+  --font: 'Inter', sans-serif;
+}
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: var(--font); color: var(--text-dark); background: var(--bg-white); overflow-x: hidden; }
     a { text-decoration: none; color: inherit; }
@@ -425,6 +438,9 @@
       .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 768px) {
+      .logo-icon img {
+        width: 100px;
+      }
       .nav-links { display: none; }
       .menu-toggle { display: flex; }
       .services-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
@@ -438,6 +454,9 @@
       .testimonials-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 480px) {
+      .logo-icon img {
+        width: 50px;
+      }
       .services-grid { grid-template-columns: repeat(4, 1fr); }
       .products-row { grid-template-columns: repeat(2, 1fr); }
       .categories-grid { grid-template-columns: repeat(2, 1fr); }
@@ -665,7 +684,7 @@
         <div class="cat-card-footer"><div class="cat-card-name">USA Premium</div><div class="cat-card-count">Top imported brands</div></div>
       </a>
       <a href="categories.html?catogeriesID=2" class="cat-card">
-        <div class="cat-card-img" style="background:linear-gradient(135deg,#f0fdf4,#d1fae5)"><span class="cat-img-placeholder">❤️</span></div>
+        <div class="cat-card-img" style="background:linear-gradient(135deg,#f0fdf4,#d1fae5)"><span class="cat-img-placeholder"><img src="./assets/image2/general.jpeg" alt=""></span></div>
         <div class="cat-card-footer"><div class="cat-card-name">General Health</div><div class="cat-card-count">Everyday essentials</div></div>
       </a>
       <a href="categories.html?catogeriesID=3" class="cat-card">

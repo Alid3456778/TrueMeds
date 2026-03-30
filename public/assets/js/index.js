@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     container.innerHTML = verified.slice(0, 6).map(r => `
       <div class="testimonial">
         <div class="stars">${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</div>
-        <p class="testimonial-text">"${r.reviewtext}"</p>
+        <p class="testimonial-text">"${r.review_text}"</p>
         <p class="testimonial-author">${r.name}</p>
         <div class="verified-purchase">
           <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
@@ -227,14 +227,8 @@ document.addEventListener("DOMContentLoaded", async () => {
           <div class="product-body">
             <div class="product-name">${p.product_name || "Product"}</div>
             ${rating > 0 ? `<div style="color:#f59e0b;font-size:12px;margin-bottom:6px;">${stars}</div>` : ""}
-            <div class="product-price">
-              <span class="price-now">${price > 0 ? "$" + price.toFixed(2) : "View Price"}</span>
-            </div>
-            <button class="btn-add"
-              onclick="event.stopPropagation();
-                       handleAddToCart(this,'${p.product_id}','${p.category_id}','${safeName}','${price}','${safeImg}')">
-              ADD TO CART
-            </button>
+            
+            
           </div>
         </div>`;
     }).join("");

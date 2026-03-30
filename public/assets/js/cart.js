@@ -25,7 +25,8 @@ async function loadCartItems() {
       container.innerHTML = "<p>Your cart is empty.</p>";
       return;
     }
-
+    console.log(cartData);
+    
     container.innerHTML = "";
     let subtotal = 0;
     for (const item of cartItems) {
