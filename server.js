@@ -263,8 +263,8 @@ app.post("/api/checkout", async (req, res) => {
         port: 465,
         secure: true,
         auth: {
-          user: "orderconfirmation@mclandpharma.com",
-          pass: "Order$123mcland",
+          user: "support@truemedspharmacy.com",
+          pass: "falsemedS@123",
         },
       });
 
@@ -287,7 +287,7 @@ app.post("/api/checkout", async (req, res) => {
               </head>
               <body>
                   <div class="header">
-                      <h1>Order Confirmation - Mcland Pharma</h1>
+                      <h1>Order Confirmation - TrueMedsPharma</h1>
                       <p>Thank you for your order, ${firstName} ${lastName}!</p>
                   </div>
                   <div class="content">
@@ -342,21 +342,21 @@ app.post("/api/checkout", async (req, res) => {
                       <p><strong>WhatsApp:</strong> +91 887 920 1044</p>
                       <p><strong>Email:</strong> customerinfo2024@gmail.com</p>
                       <p><em>This is an automated confirmation email.</em></p>
-                      <p>© ${new Date().getFullYear()} Mcland Pharma. All rights reserved.</p>
+                      <p>© ${new Date().getFullYear()} Truemeds Pharma. All rights reserved.</p>
                   </div>
               </body>
               </html>
         `;
       const mailOptions = {
-        from: '" Pharma" <orderconfirmation@mclandpharma.com>',
+        from: '"Tremeds Pharma" <support@truemedspharmacy.com>',
         to: email,
-        subject: "Order Confirmation - Mcland Pharma",
+        subject: "Order Confirmation - TrueMed Pharma",
         html: htmlBody,
       };
 
       await transporter.sendMail(mailOptions);
       // 5️⃣ SAVE EMAIL INTO “Sent” FOLDER using IMAP
-      const rawEmail = `From: "Mcland Pharma" <orderconfirmation@mclandpharma.com>
+      const rawEmail = `From: "Tremeds Pharma" <support@truemedspharmacy.com>
 To: ${email}
 Subject: Order Confermation
 Content-Type: text/html; charset=UTF-8
@@ -366,8 +366,8 @@ ${htmlBody}
 
       const imapConfig = {
         imap: {
-          user: "orderconfirmation@mclandpharma.com",
-          password: "Order$123mcland",
+          user: "support@truemedspharmacy.com",
+          password: "falsemedS@123",
           host: "imap.hostinger.com",
           port: 993,
           tls: true,
@@ -653,8 +653,8 @@ app.post("/api/manual-order", async (req, res) => {
         port: 465,
         secure: true,
         auth: {
-          user: "orderconfirmation@mclandpharma.com",
-          pass: "Order$123mcland",
+          user: "support@truemedspharmacy.com",
+          pass: "falsemedS@123",
         },
       });
 
@@ -677,7 +677,7 @@ app.post("/api/manual-order", async (req, res) => {
             </head>
             <body>
                 <div class="header">
-                    <h1>Order Confirmation - Mcland Pharma</h1>
+                    <h1>Order Confirmation - Truemeds Pharma</h1>
                     <p>Thank you for your order, ${firstName} ${lastName}!</p>
                 </div>
                 <div class="content">
@@ -731,22 +731,22 @@ app.post("/api/manual-order", async (req, res) => {
                     <p><strong>WhatsApp:</strong> +91 887 920 1044</p>
                     <p><strong>Email:</strong> customerinfo2024@gmail.com</p>
                     <p><em>This is an automated confirmation email.</em></p>
-                    <p>© ${new Date().getFullYear()} Mcland Pharma. All rights reserved.</p>
+                    <p>© ${new Date().getFullYear()} Truemeds Pharma. All rights reserved.</p>
                 </div>
             </body>
             </html>
         `;
       const mailOptions = {
-        from: '"Mcland Pharma" <orderconfirmation@mclandpharma.com>',
+        from: '"TrueMeds Pharma" <support@truemedspharmacy.com>',
         to: email,
-        subject: "Order Confirmation - Mcland Pharma",
+        subject: "Order Confirmation - TrueMeds Pharma",
         html: htmlBody,
       };
 
       await transporter.sendMail(mailOptions);
 
       // 5️⃣ SAVE EMAIL INTO “Sent” FOLDER using IMAP
-      const rawEmail = `From: "Mcland Pharma" <orderconfirmation@mclandpharma.com>
+      const rawEmail = `From: "Truemeds Pharma" <support@truemedspharmacy.com
 To: ${email}
 Subject: Order Confermation
 Content-Type: text/html; charset=UTF-8
@@ -756,8 +756,8 @@ ${htmlBody}
 
       const imapConfig = {
         imap: {
-          user: "orderconfirmation@mclandpharma.com",
-          password: "Order$123mcland",
+          user: "support@truemedspharmacy.com",
+          password: "falsemedS@123",
           host: "imap.hostinger.com",
           port: 993,
           tls: true,
@@ -1767,14 +1767,14 @@ app.get("/api/orders/:orderId/payment-status", async (req, res) => {
 //         secure: true,
 //         auth: {
 //           user: "orderconfirmation@mclandpharma.com",
-//           pass: "Order$123mcland",
+//           pass: "falsemedS@123",
 //       },
 //     });
 
 //     //want to update
 //     // Send email
 //     await transporter.sendMail({
-//       from: '"Mcland Pharma" <orderconfirmation@mclandpharma.com>',
+//       from: '"Truemeds Pharma" <orderconfirmation@mclandpharma.com>',
 //       to: email,
 //       subject: "Your Order has been Shipped",
 //       text: `Hello ${name},\n\nYour order #${orderId} has been shipped.\nTracking Number: ${trackingNumber}\n\nThank you for shopping with us!`,
@@ -1843,7 +1843,7 @@ app.post("/api/orders/:orderId/send-tracking", async (req, res) => {
                 </p>
 
                 <p style="margin:0 0 15px;">
-                  Thank you for placing an order with <strong>McLand Pharma</strong>.  
+                  Thank you for placing an order with <strong>Truemeds Pharma</strong>.  
                   Below are your order details:
                 </p>
 
@@ -1864,7 +1864,7 @@ app.post("/api/orders/:orderId/send-tracking", async (req, res) => {
 
                 <p style="margin:0;">
                   Thank you!  
-                  <br><strong>McLand Pharma</strong>
+                  <br><strong>Truemeds Pharma</strong>
                 </p>
               </td>
             </tr>
@@ -1874,7 +1874,7 @@ app.post("/api/orders/:orderId/send-tracking", async (req, res) => {
               <td align="center" 
                   style="background:#fafafa;padding:18px;color:#777;font-size:12px;line-height:18px;">
                 This is an automated email. Please do not reply.<br>
-                © 2025 McLand Pharma. All rights reserved.
+                © 2025 Truemeds Pharma. All rights reserved.
               </td>
             </tr>
 
@@ -1893,21 +1893,21 @@ app.post("/api/orders/:orderId/send-tracking", async (req, res) => {
       port: 465,
       secure: true,
       auth: {
-        user: "orderconfirmation@mclandpharma.com",
-        pass: "Order$123mcland",
+        user: "support@truemedspharmacy.com",
+        pass: "falsemedS@123",
       },
     });
 
     // 4️⃣ Send Email
     await transporter.sendMail({
-      from: '"Mcland Pharma" <orderconfirmation@mclandpharma.com>',
+      from: '"TrueMeds Pharma" <support@truemedspharmacy.com>',
       to: email,
       subject: "Your Order Has Been Shipped",
       html: htmlBody,
     });
 
     // 5️⃣ SAVE EMAIL INTO “Sent” FOLDER using IMAP
-    const rawEmail = `From: "Mcland Pharma" <orderconfirmation@mclandpharma.com>
+    const rawEmail = `From: "TrueMeds Pharma" <support@truemedspharmacy.com>
 To: ${email}
 Subject: Your Order Has Been Shipped
 Content-Type: text/html; charset=UTF-8
@@ -1917,8 +1917,8 @@ ${htmlBody}
 
     const imapConfig = {
       imap: {
-        user: "orderconfirmation@mclandpharma.com",
-        password: "Order$123mcland",
+        user: "support@truemedspharmacy.com",
+        password: "falsemedS@123",
         host: "imap.hostinger.com",
         port: 993,
         tls: true,
@@ -2289,7 +2289,7 @@ async function generateSQLDump() {
   ];
 
   let sqlDump = `-- ====================================================\n`;
-  sqlDump += `-- McLand Pharma Database Backup\n`;
+  sqlDump += `-- Truemeds Pharma Database Backup\n`;
   sqlDump += `-- Generated: ${new Date().toISOString()}\n`;
   sqlDump += `-- Compatible with: PostgreSQL, MySQL, SQLite, SQL Server\n`;
   sqlDump += `-- Total Tables: ${tables.length}\n`;
