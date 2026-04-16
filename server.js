@@ -2026,8 +2026,14 @@ app.post("/api/reviews", async (req, res) => {
       [email]
     );
 
-    const isVerified =
-      customerCheck.rows.length > 0 && orderCheck.rows.length > 0;
+    let isVerified = false;
+
+    if(customerCheck.rows.length > 0 && orderCheck.rows.length > 0) {
+      isVerified = true;
+    }
+
+    // let isVerified =
+    //   customerCheck.rows.length > 0 && orderCheck.rows.length > 0;
 
     // ✅ Insert the review (include verified field)
     await pool.query(

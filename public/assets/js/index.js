@@ -176,7 +176,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!data.success || !data.reviews?.length) {
       container.innerHTML = "<p>No customer reviews yet.</p>"; return;
     }
-    const verified = data.reviews.filter(r => r.verified);
+    const verified = data.reviews;
     if (!verified.length) {
       container.innerHTML = "<p>No verified customer reviews yet.</p>"; return;
     }
@@ -185,12 +185,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="stars">${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</div>
         <p class="testimonial-text">"${r.review_text}"</p>
         <p class="testimonial-author">${r.name}</p>
-        <div class="verified-purchase">
-          <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-          Verified Purchase
-        </div>
+         ${
+            r.verified
+              ? '  <div class="verified-purchase"> <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"> <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /> </svg> Verified Purchase  </div>'
+              : ' <div class="unverified-purchase"></div>'
+          }
       </div>`).join("");
   } catch (err) {
     console.error("Error fetching reviews:", err);

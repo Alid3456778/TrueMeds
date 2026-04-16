@@ -63,8 +63,35 @@
       background: var(--primary); color: #fff;
       text-align: center; padding: 8px 16px;
       font-size: 13px; font-weight: 500; letter-spacing: 0.3px;
+      display: flex;
+      justify-content: space-between;
     }
     .top-banner span { margin: 0 12px; }
+
+    .contactIcon{
+      color: #fff;
+      transition: color 0.2s;
+      gap: 6px;
+    }
+    .contactIcon a{
+      margin-left: 20px;
+      color: #fff;
+      transition: color 0.2s;
+      gap: 6px;
+    }
+
+    @media (max-width:480px) {
+      .contactIcon a{
+        margin-left: 10px;
+      }
+      .top-banner{
+        flex-direction: column;
+        gap: 8px;
+      }
+      .hideHeader{
+        display: none;
+      }
+    }
 
     /* ── HEADER ── */
     header {
@@ -324,6 +351,135 @@
     .testimonial-author { font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; }
     .verified-purchase { display: flex; align-items: center; gap: 4px; font-size: 11px; color: #059669; font-weight: 600; }
 
+    /* ── WRITE A REVIEW (Homepage) ── */
+    .home-review-wrap {
+      margin-top: 22px;
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 6px 22px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+    .home-review-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 18px 18px 14px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(135deg, rgba(31,122,224,0.06), rgba(76,175,80,0.06));
+    }
+    .home-review-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-dark);
+      letter-spacing: -0.2px;
+    }
+    .home-review-subtitle { font-size: 12px; color: var(--text-medium); margin-top: 4px; }
+    .home-review-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .review-select { display: flex; flex-direction: column; gap: 6px; min-width: 240px; }
+    .review-select label { font-size: 11px; font-weight: 700; color: var(--text-medium); }
+    .review-select select {
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+      font-size: 13px;
+      outline: none;
+    }
+    .review-select select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(31,122,224,0.12); }
+    .rating {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+      white-space: nowrap;
+    }
+    .rating span[data-value] { color: #ccc; font-size: 15px; line-height: 1; }
+    .rating__count { font-size: 12px; color: var(--text-light); font-weight: 600; margin-left: 2px; }
+    .home-review-grid {
+      display: grid;
+      /* grid-template-columns: 1.15fr 0.85fr; */
+      gap: 18px;
+      padding: 18px;
+    }
+    .home-review-grid h4 { font-size: 13px; font-weight: 800; color: var(--text-dark); margin-bottom: 10px; }
+    #review-list p { color: var(--text-medium); font-size: 13px; line-height: 1.6; }
+    .review-card {
+      border: 1px solid var(--border);
+      background: var(--bg-light);
+      padding: 12px 12px 10px;
+      border-radius: 14px;
+      margin-bottom: 10px;
+    }
+    .review-card strong { display: inline-block; font-size: 13px; color: var(--text-dark); margin-right: 8px; }
+    .review-card span { color: #f59e0b; font-size: 13px; letter-spacing: 0.5px; }
+    .review-card p { margin-top: 8px; color: var(--text-medium); font-size: 13px; line-height: 1.6; }
+    .review-card small { display: block; margin-top: 8px; color: var(--text-light); font-size: 11px; }
+
+    #reviewForm { display: flex; flex-direction: column; gap: 10px; }
+    #reviewForm input,
+    #reviewForm textarea {
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-size: 13px;
+      outline: none;
+      background: #fff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    #reviewForm textarea { min-height: 110px; resize: vertical; }
+    #reviewForm input:focus,
+    #reviewForm textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(31,122,224,0.12);
+    }
+
+    .star-rating {
+      display: flex;
+      gap: 8px;
+      font-size: 26px;
+      color: #d1d5db;
+      cursor: pointer;
+      user-select: none;
+      margin: 2px 0 6px;
+    }
+    .star-rating span { transition: transform 0.12s ease, color 0.2s ease; line-height: 1; }
+    .star-rating span:hover { transform: translateY(-1px) scale(1.08); color: #f59e0b; }
+    .star-rating span.selected { color: #f59e0b; }
+
+    #reviewForm button[type="submit"] {
+      border: none;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-weight: 800;
+      font-size: 13px;
+      color: #fff;
+      background: var(--primary-gradient);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+      box-shadow: 0 10px 22px rgba(31,122,224,0.22);
+    }
+    #reviewForm button[type="submit"]:hover { filter: brightness(1.02); transform: translateY(-1px); box-shadow: 0 14px 26px rgba(31,122,224,0.28); }
+    #reviewForm button[type="submit"]:active { transform: translateY(0); }
+
+    .show-more-btn {
+      display: block;
+      margin: 10px auto 0;
+      padding: 8px 14px;
+      background: #fff;
+      color: var(--text-medium);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .show-more-btn:hover { background: var(--bg-light); transform: translateY(-1px); }
+
     /* ── HEALTH ARTICLES ── */
     .health-feed { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
     .health-card {
@@ -378,7 +534,7 @@
     .footer-bottom {
       border-top: 1px solid rgba(255,255,255,0.08);
       padding-top: 24px; display: flex; align-items: center;
-      justify-content: space-between; flex-wrap: wrap; gap: 12px;
+      flex-wrap: wrap; gap: 12px;
     }
     .footer-bottom p { font-size: 12px; color: #666; }
     .footer-badges { display: flex; gap: 8px; }
@@ -436,6 +592,7 @@
       .trust-inner { grid-template-columns: repeat(2, 1fr); }
       .hero-banner-img img, .hero-banner-placeholder { height: 140px; }
       .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+      .home-review-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 768px) {
       .logo-icon img {
@@ -469,9 +626,46 @@
 
   <!-- TOP BANNER -->
   <div class="top-banner">
-    🚚 Fast Delivery <span>|</span>
-    🔒 Secure Checkout <span>|</span>
-    💬 24/7 Customer Support
+    <div>
+      <span>🚚 Express Delivery |</span>
+     <span> 🔒 Secure Checkout |</span>
+      <span class="hideHeader">💬 24/7 Customer Support </span>
+    </div>
+    <div class="contactIcon">
+      <a href="tel:+12095937171" aria-label="Call us"><i class="fas fa-phone"> +1 209 593 7171 </i></a>
+      <a href="mailto:info@trumeds.com" aria-label="Email us" class="hideHeader"><i class="fas fa-envelope"></i></a>
+      <a href="https://wa.me/+918879201044" target="_blank" class="trust-link">
+          <svg
+            width="20px"
+            height="20px"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            stroke="#ffffff"
+            stroke-width="0.00024000000000000003"
+          >
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              <path
+                d="M6.014 8.00613C6.12827 7.1024 7.30277 5.87414 8.23488 6.01043L8.23339 6.00894C9.14051 6.18132 9.85859 7.74261 10.2635 8.44465C10.5504 8.95402 10.3641 9.4701 10.0965 9.68787C9.7355 9.97883 9.17099 10.3803 9.28943 10.7834C9.5 11.5 12 14 13.2296 14.7107C13.695 14.9797 14.0325 14.2702 14.3207 13.9067C14.5301 13.6271 15.0466 13.46 15.5548 13.736C16.3138 14.178 17.0288 14.6917 17.69 15.27C18.0202 15.546 18.0977 15.9539 17.8689 16.385C17.4659 17.1443 16.3003 18.1456 15.4542 17.9421C13.9764 17.5868 8 15.27 6.08033 8.55801C5.97237 8.24048 5.99955 8.12044 6.014 8.00613Z"
+                fill="#ffffff"
+              ></path>
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M12 23C10.7764 23 10.0994 22.8687 9 22.5L6.89443 23.5528C5.56462 24.2177 4 23.2507 4 21.7639V19.5C1.84655 17.492 1 15.1767 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM6 18.6303L5.36395 18.0372C3.69087 16.4772 3 14.7331 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C11.0143 21 10.552 20.911 9.63595 20.6038L8.84847 20.3397L6 21.7639V18.6303Z"
+                fill="#ffffff"
+              ></path>
+            </g>
+          </svg>
+          <!-- <span class="trust-text">WhatsApp</span> -->
+        </a>
+    </div>
   </div>
 
   <!-- ══════════════════════════════════════
@@ -586,7 +780,7 @@
   <div class="divider"></div>
 
   <!-- QUICK SERVICES -->
-  <div class="section">
+  <!-- <div class="section">
     <div class="section-header">
       <h2 class="section-title">Our <span>Services</span></h2>
     </div>
@@ -632,6 +826,19 @@
         <div class="service-desc">BP, Sugar &amp; more</div>
       </div>
     </div>
+  </div> -->
+
+  <div class="section">
+    <div class="section-header">
+      <h2 class="section-title">Premium <span>Products</span></h2>
+      <a href="categories.html?catogeriesID=1" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="products-row" id="productsGrid">
+      <!-- Filled by index.js from /products?categoryID=1 -->
+      <p style="color:#999;font-size:13px;grid-column:1/-1;padding:10px 0;">
+        <i class="fas fa-spinner fa-spin" style="color:var(--primary);margin-right:6px;"></i>Loading products...
+      </p>
+    </div>
   </div>
 
   <div class="divider"></div>
@@ -656,18 +863,7 @@
        • Grid starts EMPTY — index.js fills it from GET /products?categoryID=1
        • Static placeholder cards removed to avoid DOM conflicts
   ══════════════════════════════════════ -->
-  <div class="section">
-    <div class="section-header">
-      <h2 class="section-title">Trending <span>Products</span></h2>
-      <a href="categories.html?catogeriesID=1" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
-    </div>
-    <div class="products-row" id="productsGrid">
-      <!-- Filled by index.js from /products?categoryID=1 -->
-      <p style="color:#999;font-size:13px;grid-column:1/-1;padding:10px 0;">
-        <i class="fas fa-spinner fa-spin" style="color:var(--primary);margin-right:6px;"></i>Loading products...
-      </p>
-    </div>
-  </div>
+  
 
   <div class="divider"></div>
 
@@ -725,7 +921,7 @@
   <div class="divider"></div>
 
   <!-- HEALTH ARTICLES -->
-  <div class="section">
+  <!-- <div class="section">
     <div class="section-header">
       <h2 class="section-title">Health <span>Articles</span></h2>
       <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
@@ -764,7 +960,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <div class="divider"></div>
 
@@ -783,6 +979,58 @@
         <p style="color:#999;font-size:14px;">
           <i class="fas fa-spinner fa-spin" style="color:var(--primary);margin-right:6px;"></i>Loading reviews...
         </p>
+      </div>
+
+      <!-- Write a review (per-product) -->
+      <div class="home-review-wrap" id="reviews-section">
+        <div class="home-review-head">
+          <div>
+            <div class="home-review-title">Write a Review</div>
+            <!-- <div class="home-review-subtitle">Select a product and share your experience</div> -->
+          </div>
+          <!-- <div class="home-review-controls">
+            <div class="review-select">
+              <label for="review-product-select">Product</label>
+              <select id="review-product-select" aria-label="Select a product to review">
+                <option value="">Select a product to review</option>
+              </select>
+            </div>
+            <div id="rating" class="rating" aria-label="Average rating">
+              <span data-value="1">★</span>
+              <span data-value="2">★</span>
+              <span data-value="3">★</span>
+              <span data-value="4">★</span>
+              <span data-value="5">★</span>
+              <span class="rating__count">(0 reviews)</span>
+            </div>
+          </div> -->
+        </div>
+
+        <div class="home-review-grid">
+          <!-- <div class="home-review-list">
+            <h4>Latest reviews</h4>
+            <div id="review-list">
+              <p>Please choose a product above to see reviews.</p>
+            </div>
+          </div> -->
+
+          <div class="home-review-form">
+            <h4>Share your experience</h4>
+            <form id="reviewForm">
+              <input id="review-name" type="text" placeholder="Your name" autocomplete="name" required />
+              <input id="review-email" type="email" placeholder="Your email" autocomplete="email" required />
+              <div id="star-rating" class="star-rating" aria-label="Your rating">
+                <span data-value="1" aria-label="1 star">★</span>
+                <span data-value="2" aria-label="2 stars">★</span>
+                <span data-value="3" aria-label="3 stars">★</span>
+                <span data-value="4" aria-label="4 stars">★</span>
+                <span data-value="5" aria-label="5 stars">★</span>
+              </div>
+              <textarea id="review-text" placeholder="Write your review..." required></textarea>
+              <button type="submit">Submit Review</button>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -813,13 +1061,13 @@
           <div class="trust-sub">In as fast as 2 hours</div>
         </div>
       </div>
-      <div class="trust-item">
+      <!-- <div class="trust-item">
         <div class="trust-icon"><i class="fas fa-undo"></i></div>
         <div class="trust-info">
           <div class="trust-title">Easy Returns</div>
           <div class="trust-sub">Hassle-free return policy</div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 
@@ -989,6 +1237,7 @@
                 add-to-cart API call
   ═══════════════════════════════════════════════════════ -->
   <script src="assets/js/index.js"></script>
+  <script src="assets/js/review.js"></script>
 
 </body>
 </html>

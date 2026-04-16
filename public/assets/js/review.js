@@ -3,12 +3,30 @@
 // ============================
 let selectedRating = 0;
 
+function getActiveProductId() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const fromUrl = urlParams.get("product_ID") || urlParams.get("id") || 11 ;
+  if (fromUrl) return String(fromUrl);
+
+  const select = document.getElementById("review-product-select");
+  if (select && select.value) return String(select.value);
+
+  const holder = document.getElementById("reviews-section");
+  const fromData = holder?.dataset?.productId;
+  if (fromData) return String(fromData);
+
+  return null;
+}
+
 // Setup the interactive review stars in the review form
 function setupStarRating() {
   const stars = document.querySelectorAll("#star-rating span");
   if (!stars.length) return;
 
   stars.forEach((star) => {
+    if (star.dataset.bound === "1") return;
+    star.dataset.bound = "1";
+
     star.addEventListener("mouseenter", () => {
       resetStars();
       highlightStars(star.dataset.value);
@@ -44,6 +62,13 @@ async function loadReviews(productId) {
   const ratingStars = document.querySelectorAll("#rating span[data-value]");
   const ratingCount = document.querySelector("#rating .rating__count");
 
+  if (!reviewList) return;
+  if (!productId) {
+    reviewList.innerHTML = "<p>Please choose a product above to see reviews.</p>";
+    ratingStars.forEach((s) => (s.style.color = "#ccc"));
+    if (ratingCount) ratingCount.textContent = "(0 reviews)";
+    return;
+  }
   reviewList.innerHTML = "<p>Loading reviews...</p>";
 
   try {
@@ -65,17 +90,21 @@ async function loadReviews(productId) {
       result.reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews;
 
     // ✅ Update average stars display
-    ratingStars.forEach((star) => {
-      const starValue = parseInt(star.dataset.value);
-      if (starValue <= Math.round(avgRating)) {
-        star.style.color = "#FFD700"; // Gold for filled stars
-      } else {
-        star.style.color = "#ccc"; // Gray for unfilled
-      }
-    });
+    if (ratingStars.length > 0) {
+      ratingStars.forEach((star) => {
+        const starValue = parseInt(star.dataset.value);
+        if (starValue <= Math.round(avgRating)) {
+          star.style.color = "#FFD700"; // Gold for filled stars
+        } else {
+          star.style.color = "#ccc"; // Gray for unfilled
+        }
+      });
+    }
 
     // ✅ Update review count text
-    ratingCount.textContent = `(${totalReviews} reviews)`;
+    if (ratingCount) {
+      ratingCount.textContent = `(${totalReviews} reviews)`;
+    }
 
     // // ✅ Show reviews below
     // reviewList.innerHTML = result.reviews
@@ -103,7 +132,7 @@ async function loadReviews(productId) {
         (r) => `
     <div class="review-card">
       <strong>${r.name}</strong> 
-      <span>${"⭐".repeat(r.rating)}</span>
+      <span>${"\u2605".repeat(r.rating)}</span>
       <p>${r.review_text}</p>
       <small>${new Date(r.created_at).toLocaleDateString()}</small>
       ${
@@ -127,7 +156,7 @@ async function loadReviews(productId) {
         (r) => `
     <div class="review-card">
       <strong>${r.name}</strong> 
-      <span>${"⭐".repeat(r.rating)}</span>
+      <span>${"\u2605".repeat(r.rating)}</span>
       <p>${r.review_text}</p>
       <small>${new Date(r.created_at).toLocaleDateString()}</small>
       ${
@@ -182,8 +211,11 @@ async function loadReviews(productId) {
 // ============================
 async function handleReviewSubmit(event) {
   event.preventDefault();
-  const urlParams = new URLSearchParams(window.location.search);
-  const product_id = urlParams.get("product_ID");
+  const product_id = getActiveProductId();
+  if (!product_id) {
+    alert("Please select a product first.");
+    return;
+  }
 
   const name = document.getElementById("review-name").value.trim();
   const email = document.getElementById("review-email").value.trim();
@@ -212,7 +244,9 @@ async function handleReviewSubmit(event) {
       alert("Review submitted successfully!");
       document.getElementById("reviewForm").reset();
       selectedRating = 0;
-      setupStarRating();
+      document
+        .querySelectorAll("#star-rating span")
+        .forEach((s) => s.classList.remove("selected"));
       loadReviews(product_id); // reload and refresh average
     } else {
       alert(result.message);
@@ -226,16 +260,55 @@ async function handleReviewSubmit(event) {
 // ============================
 // INITIALIZE ON PAGE LOAD
 // ============================
-document.addEventListener("DOMContentLoaded", () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const productId = urlParams.get("product_ID");
+async function initProductSelectorIfPresent() {
+  const select = document.getElementById("review-product-select");
+  if (!select) return;
 
-  
-  // console.log("Reviews");
+  select.innerHTML = `<option value="">Select a product to review</option>`;
 
-  if (productId) loadReviews(productId);
+  try {
+    // Keep in sync with homepage "Trending Products" data source.
+    const res = await fetch("/products?categoryID=1");
+    const products = await res.json();
+
+    if (Array.isArray(products) && products.length) {
+      products.slice(0, 20).forEach((p) => {
+        const opt = document.createElement("option");
+        opt.value = p.product_id;
+        opt.textContent = p.product_name || `Product #${p.product_id}`;
+        select.appendChild(opt);
+      });
+    }
+
+    // Auto-select the first product so the section isn't empty by default.
+    if (!select.value && select.options.length > 1) {
+      select.selectedIndex = 1;
+    }
+  } catch (e) {
+    console.error("Error loading products for review selector:", e);
+  }
+
+  select.addEventListener("change", () => {
+    const pid = getActiveProductId();
+    loadReviews(pid);
+  });
+}
+
+function initReviews() {
   setupStarRating();
+  initProductSelectorIfPresent().then(() => {
+    const productId = getActiveProductId();
+    if (productId) loadReviews(productId);
+  });
 
   const form = document.getElementById("reviewForm");
   if (form) form.addEventListener("submit", handleReviewSubmit);
-});
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initReviews);
+} else {
+  initReviews();
+}
+
+
