@@ -321,6 +321,24 @@ html {
   animation: fadeInUp 0.6s ease-out;
 }
 
+ /* ── LOGO ── */
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+      /* .logo-icon {
+      width: 36px; height: 36px; background: var(--primary);
+      border-radius: 8px; display: flex; align-items: center;
+      justify-content: center; color: #fff; font-size: 18px;
+      font-weight: 700; overflow: hidden;
+    } */
+      .logo-icon img {
+        width: 100px;
+        object-fit: cover;
+      }
+
 /* Dark Mode Support */
 @media (prefers-color-scheme: dark) {
   :root {

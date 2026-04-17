@@ -239,6 +239,15 @@ function updateProductUI(product, variants) {
     a.classList.toggle("active", String(a.dataset.id) === String(product.category_id))
   );
 
+  // Check Stock
+  if (product.stocks !== undefined && product.stocks !== null && parseInt(product.stocks) <= 0) {
+    const diffEl = document.getElementById("differ");
+    if (diffEl) diffEl.innerHTML = `<div style="padding:15px;background:#fff1f2;border:1px solid #fda4af;border-radius:8px;color:#be123c;font-weight:700;text-align:center;margin-top:10px;">⚠️ OUT OF STOCK</div>`;
+    const priceEl = document.getElementById("product-price");
+    if (priceEl) priceEl.innerHTML = `<span style="font-size:18px;color:#999">Currently Unavailable</span>`;
+    return;
+  }
+
   // Variants
   if (!variants.length) {
     const diffEl = document.getElementById("differ");
