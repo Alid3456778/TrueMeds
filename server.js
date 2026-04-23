@@ -344,7 +344,7 @@ const orderRes = await client.query(
               </html>
         `;
       const mailOptions = {
-        from: '"Trumeds Pharmacy" <support@truemedspharmacy.com>',
+        from: '"Truemeds Pharmacy" <support@truemedspharmacy.com>',
         to: email,
         subject: "Order Confirmation - TrueMeds Pharmacy",
         html: htmlBody,
