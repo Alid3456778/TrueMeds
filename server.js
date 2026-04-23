@@ -200,41 +200,37 @@ app.post("/api/checkout", async (req, res) => {
 
     // 2) ✅ Insert order WITH customer snapshot
     // This preserves the customer data as it was at order time
-    const orderRes = await client.query(
-      `INSERT INTO orders (
-        user_id, 
-        total_amount, 
-        shipping,
-        customer_first_name,
-        customer_last_name,
-        customer_email,
-        customer_phone,
-        customer_company,
-        customer_country,
-        customer_street_address,
-        customer_apartment,
-        customer_city,
-        customer_state,
-        customer_zip_code
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
-      RETURNING order_id`,
-      [
-        userId,
-        totalCost,
-        shippingCost,
-        firstName,
-        lastName,
-        email,
-        phone,
-        companyName || null,
-        country,
-        billingStreetAddress,
-        apartment || null,
-        billingCity,
-        billingState,
-        billingZip,
-      ]
-    );
+     const SOURCE = process.env.SOURCE || "truemed"; // set per server
+
+const orderRes = await client.query(
+  `INSERT INTO orders (
+    user_id, total_amount, shipping,
+    customer_first_name, customer_last_name,
+    customer_email, customer_phone,
+    customer_company, customer_country,
+    customer_street_address, customer_apartment,
+    customer_city, customer_state, customer_zip_code,
+    source   -- ✅ NEW
+  ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)
+  RETURNING order_id`,
+  [
+    userId,
+    totalCost,
+    shippingCost,
+    firstName,
+    lastName,
+    email,
+    phone,
+    companyName || null,
+    country,
+    billingStreetAddress,
+    apartment || null,
+    billingCity,
+    billingState,
+    billingZip,
+    SOURCE   // ✅ THIS IS THE KEY
+  ]
+);
     const orderId = orderRes.rows[0].order_id;
 
     // 3) Insert order items
@@ -287,7 +283,7 @@ app.post("/api/checkout", async (req, res) => {
               </head>
               <body>
                   <div class="header">
-                      <h1>Order Confirmation - TrueMedsPharma</h1>
+                      <h1>Order Confirmation - TrueMedsPharmacy</h1>
                       <p>Thank you for your order, ${firstName} ${lastName}!</p>
                   </div>
                   <div class="content">
@@ -340,23 +336,23 @@ app.post("/api/checkout", async (req, res) => {
                       <h3>Contact Information</h3>
                       <p><strong>Phone:</strong> +1 209 593 7171</p>
                       <p><strong>WhatsApp:</strong> +91 887 920 1044</p>
-                      <p><strong>Email:</strong> customerinfo2024@gmail.com</p>
+                      <p><strong>Email:</strong> support@truemedspharmacy.com</p>
                       <p><em>This is an automated confirmation email.</em></p>
-                      <p>© ${new Date().getFullYear()} Truemeds Pharma. All rights reserved.</p>
+                      <p>© ${new Date().getFullYear()} Truemeds Pharmacy. All rights reserved.</p>
                   </div>
               </body>
               </html>
         `;
       const mailOptions = {
-        from: '"Tremeds Pharma" <support@truemedspharmacy.com>',
+        from: '"Trumeds Pharmacy" <support@truemedspharmacy.com>',
         to: email,
-        subject: "Order Confirmation - TrueMed Pharma",
+        subject: "Order Confirmation - TrueMeds Pharmacy",
         html: htmlBody,
       };
 
       await transporter.sendMail(mailOptions);
       // 5️⃣ SAVE EMAIL INTO “Sent” FOLDER using IMAP
-      const rawEmail = `From: "Tremeds Pharma" <support@truemedspharmacy.com>
+      const rawEmail = `From: "Truemeds Pharmacy" <support@truemedspharmacy.com>
 To: ${email}
 Subject: Order Confermation
 Content-Type: text/html; charset=UTF-8
@@ -729,7 +725,7 @@ app.post("/api/manual-order", async (req, res) => {
                     <h3>Contact Information</h3>
                     <p><strong>Phone:</strong> +1 209 593 7171</p>
                     <p><strong>WhatsApp:</strong> +91 887 920 1044</p>
-                    <p><strong>Email:</strong> customerinfo2024@gmail.com</p>
+                    <p><strong>Email:</strong> support@truemedspharmacy.com</p>
                     <p><em>This is an automated confirmation email.</em></p>
                     <p>© ${new Date().getFullYear()} Truemeds Pharma. All rights reserved.</p>
                 </div>

@@ -1439,7 +1439,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!page) return;
 
     const headerRow = document.createElement("tr");
-    headerRow.innerHTML = `<td colspan="6" style="font-weight:bold; background:var(--light-gray); text-align:center;">Orders for ${page.date}</td>`;
+    headerRow.innerHTML = `<td colspan="7" style="font-weight:bold; background:var(--light-gray); text-align:center;">Orders for ${page.date}</td>`;
     tableBody.appendChild(headerRow);
 
     page.orders.forEach((request) => {
@@ -1461,6 +1461,14 @@ document.addEventListener("DOMContentLoaded", () => {
         paymentStatus
       );
 
+      const src = String(request.source || "").trim().toLowerCase();
+      const sourceIndicator =
+        src === "mcland"
+          ? `<span class="source-badge" title="Source: McLand">MCLAND</span>`
+          : src === "truemed"
+          ? `<span class="source-dot" title="Source: TrueMeds"></span>`
+          : "";
+
       //This code was used to delete order requests If neend add this into the future code ...
       // <button onclick="deleteRequest(${request.order_id})"
       //                   style="background: linear-gradient(135deg, #ef4444, #dc2626);">
@@ -1472,7 +1480,12 @@ document.addEventListener("DOMContentLoaded", () => {
       row.innerHTML = `
             <td>${date.toString().slice(0, 10) + " " + date.toString().slice(11, 25)}</td>
             <td>${request.serial}</td>
-            <td>${name_or_id}</td>
+            <td>
+              <span class="order-ref">
+                <span class="order-ref-text">${name_or_id}</span>
+                ${sourceIndicator}
+              </span>
+            </td>
             <td>${request.user_id}</td>
             <td>$${parseFloat(request.total_amount).toFixed(2)}</td>
             <td>${statusDropdownHTML}</td>
@@ -1506,7 +1519,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const emptyRows = 10 - page.orders.length;
     for (let i = 0; i < emptyRows; i++) {
       const empty = document.createElement("tr");
-      empty.innerHTML = `<td colspan="6">&nbsp;</td>`;
+      empty.innerHTML = `<td colspan="7">&nbsp;</td>`;
       tableBody.appendChild(empty);
     }
 
