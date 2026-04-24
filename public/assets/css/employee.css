@@ -599,7 +599,7 @@ tbody td {
 
 .source-badge {
   position: absolute;
-  top: -8px;
+  top: -20px;
   right: -8px;
   padding: 2px 7px;
   border-radius: 999px;

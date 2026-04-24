@@ -1466,7 +1466,7 @@ document.addEventListener("DOMContentLoaded", () => {
         src === "mcland"
           ? `<span class="source-badge" title="Source: McLand">MCLAND</span>`
           : src === "truemed"
-          ? `<span class="source-dot" title="Source: TrueMeds"></span>`
+          ? `<span class="source-badge" title="Source: TrueMeds">TrueM</span>`
           : "";
 
       //This code was used to delete order requests If neend add this into the future code ...
