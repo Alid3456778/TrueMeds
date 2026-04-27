@@ -374,13 +374,7 @@ function renderVariantPrice(v) {
         ${pills       ? `<span style="background:#f0f0f0;padding:3px 10px;border-radius:5px;font-weight:600;color:#333;font-size:13px">${pills} pills</span>` : ""}
       </div>` : ""}
 
-    <div style="font-size:12px;color:#aaa;margin-bottom:4px">Inclusive of all taxes</div>
-
-    ${delivery ? `
-      <div style="font-size:12px;color:#666;margin-top:8px;display:flex;align-items:center;gap:6px">
-        <i class="fas fa-truck" style="color:#028c7e"></i>
-        <span>${delivery}</span>
-      </div>` : ""}`;
+    <div style="font-size:12px;color:#aaa;margin-bottom:4px">Inclusive of all taxes</div>`;
 }
 
 function changeQty(delta) {

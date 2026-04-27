@@ -532,11 +532,11 @@
   </div>
 
   <!-- FREE DELIVERY BAR -->
-  <div class="free-bar" id="freeBar">
+  <!-- <div class="free-bar" id="freeBar">
     <div class="free-bar-icon"><i class="fas fa-truck"></i></div>
     <div class="free-bar-text">Add <strong id="freeBarAmt">$50.00</strong> more to get <strong>FREE delivery!</strong></div>
     <div class="free-bar-track"><div class="free-bar-fill" id="freeBarFill" style="width:0%"></div></div>
-  </div>
+  </div> -->
 
   <div class="cart-layout">
 
@@ -568,7 +568,7 @@
     <!-- RIGHT: SUMMARY -->
     <div>
       <!-- COUPON -->
-      <div class="coupon-box">
+      <!-- <div class="coupon-box">
         <div class="coupon-title"><i class="fas fa-tag" style="color:var(--primary)"></i> Apply Coupon / Promo Code</div>
         <div class="coupon-row">
           <input type="text" id="couponInput" class="coupon-input" placeholder="Enter coupon code" />
@@ -578,7 +578,7 @@
         <button id="removeCouponBtn" onclick="removeCoupon()" style="display:none;margin-top:8px;background:none;border:none;color:var(--red);font-size:12px;font-weight:600;cursor:pointer">
           <i class="fas fa-times"></i> Remove Coupon
         </button>
-      </div>
+      </div> -->
 
       <!-- ORDER SUMMARY -->
       <div class="summary-box">
@@ -614,21 +614,21 @@
           <div class="saving-chip" id="savingChip" style="display:none">
             🎉 You're saving <strong id="savingAmt">$0.00</strong> on this order!
           </div>
-          <button class="btn-checkout" id="checkoutBtn" onclick="openCheckout()" disabled>
+          <button class="btn-checkout" id="checkoutBtn">
+            <a href="./checkout1.html">
             <i class="fas fa-lock"></i> Proceed to Checkout
           </button>
-          <div class="payment-icons">
+          <!-- <div class="payment-icons">
             <span class="pay-icon">💳 Cards</span>
             <span class="pay-icon">🏦 NetBanking</span>
             <span class="pay-icon">📱 GPay</span>
             <span class="pay-icon">🔗 UPI</span>
             <span class="pay-icon">💵 COD</span>
-          </div>
+          </div> -->
           <div class="trust-list">
-            <div class="trust-item"><i class="fas fa-shield-alt"></i> 100% Authentic Products — sourced from licensed manufacturers</div>
-            <div class="trust-item"><i class="fas fa-undo"></i> Easy 7-Day Returns — hassle-free for eligible products</div>
-            <div class="trust-item"><i class="fas fa-lock"></i> Secure Payments — 256-bit SSL encrypted</div>
-            <div class="trust-item"><i class="fas fa-headset"></i> 24/7 Support — expert pharmacist available</div>
+            <div class="trust-item"><i class="fas fa-shield-alt"></i> 100% Authentic Products </div>
+            <div class="trust-item"><i class="fas fa-lock"></i> Secure Payments  </div>
+            <div class="trust-item"><i class="fas fa-headset"></i> 24/7 Support </div>
           </div>
         </div>
       </div>
@@ -731,7 +731,7 @@ function renderCart() {
               <i class="fas fa-trash-alt"></i> Remove
             </button>
           </div>
-          <div class="item-delivery"><i class="fas fa-truck"></i> Fast delivery — 3–5 business days</div>
+          <div class="item-delivery"></div>
         </div>
       </div>`;
   }).join("");

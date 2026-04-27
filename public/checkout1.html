@@ -15,38 +15,40 @@
   </head>
   <body>
     <!-- Payment Modal -->
-    <div id="paymentModal" class="modal1">
-      <div class="modal-content1">
-        <h2>Select Payment Method</h2>
-        <button onclick="selectPayment('Zelle')" class="Payment_Button">
-          <img src="./assets/image/zelle.png" alt="" style="max-width: 100px" />
-        </button>
-        <button onclick="selectPayment('Bitcoin')" class="Payment_Button">
-          <img
-            src="./assets/image/bitcoin.png"
-            alt=""
-            style="max-width: 100px"
-          />
-        </button>
-        <button onclick="selectPayment('Venmo')" class="Payment_Button">
-          <img src="./assets/image/venmo.png" alt="" style="max-width: 100px" />
-        </button>
-        <button onclick="confirmPayment()" class="X_button">
-          Cancel Payment
-        </button>
-        <div id="qr-container" style="margin-top: 20px; display: none">
-          <img id="qr-code" src="" alt="QR Code" style="max-width: 200px" />
+<div id="paymentModal" class="modal1">
+  <div class="modal-content1">
+    <h2>Select Payment Method</h2>
 
-          <h3 id="qrtext_id"></h3>
-          <br />
-          <button onclick="confirmPayment()" class="Ok_Button">OK</button>
-          <!-- <button onclick="cancelPayment()">Cancel</button> -->
-          <button onclick="confirmPayment()" class="Cancel_Button">
-            Cancel
-          </button>
-        </div>
+    <!-- Wrap payment icons in this div -->
+    <div class="payment-methods-grid">
+      <button onclick="selectPayment('Zelle')" class="Payment_Button">
+        <img src="./assets/image/zelle.png" alt="Zelle" />
+      </button>
+      <button onclick="selectPayment('Bitcoin')" class="Payment_Button">
+        <img src="./assets/image/bitcoin.png" alt="Bitcoin" />
+      </button>
+      <button onclick="selectPayment('Venmo')" class="Payment_Button">
+        <img src="./assets/image/venmo.png" alt="Venmo" />
+      </button>
+    </div>
+
+    <div class="modal-cancel-row">
+      <button onclick="confirmPayment()" class="X_button">Cancel Payment</button>
+    </div>
+
+    <div id="qr-container" style="display: none;">
+      <img id="qr-code" src="" alt="QR Code" />
+      <h3 id="qrtext_id"></h3>
+
+      <!-- Wrap OK + Cancel in this div -->
+      <div class="qr-actions">
+        <button onclick="confirmPayment()" class="Ok_Button">OK</button>
+        <button onclick="confirmPayment()" class="Cancel_Button">Cancel</button>
       </div>
     </div>
+
+  </div>
+</div>
 
     <!-- Confirmation Modal -->
     <div id="confirmationModal" class="modal">
@@ -70,7 +72,7 @@
     <header class="navbar">
       <div class="navbar-top" id="navbar">
         <div class="logo" onclick="window.location.href='./index.html'">
-          <img src="./assets/image2/logo.jpeg" alt="TrueMeds Pharmacy Logo" />
+          <img src="./assets/image2/logo2.png" alt="TrueMeds Pharmacy Logo" />
         </div>
         <div class="navbar-top-right">
           <div class="actions">
