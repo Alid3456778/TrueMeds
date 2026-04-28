@@ -307,6 +307,47 @@
         width: 50px;
       }
       .cart-item{flex-wrap:wrap}.item-img{width:70px;height:70px}}
+      /* ———————— Search Suggestions Dropdown ———————— */
+.search-bar {
+  position: relative;
+}
+
+.search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  padding: 0;
+  margin-top: 0.25rem;
+  max-height: 300px;
+  overflow-y: auto;
+  display: none;
+}
+
+.search-suggestions li {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 14px;
+  color: #1f2937;
+}
+
+.search-suggestions li:last-child {
+  border-bottom: none;
+}
+
+.search-suggestions li:hover {
+  background-color: #f0faf9;
+  color: #028c7e;
+}
   </style>
 </head>
 <body>
@@ -375,8 +416,9 @@
       
     </a>
     <div class="search-bar">
-      <input type="text" id="mainSearch" placeholder="Search medicines…" autocomplete="off" />
+      <input type="text" id="mainSearch" placeholder="Search medicines" autocomplete="off">
       <button class="search-btn" id="searchBtn"><i class="fas fa-search"></i></button>
+      <ul id="suggestions" class="search-suggestions"></ul>
     </div>
     <div class="nav-actions">
       <a href="cart.html" class="nav-link">
@@ -650,9 +692,9 @@ const SHIPPING_COST           = 10;
 // ─────────────────────────────────────────────────────────────────────────
 //  BOOT
 // ─────────────────────────────────────────────────────────────────────────
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   loadCart();
-  initSearch();
+  await initSearch();
   initMobileMenu();
   initScrollTop();
 });
@@ -1027,16 +1069,75 @@ function updateCartBadge(count) {
   badge.style.display = count > 0 ? "inline-flex" : "none";
   localStorage.setItem("cartCount", count);
 }
-
-function initSearch() {
-  const inp = document.getElementById("mainSearch");
-  const btn = document.getElementById("searchBtn");
+//search bar
+async function initSearch() {
+  const inp = document.getElementById('mainSearch');
+  const btn = document.getElementById('searchBtn');
   if (!inp || !btn) return;
-  const go = () => { const q=inp.value.trim(); if(q) window.location.href=`categories.html?catogeriesID=1&search=${encodeURIComponent(q)}`; };
-  btn.addEventListener("click", go);
-  inp.addEventListener("keydown", e => { if(e.key==="Enter"){e.preventDefault();go();} });
+  try {
+    const cached = localStorage.getItem('SearchProducts');
+    const cacheTime = parseInt(localStorage.getItem('SearchProductsTime') || '0');
+    let products = [];
+    if (cached && (Date.now() - cacheTime < 5 * 60 * 1000)) {
+      products = JSON.parse(cached);
+    } else {
+      const res = await fetch('/products');
+      if (res.ok) products = await res.json();
+      console.log('Products sample:', products[0]);
+      localStorage.setItem('SearchProducts', JSON.stringify(products));
+      localStorage.setItem('SearchProductsTime', Date.now().toString());
+    }
+    const sugBox = document.getElementById('suggestions');
+    if (!sugBox) return;
+    inp.addEventListener('input', () => {
+      const q = inp.value.trim().toLowerCase();
+      sugBox.innerHTML = '';
+      if (!q) { sugBox.style.display = 'none'; return; }
+      const matches = products.filter(p => p.product_name?.toLowerCase().includes(q)).slice(0, 8);
+      if (matches.length) {
+        matches.forEach(p => {
+          const li = document.createElement('li');
+          const img = document.createElement('img');
+          img.src = p.image_url || 'assets/image/default.png';
+          img.style.cssText = 'width:40px;height:40px;object-fit:cover;margin-right:10px;border-radius:6px;flex-shrink:0';
+          img.onerror = () => img.style.display = 'none';
+          const span = document.createElement('span');
+          span.textContent = p.product_name;
+          li.appendChild(img); li.appendChild(span);
+          li.addEventListener('click', () => {
+            window.location.href = `productoverview.html?productID=${p.product_id}`;
+          });
+          sugBox.appendChild(li);
+        });
+        sugBox.style.display = 'block';
+      } else {
+        const li = document.createElement('li');
+        li.textContent = 'No products found';
+        li.style.cssText = 'padding:12px 14px;color:#999;cursor:default';
+        sugBox.appendChild(li);
+        sugBox.style.display = 'block';
+      }
+    });
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.search-bar')) sugBox.style.display = 'none';
+    });
+    function doSearch() {
+      const q = inp.value.trim().toLowerCase();
+      if (!q) return;
+      const exact = products.find(p => p.product_name?.toLowerCase() === q);
+      if (exact) {
+        window.location.href = `productoverview.html?productID=${exact.productid}`;
+      } else {
+        window.location.href = `categories.html?search=${encodeURIComponent(q)}`;
+      }
+      sugBox.style.display = 'none';
+    }
+    btn.addEventListener('click', doSearch);
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); doSearch(); } });
+  } catch (err) {
+    console.error('Search init error:', err);
+  }
 }
-
 function initMobileMenu() {
   document.getElementById("menuToggle")?.addEventListener("click", () => {
     document.getElementById("mobileMenu").classList.add("open");
