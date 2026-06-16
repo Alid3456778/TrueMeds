@@ -66,6 +66,7 @@ jobs:
           username: mclanduser
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            echo "Starting deployment..."
             cd apps/TrueMeds
             git pull origin main
             npm install
