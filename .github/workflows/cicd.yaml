@@ -37,7 +37,7 @@ jobs:
 
       - name: Compare with expected database URL
         run: |
-          EXPECTED_URL="postgres://postgres:postsql@localhost:5432/postgres"
+          EXPECTED_URL="postgres://postgres:postsql@localhost:5432/datamc"
           echo "Expected URL: $EXPECTED_URL"
           echo "Found URL:    ${{ steps.dburl.outputs.database_url_read }}"
 
