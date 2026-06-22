@@ -685,60 +685,64 @@
         cursor: not-allowed;
       }
 
-      /* ── CATEGORY CARDS ── */
-      /* .categories-grid class required by old index.js drag-to-scroll */
-      .categories-grid {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 14px;
-      }
-      .cat-card {
-        border-radius: var(--radius-lg);
-        overflow: hidden;
-        cursor: pointer;
-        transition:
-          transform 0.2s,
-          box-shadow 0.2s;
-      }
-      .cat-card:hover {
-        transform: translateY(-3px);
-        box-shadow: var(--shadow-md);
-      }
-      .cat-card-img {
-        width: 100%;
-        height: 110px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 42px;
-        overflow: hidden;
-      }
-      .cat-card-img img {
-        width: 100%;
-        height: 110px;
-        object-fit: cover;
-        display: block;
-      }
-      .cat-img-placeholder {
-        font-size: 42px;
-      }
-      .cat-card-footer {
-        padding: 10px 12px;
-        background: var(--bg-white);
-        border: 1px solid var(--border);
-        border-top: none;
-        border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-      }
-      .cat-card-name {
-        font-size: 13px;
-        font-weight: 600;
-        color: var(--text-dark);
-      }
-      .cat-card-count {
-        font-size: 11px;
-        color: var(--text-light);
-        margin-top: 2px;
-      }
+      /* ===== Categories Grid - Two Rows ===== */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-auto-flow: row;
+  gap: 20px 16px;
+  overflow: visible;
+}
+
+.cat-card {
+  width: 100%;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: transform 0.2s ease;
+}
+
+.cat-card:hover {
+  transform: translateY(-3px);
+}
+
+.cat-card:hover .category-image {
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+}
+
+/* The square image itself */
+.category-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 14px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s ease;
+}
+.cat-card-name {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+/* Tablet: 3 per row → still wraps into multiple rows */
+@media (max-width: 900px) {
+  .categories-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Mobile: 2 per row */
+@media (max-width: 480px) {
+  .categories-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px 12px;
+  }
+}
 
       /* ── TESTIMONIALS ── */
       /* #testimonials-grid required by old index.js /api/reviews render */
@@ -1711,8 +1715,6 @@
 
     <div class="divider"></div>
 
-    <!-- SHOP BY CATEGORY
-       .categories-grid class required by old index.js drag-to-scroll logic -->
     <div class="section">
       <div class="section-header">
         <h2 class="section-title">Shop by <span>Category</span></h2>
@@ -1721,128 +1723,62 @@
         ></a>
       </div>
       <div class="categories-grid">
+    
         <a href="categories.html?catogeriesID=1" class="cat-card">
-          <div
-            class="cat-card-img"
-            style="background: linear-gradient(135deg, #e8f4f8, #b3d9f0)"
-          >
-            <span class="cat-img-placeholder">🇺🇸</span>
-          </div>
-          <div class="cat-card-footer">
-            <div class="cat-card-name">USA Premium</div>
-            <div class="cat-card-count">Top imported brands</div>
-          </div>
+          <img src="./assets/image2/usa.png" alt="USA Premium" class="category-image" />
+          <div class="cat-card-name">USA Premium</div>
         </a>
+
+        <a href="" class="cat-card">
+          <img src="./assets/image2/uk-premium.jpeg" alt="UK Premium" class="category-image" />
+          <div class="cat-card-name">UK Premium</div>
+        </a>
+    
         <a href="categories.html?catogeriesID=2" class="cat-card">
-          <div
-            class="cat-card-img"
-            style="background: linear-gradient(135deg, #f0fdf4, #d1fae5)"
-          >
-            <span class="cat-img-placeholder"
-              ><img src="./assets/image2/general.jpeg" alt=""
-            /></span>
-          </div>
-          <div class="cat-card-footer">
-            <div class="cat-card-name">General Health</div>
-            <div class="cat-card-count">Everyday essentials</div>
-          </div>
+          <img src="./assets/image2/general.jpeg" alt="General Health" class="category-image" />
+          <div class="cat-card-name">General Health</div>
         </a>
+    
         <a href="categories.html?catogeriesID=3" class="cat-card">
-          <div
-            class="cat-card-img"
-            style="background: linear-gradient(135deg, #fff7ed, #fed7aa)"
-          >
-            <span class="cat-img-placeholder">⚡</span>
-          </div>
-          <div class="cat-card-footer">
-            <div class="cat-card-name">Pain Relief</div>
-            <div class="cat-card-count">Fast-acting solutions</div>
-          </div>
+          <img src="./assets/image2/pain.png" alt="Pain Relief" class="category-image" />
+          <div class="cat-card-name">Pain Relief</div>
         </a>
+    
         <a href="categories.html?catogeriesID=4" class="cat-card">
-          <div
-            class="cat-card-img"
-            style="background: linear-gradient(135deg, #fff0f4, #ffd6e4)"
-          >
-            <span class="cat-img-placeholder">🫀</span>
-          </div>
-          <div class="cat-card-footer">
-            <div class="cat-card-name">Cardiac Care</div>
-            <div class="cat-card-count">Heart health products</div>
-          </div>
+          <img src="./assets/image2/cardiac.png" alt="Cardiac Care" class="category-image" />
+          <div class="cat-card-name">Cardiac Care</div>
         </a>
+    
         <a href="categories.html?catogeriesID=5" class="cat-card">
-          <div
-            class="cat-card-img"
-            style="background: linear-gradient(135deg, #f5f3ff, #ede9fe)"
-          >
-            <span class="cat-img-placeholder">🧠</span>
-          </div>
-          <div class="cat-card-footer">
-            <div class="cat-card-name">Mental Health</div>
-            <div class="cat-card-count">Wellness &amp; balance</div>
-          </div>
+          <img src="./assets/image2/mental.png" alt="Mental Health" class="category-image" />
+          <div class="cat-card-name">Mental Health</div>
         </a>
+    
         <a href="categories.html?catogeriesID=6" class="cat-card">
-          <div
-            class="cat-card-img"
-            style="background: linear-gradient(135deg, #fdf4ff, #e9d5ff)"
-          >
-            <span class="cat-img-placeholder">💜</span>
-          </div>
-          <div class="cat-card-footer">
-            <div class="cat-card-name">Sexual Wellness</div>
-            <div class="cat-card-count">Trusted products</div>
-          </div>
+          <img src="./assets/image2/sex.png" alt="Sexual Wellness" class="category-image" />
+          <div class="cat-card-name">Sexual Wellness</div>
         </a>
+    
         <a href="categories.html?catogeriesID=7" class="cat-card">
-          <div
-            class="cat-card-img"
-            style="background: linear-gradient(135deg, #fff1f2, #ffe4e6)"
-          >
-            <span class="cat-img-placeholder">✨</span>
-          </div>
-          <div class="cat-card-footer">
-            <div class="cat-card-name">Skincare</div>
-            <div class="cat-card-count">Glow &amp; protect</div>
-          </div>
+          <img src="./assets/image2/skin.png" alt="Skincare" class="category-image" />
+          <div class="cat-card-name">Skincare</div>
         </a>
+    
         <a href="categories.html?catogeriesID=8" class="cat-card">
-          <div
-            class="cat-card-img"
-            style="background: linear-gradient(135deg, #f0f9ff, #bae6fd)"
-          >
-            <span class="cat-img-placeholder">💪</span>
-          </div>
-          <div class="cat-card-footer">
-            <div class="cat-card-name">Steroids</div>
-            <div class="cat-card-count">Pharma-grade quality</div>
-          </div>
+          <img src="./assets/image2/steroids.png" alt="Steroids" class="category-image" />
+          <div class="cat-card-name">Steroids</div>
         </a>
+    
         <a href="categories.html?catogeriesID=9" class="cat-card">
-          <div
-            class="cat-card-img"
-            style="background: linear-gradient(135deg, #fdf2f8, #fce7f3)"
-          >
-            <span class="cat-img-placeholder">🌸</span>
-          </div>
-          <div class="cat-card-footer">
-            <div class="cat-card-name">Women's Health</div>
-            <div class="cat-card-count">For every woman</div>
-          </div>
+          <img src="./assets/image2/women.png" alt="Women's Health" class="category-image" />
+          <div class="cat-card-name">Women's Health</div>
         </a>
+    
         <a href="categories.html?catogeriesID=10" class="cat-card">
-          <div
-            class="cat-card-img"
-            style="background: linear-gradient(135deg, #f0f9ff, #dbeafe)"
-          >
-            <span class="cat-img-placeholder">🏃</span>
-          </div>
-          <div class="cat-card-footer">
-            <div class="cat-card-name">Men's Health</div>
-            <div class="cat-card-count">Strength &amp; vitality</div>
-          </div>
+          <img src="./assets/image2/mens.png" alt="Men's Health" class="category-image" />
+          <div class="cat-card-name">Men's Health</div>
         </a>
+    
       </div>
     </div>
 
