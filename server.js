@@ -406,6 +406,90 @@ ${htmlBody}
   }
 });
 
+/* ══════════════════════════════════════════════════════════════════
+   PASTE THESE TWO ROUTES INTO server.js
+   → Place them just BEFORE the line:  app.use(express.static(...))
+   → Uses existing "voice_full_orders_test" table (JSONB order_data column)
+   → No new table needed.
+   ══════════════════════════════════════════════════════════════════ */
+
+// POST /api/medicine-request
+// Called by smart-search.js when user submits a not-found medicine request.
+// Saved into voice_full_orders_test (order_data JSONB) with type="medicine_request"
+app.post("/api/medicine-request", async (req, res) => {
+  try {
+    const payload = {
+      type           : "medicine_request",
+      medicine       : req.body.medicine       || "",
+      strength_mg    : req.body.strength_mg    || "",
+      quantity       : req.body.quantity       || "",
+      customer_name  : req.body.customer_name  || "",
+      customer_phone : req.body.customer_phone || "",
+      customer_email : req.body.customer_email || "",
+      notes          : req.body.notes          || "",
+      requested_at   : req.body.requested_at   || new Date().toISOString(),
+    };
+
+    await pool.query(
+      "INSERT INTO voice_full_orders_test (order_data) VALUES ($1)",
+      [JSON.stringify(payload)]
+    );
+
+    console.log("💊 Medicine request saved:", payload.medicine, "from", payload.customer_email);
+    res.json({ success: true, message: "Medicine request received." });
+  } catch (err) {
+    console.error("Error saving medicine request:", err);
+    res.status(500).json({ success: false, error: "Failed to save request." });
+  }
+});
+
+// GET /api/medicine-requests
+// Fetches all medicine requests for the employee dashboard.
+// Filters voice_full_orders_test rows where order_data->>'type' = 'medicine_request'
+app.get("/api/medicine-requests", async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT id, order_data, created_at
+      FROM voice_full_orders_test
+      WHERE order_data->>'type' = 'medicine_request'
+      ORDER BY created_at DESC
+    `);
+
+    const rows = result.rows.map(r => ({
+      id           : r.id,
+      created_at   : r.created_at,
+      medicine     : r.order_data.medicine       || "",
+      strength_mg  : r.order_data.strength_mg    || "",
+      quantity     : r.order_data.quantity       || "",
+      customer_name: r.order_data.customer_name  || "",
+      customer_phone:r.order_data.customer_phone || "",
+      customer_email:r.order_data.customer_email || "",
+      notes        : r.order_data.notes          || "",
+    }));
+
+    res.json({ success: true, data: rows });
+  } catch (err) {
+    console.error("Error fetching medicine requests:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// DELETE /api/medicine-requests/:id
+// Lets employee mark a request as resolved (deletes it from the table)
+app.delete("/api/medicine-requests/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await pool.query(
+      "DELETE FROM voice_full_orders_test WHERE id = $1 AND order_data->>'type' = 'medicine_request'",
+      [id]
+    );
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Error deleting medicine request:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // ========================================
 // NEW ENDPOINT: Get order with customer snapshot (with fallback)
 // ========================================

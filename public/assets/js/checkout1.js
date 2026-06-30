@@ -39,6 +39,20 @@ function selectPayment(method) {
   }
 }
 
+function getCheckoutCurrencySymbol(cartItems) {
+  if (!Array.isArray(cartItems) || cartItems.length === 0) return "$";
+  return cartItems.some(
+    (item) => parseInt(item.category_id, 10) === 11 || parseInt(item.categoryId, 10) === 11
+  )
+    ? "€"
+    : "$";
+}
+
+function formatCheckoutAmount(amount, cartItems) {
+  const symbol = getCheckoutCurrencySymbol(cartItems);
+  return `${symbol}${amount.toFixed(2)}`;
+}
+
 function confirmPayment() {
   document.getElementById("paymentModal").style.display = "none";
   placeOrder(); // Only now place order
@@ -451,6 +465,8 @@ function displayCartItems() {
   let subtotal = 0;
   cartItemsElement.innerHTML = "";
   // Display each cart item
+  const currencySymbol = getCheckoutCurrencySymbol(cartData);
+
   cartData.forEach((item) => {
     const cleanPrice = item.price
       .toString()
@@ -458,14 +474,14 @@ function displayCartItems() {
       .replace(/[^0-9.]/g, "");
     const itemPrice = parseFloat(item.price);
     console.log("pricing is ", cleanPrice);
-    subtotal += parseFloat(item.price);
+    subtotal += itemPrice;
 
     const row = `
             <tr>
               <td>${item.name} ${item.mg ? item.mg + "mg" : ""} × ${
       item.quantity
     }</td>
-              <td>$${item.price}</td>
+              <td>${currencySymbol}${itemPrice.toFixed(2)}</td>
             </tr>
           `;
     cartItemsElement.innerHTML += row;
@@ -475,8 +491,8 @@ function displayCartItems() {
   const shippingCost = calculateShippingCost(subtotal, cartData);
   const totalCost = subtotal + shippingCost;
 
-  shippingCostElement.textContent = `$${shippingCost.toFixed(2)}`;
-  totalCostElement.textContent = `$${totalCost.toFixed(2)}`;
+  shippingCostElement.textContent = formatCheckoutAmount(shippingCost, cartData);
+  totalCostElement.textContent = formatCheckoutAmount(totalCost, cartData);
 
   // Show the order content and hide loading
   document.getElementById("order-loading").style.display = "none";

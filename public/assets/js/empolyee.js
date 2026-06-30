@@ -2500,3 +2500,342 @@ console.log(
 //     }
 //   });
 // });
+/**
+ * employee-medicine-requests.js
+ * ──────────────────────────────────────────────────────────────────
+ * Adds a "Medicine Requests" panel to the employee dashboard.
+ *
+ * HOW TO INTEGRATE:
+ *  1. Add this file to your public/ folder
+ *  2. Add ONE <script> tag in employee.html  (after empolyee.js):
+ *       <script src="employee-medicine-requests.js"></script>
+ *  3. Add ONE <div> somewhere in employee.html body (e.g. after the
+ *     orders section):
+ *       <div id="medicine-requests-section"></div>
+ *
+ * That's it — zero changes to empolyee.js or any existing file.
+ */
+
+(function () {
+  "use strict";
+
+  /* ── INJECT PANEL HTML ───────────────────────────────────────── */
+  function injectPanel() {
+    let container = document.getElementById("medicine-requests-section");
+    if (!container) {
+      // Auto-insert before </main> or at end of body if anchor not found
+      container = document.createElement("div");
+      container.id = "medicine-requests-section";
+      const main = document.querySelector("main") || document.body;
+      main.appendChild(container);
+    }
+
+    container.innerHTML = `
+      <section class="med-req-section" id="med-req-wrap">
+        <div class="med-req-title-bar">
+          <h2 class="med-req-heading">
+            💊 Medicine Requests
+            <span class="med-req-badge" id="med-req-count">…</span>
+          </h2>
+          <button class="med-req-refresh-btn" id="med-req-refresh">
+            🔄 Refresh
+          </button>
+        </div>
+        <p class="med-req-desc">
+          Customers searched for medicines not in the catalogue and submitted requests.
+          Review below and add to inventory when possible.
+        </p>
+
+        <div id="med-req-table-wrap">
+          <table class="med-req-table" id="med-req-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Medicine</th>
+                <th>Strength</th>
+                <th>Qty</th>
+                <th>Customer</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Notes</th>
+                <th>Requested At</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="med-req-tbody">
+              <tr><td colspan="10" class="med-req-loading">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    `;
+
+    injectStyles();
+  }
+
+  /* ── STYLES (scoped so they never clash) ─────────────────────── */
+  function injectStyles() {
+    if (document.getElementById("med-req-styles")) return;
+    const style = document.createElement("style");
+    style.id = "med-req-styles";
+    style.textContent = `
+      .med-req-section {
+        margin: 32px 0;
+        background: #fff;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 2px 16px rgba(0,0,0,.06);
+      }
+      .med-req-title-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 22px 14px;
+        border-bottom: 1px solid #f0f0f0;
+        background: #f8fafc;
+      }
+      .med-req-heading {
+        font-size: 16px;
+        font-weight: 800;
+        color: #212121;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .med-req-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 22px;
+        height: 22px;
+        padding: 0 6px;
+        background: #e03e3e;
+        color: #fff;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .med-req-refresh-btn {
+        padding: 7px 14px;
+        background: #028c7e;
+        color: #fff;
+        border: none;
+        border-radius: 7px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background .2s;
+      }
+      .med-req-refresh-btn:hover { background: #016f63; }
+      .med-req-desc {
+        padding: 10px 22px 0;
+        font-size: 13px;
+        color: #888;
+        margin: 0;
+      }
+      #med-req-table-wrap {
+        overflow-x: auto;
+        padding: 14px 22px 20px;
+      }
+      .med-req-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      .med-req-table thead tr {
+        background: #1e293b;
+        color: #fff;
+      }
+      .med-req-table th {
+        padding: 10px 12px;
+        text-align: left;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      .med-req-table tbody tr {
+        border-bottom: 1px solid #f0f0f0;
+        transition: background .15s;
+      }
+      .med-req-table tbody tr:hover { background: #f8fafc; }
+      .med-req-table td {
+        padding: 10px 12px;
+        color: #333;
+        vertical-align: middle;
+        max-width: 180px;
+        word-break: break-word;
+      }
+      .med-req-table td:first-child { color: #94a3b8; font-weight: 600; }
+      .med-req-med-name {
+        font-weight: 700;
+        color: #028c7e !important;
+      }
+      .med-req-loading {
+        text-align: center;
+        color: #94a3b8;
+        padding: 30px !important;
+        font-size: 14px;
+      }
+      .med-req-empty {
+        text-align: center;
+        color: #94a3b8;
+        padding: 30px !important;
+        font-size: 14px;
+      }
+      .med-req-resolve-btn {
+        padding: 5px 10px;
+        background: #059669;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background .2s;
+      }
+      .med-req-resolve-btn:hover { background: #047857; }
+      .med-req-resolve-btn:disabled { opacity:.5; cursor:default; }
+      .med-req-notes-cell { color: #888; font-style: italic; }
+      .med-req-date { color: #94a3b8; white-space: nowrap; }
+    `;
+    document.head.appendChild(style);
+  }
+
+  /* ── LOAD REQUESTS ───────────────────────────────────────────── */
+  async function loadRequests() {
+    const tbody  = document.getElementById("med-req-tbody");
+    const badge  = document.getElementById("med-req-count");
+    if (!tbody) return;
+
+    tbody.innerHTML = `<tr><td colspan="10" class="med-req-loading">⏳ Loading…</td></tr>`;
+
+    try {
+      const res  = await fetch("/api/medicine-requests");
+      const data = await res.json();
+
+      if (!data.success || !data.data) {
+        tbody.innerHTML = `<tr><td colspan="10" class="med-req-empty">⚠️ Failed to load requests.</td></tr>`;
+        return;
+      }
+
+      const rows = data.data;
+
+      // Update badge
+      if (badge) {
+        badge.textContent = rows.length;
+        badge.style.display = rows.length === 0 ? "none" : "inline-flex";
+      }
+
+      if (rows.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="10" class="med-req-empty">✅ No pending medicine requests.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = rows.map((r, i) => `
+        <tr data-id="${r.id}">
+          <td>${i + 1}</td>
+          <td class="med-req-med-name">${escHtml(r.medicine)}</td>
+          <td>${escHtml(r.strength_mg)}</td>
+          <td>${escHtml(String(r.quantity))}</td>
+          <td>${escHtml(r.customer_name)}</td>
+          <td><a href="mailto:${escHtml(r.customer_email)}">${escHtml(r.customer_email)}</a></td>
+          <td>${escHtml(r.customer_phone)}</td>
+          <td class="med-req-notes-cell">${r.notes ? escHtml(r.notes) : "—"}</td>
+          <td class="med-req-date">${formatDate(r.created_at)}</td>
+          <td>
+            <button class="med-req-resolve-btn"
+                    data-id="${r.id}"
+                    onclick="window.__medReqResolve(${r.id}, this)">
+              ✔ Resolve
+            </button>
+          </td>
+        </tr>
+      `).join("");
+
+    } catch (err) {
+      console.error("[MedReq] Error loading requests:", err);
+      if (tbody) {
+        tbody.innerHTML = `<tr><td colspan="10" class="med-req-empty">⚠️ Server error. Try refreshing.</td></tr>`;
+      }
+    }
+  }
+
+  /* ── RESOLVE (DELETE) ────────────────────────────────────────── */
+  window.__medReqResolve = async function (id, btn) {
+    if (!confirm("Mark this request as resolved and remove it?")) return;
+    if (btn) { btn.disabled = true; btn.textContent = "Resolving…"; }
+
+    try {
+      const res  = await fetch(`/api/medicine-requests/${id}`, { method: "DELETE" });
+      const data = await res.json();
+      if (data.success) {
+        // Remove the row from DOM
+        const row = document.querySelector(`#med-req-tbody tr[data-id="${id}"]`);
+        if (row) {
+          row.style.opacity = "0";
+          row.style.transition = "opacity .3s";
+          setTimeout(() => { row.remove(); updateBadge(); }, 300);
+        }
+      } else {
+        if (btn) { btn.disabled = false; btn.textContent = "✔ Resolve"; }
+        alert("Failed to resolve request. Try again.");
+      }
+    } catch (err) {
+      console.error("[MedReq] Resolve error:", err);
+      if (btn) { btn.disabled = false; btn.textContent = "✔ Resolve"; }
+      alert("Server error. Please try again.");
+    }
+  };
+
+  function updateBadge() {
+    const remaining = document.querySelectorAll("#med-req-tbody tr[data-id]").length;
+    const badge     = document.getElementById("med-req-count");
+    if (badge) {
+      badge.textContent = remaining;
+      badge.style.display = remaining === 0 ? "none" : "inline-flex";
+    }
+    if (remaining === 0) {
+      const tbody = document.getElementById("med-req-tbody");
+      if (tbody) {
+        tbody.innerHTML = `<tr><td colspan="10" class="med-req-empty">✅ No pending medicine requests.</td></tr>`;
+      }
+    }
+  }
+
+  /* ── HELPERS ─────────────────────────────────────────────────── */
+  function escHtml(str) {
+    return String(str || "")
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  function formatDate(iso) {
+    if (!iso) return "—";
+    try {
+      const d = new Date(iso);
+      return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+        + " " + d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+    } catch { return iso; }
+  }
+
+  /* ── INIT ────────────────────────────────────────────────────── */
+  function init() {
+    // Wait for login check to pass (empolyee.js does a redirect if not logged in)
+    const isLoggedIn = localStorage.getItem("employeeLoggedIn");
+    if (isLoggedIn !== "true") return; // don't inject if not logged in
+
+    injectPanel();
+    loadRequests();
+
+    // Refresh button
+    document.getElementById("med-req-refresh")?.addEventListener("click", loadRequests);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();

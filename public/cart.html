@@ -720,6 +720,19 @@ async function loadCart() {
 // ─────────────────────────────────────────────────────────────────────────
 //  RENDER CART
 // ─────────────────────────────────────────────────────────────────────────
+function getCurrencySymbol(categoryId) {
+  return parseInt(categoryId) === 11 ? "€" : "$";
+}
+
+function formatCurrency(amount, categoryId) {
+  return `${getCurrencySymbol(categoryId)}${amount.toFixed(2)}`;
+}
+
+function getSummaryCurrencySymbol(selectedItems) {
+  if (!selectedItems || !selectedItems.length) return "$";
+  return selectedItems.some(item => getCurrencySymbol(item.category_id ?? item.categoryid) === "€") ? "€" : "$";
+}
+
 function renderCart() {
   const container = document.getElementById("cartItemsContainer");
   document.getElementById("itemCountBadge").textContent = cartItems.length;
@@ -739,10 +752,11 @@ function renderCart() {
   }
 
   container.innerHTML = cartItems.map(item => {
-    const price    = parseFloat(item.price) || 0;
-    const qty      = parseInt(item.quantity) || 1;
-    const subtotal = price * qty;
-    
+    const price      = parseFloat(item.price) || 0;
+    const qty        = parseInt(item.quantity) || 1;
+    const subtotal   = price * qty;
+    const categoryId = item.category_id ?? item.categoryid;
+
     return `
       <div class="cart-item" id="cart-item-${item.id}">
         <div class="item-check">
@@ -761,8 +775,8 @@ function renderCart() {
           </div>
           ${item.mg ? `<div class="item-mg"><i class="fas fa-pills" style="margin-right:4px;color:var(--primary)"></i>${item.mg}</div>` : ""}
           <div class="item-price-row">
-            <span class="item-price">$${price.toFixed(2)}</span>
-            ${qty > 1 ? `<span style="font-size:12px;color:var(--text-lt)">× ${qty} = $${subtotal.toFixed(2)}</span>` : ""}
+            <span class="item-price">${formatCurrency(price, categoryId)}</span>
+            ${qty > 1 ? `<span style="font-size:12px;color:var(--text-lt)">× ${qty} = ${formatCurrency(subtotal, categoryId)}</span>` : ""}
           </div>
           <div class="item-actions">
             <div class="qty-box">
@@ -862,13 +876,21 @@ function updateSummary() {
   document.getElementById("sumDelivery").textContent = shipping > 0 ? `$${shipping.toFixed(2)}` : "FREE 🎉";
   document.getElementById("sumTotal").textContent    = `$${total.toFixed(2)}`;
 
+  const symbol = getSummaryCurrencySymbol(selected);
   const chip = document.getElementById("savingChip");
   if (saving > 0) {
     chip.style.display = "block";
-    document.getElementById("savingAmt").textContent = `$${saving.toFixed(2)}`;
+    document.getElementById("savingAmt").textContent = `${symbol}${saving.toFixed(2)}`;
   } else {
     chip.style.display = "none";
   }
+
+  document.getElementById("sumMRP").textContent      = `${symbol}${mrp.toFixed(2)}`;
+  document.getElementById("sumDiscount").textContent = `- ${symbol}${discount.toFixed(2)}`;
+  document.getElementById("sumCoupon").textContent   = `- ${symbol}${coupon.toFixed(2)}`;
+  document.getElementById("sumSubtotal").textContent = `${symbol}${subtotal.toFixed(2)}`;
+  document.getElementById("sumDelivery").textContent = shipping > 0 ? `${symbol}${shipping.toFixed(2)}` : "FREE 🎉";
+  document.getElementById("sumTotal").textContent    = `${symbol}${total.toFixed(2)}`;
 
   document.getElementById("checkoutBtn").disabled = selected.length === 0;
 }
@@ -881,14 +903,20 @@ function updateFreeBar() {
   const remaining = Math.max(0, FREE_DELIVERY_THRESHOLD - total);
   const pct = Math.min(100, (total / FREE_DELIVERY_THRESHOLD) * 100);
 
-  document.getElementById("freeBarFill").style.width = `${pct}%`;
+  const freeBar = document.getElementById("freeBar");
+  if (!freeBar) return;
+
+  const freeBarFill = freeBar.querySelector("#freeBarFill");
+  const freeBarAmt = freeBar.querySelector("#freeBarAmt");
+  const freeBarText = freeBar.querySelector(".free-bar-text");
+  if (!freeBarFill || !freeBarAmt || !freeBarText) return;
+
+  freeBarFill.style.width = `${pct}%`;
   if (remaining > 0) {
-    document.getElementById("freeBarAmt").textContent = `$${remaining.toFixed(2)}`;
-    document.getElementById("freeBar").querySelector(".free-bar-text").innerHTML =
-      `Add <strong>$${remaining.toFixed(2)}</strong> more to get <strong>FREE delivery!</strong>`;
+    freeBarAmt.textContent = `$${remaining.toFixed(2)}`;
+    freeBarText.innerHTML = `Add <strong>$${remaining.toFixed(2)}</strong> more to get <strong>FREE delivery!</strong>`;
   } else {
-    document.getElementById("freeBar").querySelector(".free-bar-text").innerHTML =
-      `🎉 <strong>You've unlocked FREE delivery!</strong>`;
+    freeBarText.innerHTML = `🎉 <strong>You've unlocked FREE delivery!</strong>`;
   }
 }
 

@@ -1403,6 +1403,630 @@
           font-size: 17px;
         }
       }
+  
+      /* ================================================================
+   smart-search.css  –  TrueMeds Inline Smart Search
+   Fully namespaced under #tm-smart-search  →  zero collision risk
+   ================================================================ */
+
+/* ── SECTION WRAPPER ─────────────────────────────────────────── */
+#tm-smart-search {
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto 0 auto;
+  padding: 36px 20px 20px;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+#tm-smart-search .tss-label {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #028c7e;
+  margin-bottom: 10px;
+}
+
+/* ── SEARCH INPUT ROW ────────────────────────────────────────── */
+#tm-smart-search .tss-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 2px solid #e2e8f0;
+  border-radius: 50px;
+  box-shadow: 0 4px 24px rgba(2,140,126,.10);
+  transition: border-color .2s, box-shadow .2s;
+  overflow: visible;
+}
+
+#tm-smart-search .tss-bar:focus-within {
+  border-color: #028c7e;
+  box-shadow: 0 4px 28px rgba(2,140,126,.18);
+}
+
+#tm-smart-search .tss-icon {
+  flex-shrink: 0;
+  padding: 0 14px 0 20px;
+  color: #94a3b8;
+  font-size: 17px;
+  pointer-events: none;
+}
+
+#tm-smart-search #tss-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 15px;
+  color: #212121;
+  padding: 14px 0;
+  font-family: inherit;
+}
+
+#tm-smart-search #tss-input::placeholder { color: #b0bec5; }
+
+#tm-smart-search .tss-clear {
+  display: none;
+  flex-shrink: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0 10px;
+  font-size: 18px;
+  color: #94a3b8;
+  line-height: 1;
+}
+
+#tm-smart-search .tss-clear:hover { color: #555; }
+
+#tm-smart-search .tss-submit {
+  flex-shrink: 0;
+  background: #028c7e;
+  color: #fff;
+  border: none;
+  border-radius: 0 48px 48px 0;
+  padding: 0 24px;
+  height: 100%;
+  min-height: 50px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .2s;
+  white-space: nowrap;
+}
+
+#tm-smart-search .tss-submit:hover { background: #016f63; }
+
+/* ── DROPDOWN SUGGESTIONS ────────────────────────────────────── */
+#tm-smart-search .tss-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 18px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.12);
+  z-index: 9999;
+  overflow: hidden;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+#tm-smart-search .tss-dropdown.open { display: block; }
+
+#tm-smart-search .tss-dd-group-label {
+  padding: 8px 16px 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  background: #f8fafc;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+#tm-smart-search .tss-dd-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background .15s;
+  border-bottom: 1px solid #f7f7f7;
+}
+
+#tm-smart-search .tss-dd-item:last-child { border-bottom: none; }
+
+#tm-smart-search .tss-dd-item:hover,
+#tm-smart-search .tss-dd-item.tss-focused {
+  background: #f0faf9;
+}
+
+#tm-smart-search .tss-dd-item img {
+  width: 42px;
+  height: 42px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+  background: #f0f0f0;
+}
+
+#tm-smart-search .tss-dd-item .tss-dd-pill {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  background: #e8f5f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+#tm-smart-search .tss-dd-meta { flex: 1; min-width: 0; }
+
+#tm-smart-search .tss-dd-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #212121;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#tm-smart-search .tss-dd-sub {
+  font-size: 11.5px;
+  color: #888;
+  margin-top: 2px;
+}
+
+#tm-smart-search .tss-dd-price {
+  font-size: 13px;
+  font-weight: 700;
+  color: #028c7e;
+  flex-shrink: 0;
+}
+
+#tm-smart-search .tss-no-result {
+  padding: 18px 16px;
+  font-size: 13px;
+  color: #94a3b8;
+  text-align: center;
+}
+
+/* ── RESULT PANEL (variants + buy) ──────────────────────────── */
+#tm-smart-search .tss-result-panel {
+  display: none;
+  margin-top: 20px;
+  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 20px;
+  box-shadow: 0 6px 30px rgba(0,0,0,.08);
+  overflow: hidden;
+  animation: tssFadeIn .22s ease;
+}
+
+@keyframes tssFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+#tm-smart-search .tss-result-panel.open { display: block; }
+
+/* Product header inside panel */
+#tm-smart-search .tss-prod-header {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  padding: 20px 22px 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+#tm-smart-search .tss-prod-img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 12px;
+  flex-shrink: 0;
+  background: #f0faf9;
+}
+
+#tm-smart-search .tss-prod-img-placeholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  background: #e8f5f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  flex-shrink: 0;
+}
+
+#tm-smart-search .tss-prod-info { flex: 1; min-width: 0; }
+
+#tm-smart-search .tss-prod-name {
+  font-size: 17px;
+  font-weight: 800;
+  color: #212121;
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+
+#tm-smart-search .tss-prod-brand {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 6px;
+}
+
+#tm-smart-search .tss-prod-desc {
+  font-size: 12.5px;
+  color: #555;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+#tm-smart-search .tss-view-link {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: #028c7e;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+#tm-smart-search .tss-view-link:hover { text-decoration: underline; }
+
+/* Variant selector */
+#tm-smart-search .tss-variants-section {
+  padding: 18px 22px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+#tm-smart-search .tss-variants-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #555;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+#tm-smart-search .tss-variants-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#tm-smart-search .tss-variant-btn {
+  padding: 9px 14px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+  text-align: center;
+  min-width: 88px;
+  transition: all .18s;
+  font-family: inherit;
+}
+
+#tm-smart-search .tss-variant-btn:hover {
+  border-color: #028c7e;
+  background: #f0faf9;
+}
+
+#tm-smart-search .tss-variant-btn.tss-selected {
+  border-color: #028c7e;
+  background: #e8f5f4;
+}
+
+#tm-smart-search .tss-variant-btn .tss-vb-pack {
+  font-size: 13px;
+  font-weight: 700;
+  color: #212121;
+}
+
+#tm-smart-search .tss-variant-btn.tss-selected .tss-vb-pack { color: #028c7e; }
+
+#tm-smart-search .tss-variant-btn .tss-vb-pills {
+  font-size: 11px;
+  color: #888;
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+#tm-smart-search .tss-variant-btn .tss-vb-price {
+  font-size: 12px;
+  font-weight: 700;
+  color: #028c7e;
+  margin-top: 3px;
+}
+
+/* Action bar */
+#tm-smart-search .tss-action-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 22px;
+  flex-wrap: wrap;
+}
+
+#tm-smart-search .tss-price-display {
+  flex: 1;
+  min-width: 120px;
+}
+
+#tm-smart-search .tss-price-main {
+  font-size: 28px;
+  font-weight: 800;
+  color: #212121;
+  line-height: 1;
+}
+
+#tm-smart-search .tss-price-per {
+  font-size: 12px;
+  color: #888;
+  margin-top: 2px;
+}
+
+#tm-smart-search .tss-buy-now {
+  padding: 0 26px;
+  height: 46px;
+  background: #028c7e;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .2s;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+}
+
+#tm-smart-search .tss-buy-now:hover:not(:disabled) { background: #016f63; }
+#tm-smart-search .tss-buy-now:disabled { opacity: .65; cursor: default; }
+
+#tm-smart-search .tss-add-cart {
+  padding: 0 22px;
+  height: 46px;
+  background: #fff;
+  color: #028c7e;
+  border: 2px solid #028c7e;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .2s, color .2s;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+#tm-smart-search .tss-add-cart:hover:not(:disabled) {
+  background: #028c7e;
+  color: #fff;
+}
+
+#tm-smart-search .tss-add-cart:disabled { opacity: .65; cursor: default; }
+
+/* Loading spinner inside panel */
+#tm-smart-search .tss-loading {
+  padding: 28px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+#tm-smart-search .tss-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2.5px solid #e2e8f0;
+  border-top-color: #028c7e;
+  border-radius: 50%;
+  animation: tssSpin .7s linear infinite;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+@keyframes tssSpin { to { transform: rotate(360deg); } }
+
+/* No variants state */
+#tm-smart-search .tss-no-variants {
+  padding: 18px 22px;
+  font-size: 13px;
+  color: #888;
+  text-align: center;
+}
+
+/* ── TOAST ───────────────────────────────────────────────────── */
+#tss-toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: #212121;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-size: 13.5px;
+  font-weight: 600;
+  z-index: 99999;
+  opacity: 0;
+  transition: opacity .3s, transform .3s;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+#tss-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  #tm-smart-search { padding: 24px 12px 16px; }
+
+  #tm-smart-search .tss-submit { padding: 0 14px; font-size: 13px; }
+
+  #tm-smart-search .tss-prod-header { flex-direction: column; }
+
+  #tm-smart-search .tss-prod-img,
+  #tm-smart-search .tss-prod-img-placeholder { width: 60px; height: 60px; }
+
+  #tm-smart-search .tss-action-bar { flex-direction: column; align-items: stretch; }
+
+  #tm-smart-search .tss-buy-now,
+  #tm-smart-search .tss-add-cart { width: 100%; justify-content: center; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   MEDICINE REQUEST FORM — appended to smart-search.css
+   ════════════════════════════════════════════════════════════════ */
+
+#tm-smart-search .tss-request-trigger {
+  border-top: 1.5px dashed #f0a500;
+  background: #fffbf0;
+}
+#tm-smart-search .tss-request-trigger:hover { background: #fff3cc; }
+
+#tm-smart-search .tss-req-form-wrap {
+  padding: 22px 24px 20px;
+}
+
+#tm-smart-search .tss-req-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+#tm-smart-search .tss-req-icon {
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+#tm-smart-search .tss-req-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #212121;
+  margin-bottom: 3px;
+}
+
+#tm-smart-search .tss-req-sub {
+  font-size: 12.5px;
+  color: #888;
+}
+
+#tm-smart-search .tss-req-form { margin: 0; }
+
+#tm-smart-search .tss-req-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 16px;
+  margin-bottom: 16px;
+}
+
+#tm-smart-search .tss-req-field { display: flex; flex-direction: column; gap: 5px; }
+#tm-smart-search .tss-req-full  { grid-column: 1 / -1; }
+
+#tm-smart-search .tss-req-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #555;
+}
+
+#tm-smart-search .tss-req-required { color: #e03e3e; }
+
+#tm-smart-search .tss-req-field input,
+#tm-smart-search .tss-req-field textarea {
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 13.5px;
+  font-family: inherit;
+  color: #212121;
+  outline: none;
+  background: #fff;
+  transition: border-color .2s;
+  resize: vertical;
+}
+
+#tm-smart-search .tss-req-field input:focus,
+#tm-smart-search .tss-req-field textarea:focus {
+  border-color: #028c7e;
+  box-shadow: 0 0 0 3px rgba(2,140,126,.08);
+}
+
+#tm-smart-search .tss-req-footer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+#tm-smart-search .tss-req-cancel {
+  padding: 0 18px;
+  height: 40px;
+  background: transparent;
+  color: #888;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .15s;
+}
+#tm-smart-search .tss-req-cancel:hover { border-color: #aaa; color: #444; }
+
+#tm-smart-search .tss-req-submit {
+  padding: 0 22px;
+  height: 40px;
+  background: #028c7e;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .2s;
+}
+#tm-smart-search .tss-req-submit:hover:not(:disabled) { background: #016f63; }
+#tm-smart-search .tss-req-submit:disabled { opacity: .6; cursor: default; }
+
+#tm-smart-search .tss-req-status {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  min-height: 20px;
+  text-align: center;
+}
+#tm-smart-search .tss-req-status.tss-req-success { color: #059669; }
+#tm-smart-search .tss-req-status.tss-req-error   { color: #dc2626; }
+
+@media (max-width: 560px) {
+  #tm-smart-search .tss-req-grid { grid-template-columns: 1fr; }
+  #tm-smart-search .tss-req-full { grid-column: 1; }
+  #tm-smart-search .tss-req-footer { flex-direction: column; }
+  #tm-smart-search .tss-req-cancel,
+  #tm-smart-search .tss-req-submit { width: 100%; }
+}
+
     </style>
   </head>
   <body>
@@ -1690,6 +2314,7 @@
       </div>
     </div>
 
+
     <div class="divider"></div>
 
     <!-- OFFER BANNER -->
@@ -1729,7 +2354,7 @@
           <div class="cat-card-name">USA Premium</div>
         </a>
 
-        <a href="" class="cat-card">
+        <a href="categories.html?catogeriesID=11" class="cat-card">
           <img src="./assets/image2/uk-premium.jpeg" alt="UK Premium" class="category-image" />
           <div class="cat-card-name">UK Premium</div>
         </a>
@@ -2090,7 +2715,7 @@
         mobileMenu.classList.add("open");
         document.body.style.overflow = "hidden";
       });
-      function closeMobileMenu() {
+      function closeMobileMenu() {  
         mobileMenu.classList.remove("open");
         document.body.style.overflow = "";
       }
@@ -2157,6 +2782,860 @@
           el.style.transition = "opacity 0.5s ease, transform 0.5s ease";
           revealObs.observe(el);
         });
+    </script>
+
+    <script>
+  /**
+ * smart-search.js  –  TrueMeds Google-style Inline Smart Search  v2
+ * ─────────────────────────────────────────────────────────────────
+ * DROP-IN: add <link> smart-search.css and <script> smart-search.js
+ * after the Premium Products section closing tag in index.html.
+ * Zero modification to existing files.
+ *
+ * ── FEATURES ──────────────────────────────────────────────────────
+ * 1. Keyword → pinned product_ids  (you configure TSS_KEYWORD_PINS below)
+ * 2. Keyword → category fallback   (general word → category)
+ * 3. Live name-match suggestions
+ * 4. Variant panel inline (select pack → Add to Cart / Buy Now)
+ * 5. "Not found" flow → medicine request form → POST /api/medicine-request
+ *    saved into voice_full_orders_test table, shown in employee dashboard
+ */
+
+(function () {
+  "use strict";
+
+  /* ════════════════════════════════════════════════════════════════
+     ①  CONFIGURE HERE — keyword → specific product IDs
+        Add as many keyword groups as you want.
+        "keywords" : words that trigger this group (case-insensitive, partial match)
+        "product_ids" : exact product_id values from your DB
+        "label" : shown as group heading in dropdown
+     ════════════════════════════════════════════════════════════════ */
+  const TSS_KEYWORD_PINS = [
+    {
+      keywords: ["pain", "ache", "relief", "painkiller", "ibuprofen", "nsaid", "aspirin", "paracetamol", "anti-inflammatory"],
+      label: "Pain Relief — Top Picks",
+      product_ids: []   // ← FILL YOUR product_ids HERE
+    },
+    {
+      keywords:["anti anzity"],
+      label : "Anty Anzity",
+      product_ids : [12,1]
+    },
+    {
+      keywords: ["heart", "cardiac", "cholesterol", "blood pressure", "bp", "hypertension", "atorvastatin", "amlodipine"],
+      label: "Cardiac Care — Top Picks",
+      product_ids: []
+    },
+    {
+      keywords: ["anxiety", "depression", "mental", "sleep", "insomnia", "stress", "alprazolam", "clonazepam", "melatonin"],
+      label: "Mental Health — Top Picks",
+      product_ids: []
+    },
+    {
+      keywords: ["sexual", "erectile", "viagra", "libido", "sildenafil", "tadalafil", "cialis", "levitra"],
+      label: "Sexual Wellness — Top Picks",
+      product_ids: []
+    },
+    {
+      keywords: ["skin", "acne", "cream", "derma", "tretinoin", "retinol"],
+      label: "Skincare — Top Picks",
+      product_ids: []
+    },
+    {
+      keywords: ["steroid", "muscle", "anabolic", "stanozolol"],
+      label: "Steroids — Top Picks",
+      product_ids: []
+    },
+    {
+      keywords: ["women", "female", "pregnancy", "ovary", "estrogen", "progesterone", "clomid"],
+      label: "Women's Health — Top Picks",
+      product_ids: []
+    },
+    {
+      keywords: ["men", "testosterone", "prostate", "finasteride", "minoxidil"],
+      label: "Men's Health — Top Picks",
+      product_ids: []
+    },
+    {
+      keywords: ["vitamin", "supplement", "antibiotic", "metformin", "diabetes", "thyroid"],
+      label: "General Health — Top Picks",
+      product_ids: []
+    },
+  ];
+
+  /* Category fallback (used when product_ids array is empty for a keyword match) */
+  const KEYWORD_CATEGORY_MAP = [
+    { id: 3,  name: "Pain Relief",     words: ["pain","ache","relief","painkiller","ibuprofen","nsaid","aspirin","paracetamol","anti-inflammatory"] },
+    { id: 4,  name: "Cardiac Care",    words: ["heart","cardiac","cholesterol","blood pressure","bp","hypertension","atorvastatin","amlodipine"] },
+    { id: 5,  name: "Mental Health",   words: ["anxiety","depression","mental","sleep","insomnia","stress","alprazolam","clonazepam","melatonin"] },
+    { id: 6,  name: "Sexual Wellness", words: ["sexual","erectile","viagra","libido","sildenafil","tadalafil","cialis","levitra"] },
+    { id: 7,  name: "Skincare",        words: ["skin","acne","cream","derma","tretinoin","retinol"] },
+    { id: 8,  name: "Steroids",        words: ["steroid","muscle","anabolic","stanozolol"] },
+    { id: 9,  name: "Women's Health",  words: ["women","female","pregnancy","ovary","estrogen","progesterone","clomid"] },
+    { id: 10, name: "Men's Health",    words: ["men","testosterone","prostate","finasteride","minoxidil"] },
+    { id: 2,  name: "General Health",  words: ["vitamin","supplement","antibiotic","metformin","diabetes","thyroid"] },
+    { id: 1,  name: "USA Premium",     words: ["usa","premium","branded"] },
+  ];
+
+  /* ── STATE ───────────────────────────────────────────────────── */
+  let allProducts        = [];
+  let selectedProduct    = null;
+  let selectedVariants   = [];
+  let selectedVariantIdx = 0;
+  let productCache       = {};
+  let lastQuery          = "";
+
+  /* ── INJECT HTML ─────────────────────────────────────────────── */
+  function injectHTML() {
+    const grid = document.getElementById("productsGrid");
+    if (!grid) return false;
+    const section = grid.closest(".section");
+    if (!section) return false;
+
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = `
+      <div id="tm-smart-search">
+        <p class="tss-label">🔍 Search any medicine</p>
+
+        <div class="tss-bar">
+          <span class="tss-icon">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+                 viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          </span>
+          <input
+            id="tss-input"
+            type="text"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="Search medicines, brands, or conditions…"
+            aria-label="Search medicines"
+          />
+          <button class="tss-clear" id="tss-clear" aria-label="Clear search">✕</button>
+          <button class="tss-submit" id="tss-submit">Search</button>
+          <div class="tss-dropdown" id="tss-dropdown" role="listbox"></div>
+        </div>
+
+        <!-- Inline result panel (variants + buy) -->
+        <div class="tss-result-panel" id="tss-result-panel"></div>
+      </div>
+    `;
+
+    section.insertAdjacentElement("afterend", wrapper.firstElementChild);
+    return true;
+  }
+
+  /* ── PRICE PARSER ────────────────────────────────────────────── */
+  function parsePrice(str) {
+    if (!str) return 0;
+    return parseFloat(String(str).replace(/[^0-9.]/g, "")) || 0;
+  }
+
+  /* ── LOAD ALL PRODUCTS (5-min TTL cache) ─────────────────────── */
+  async function loadProducts() {
+    try {
+      const cached    = localStorage.getItem("SearchProducts");
+      const cacheTime = parseInt(localStorage.getItem("SearchProductsTime") || "0");
+      if (cached && (Date.now() - cacheTime) < 5 * 60 * 1000) {
+        allProducts = JSON.parse(cached);
+        return;
+      }
+      const res  = await fetch("/products");
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        allProducts = data;
+        localStorage.setItem("SearchProducts", JSON.stringify(data));
+        localStorage.setItem("SearchProductsTime", Date.now().toString());
+      }
+    } catch (e) {
+      console.error("[SmartSearch] Failed to load products:", e);
+    }
+  }
+
+  /* ── KEYWORD MATCHING ────────────────────────────────────────── */
+  function getKeywordPin(query) {
+    const q = query.toLowerCase();
+    return TSS_KEYWORD_PINS.find(group =>
+      group.keywords.some(w => q.includes(w))
+    ) || null;
+  }
+
+  function getKeywordCategory(query) {
+    const q = query.toLowerCase();
+    return KEYWORD_CATEGORY_MAP.find(cat =>
+      cat.words.some(w => q.includes(w))
+    ) || null;
+  }
+
+  /* ── BUILD SUGGESTIONS ───────────────────────────────────────── */
+  function buildSuggestions(query) {
+    const q = query.toLowerCase().trim();
+    if (!q) return [];
+
+    const suggestions = [];
+    const shownIds    = new Set();
+
+    // ① PINNED products by keyword (configured by you)
+    const pin = getKeywordPin(q);
+    if (pin && pin.product_ids && pin.product_ids.length > 0) {
+      const pinned = allProducts.filter(p =>
+        pin.product_ids.includes(p.product_id) ||
+        pin.product_ids.includes(Number(p.product_id))
+      );
+      if (pinned.length > 0) {
+        suggestions.push({ type: "group-label", text: pin.label });
+        pinned.forEach(p => {
+          shownIds.add(p.product_id);
+          suggestions.push({ type: "product", product: p });
+        });
+      }
+    } else {
+      // ② CATEGORY fallback when no pinned ids
+      const catMatch = getKeywordCategory(q);
+      if (catMatch) {
+        const catProducts = allProducts
+          .filter(p => String(p.category_id) === String(catMatch.id))
+          .slice(0, 4);
+        if (catProducts.length > 0) {
+          suggestions.push({ type: "group-label", text: `${catMatch.name}` });
+          catProducts.forEach(p => {
+            shownIds.add(p.product_id);
+            suggestions.push({ type: "product", product: p });
+          });
+        }
+      }
+    }
+
+    // ③ Direct name match (up to 6, excluding already shown)
+    const nameMatches = allProducts
+      .filter(p =>
+        !shownIds.has(p.product_id) &&
+        (p.product_name || "").toLowerCase().includes(q)
+      )
+      .slice(0, 6);
+
+    if (nameMatches.length > 0) {
+      if (suggestions.length > 0) {
+        suggestions.push({ type: "group-label", text: "Products" });
+      }
+      nameMatches.forEach(p => suggestions.push({ type: "product", product: p }));
+    }
+
+    return suggestions;
+  }
+
+  /* ── RENDER DROPDOWN ─────────────────────────────────────────── */
+  function renderDropdown(query, suggestions) {
+    const dd = document.getElementById("tss-dropdown");
+    if (!dd) return;
+
+    if (!suggestions.length) {
+      // Show "not found" option
+      dd.innerHTML = `
+        <div class="tss-no-result">
+          No medicine found for "<strong>${escHtml(query)}</strong>"
+        </div>
+        <div class="tss-dd-item tss-request-trigger" role="option" id="tss-trigger-request">
+          <div class="tss-dd-pill">📋</div>
+          <div class="tss-dd-meta">
+            <div class="tss-dd-name">Request this medicine</div>
+            <div class="tss-dd-sub">Tell us what you need — our team will add it</div>
+          </div>
+          <div class="tss-dd-price" style="color:#e67e22;">Request →</div>
+        </div>`;
+      dd.classList.add("open");
+
+      document.getElementById("tss-trigger-request")?.addEventListener("click", () => {
+        closeDropdown();
+        showRequestForm(query);
+      });
+      return;
+    }
+
+    dd.innerHTML = suggestions.map((s) => {
+      if (s.type === "group-label") {
+        return `<div class="tss-dd-group-label">${escHtml(s.text)}</div>`;
+      }
+      const p       = s.product;
+      const imgHtml = p.image_url
+        ? `<img src="${escHtml(p.image_url)}" alt="" onerror="this.style.display='none'">`
+        : `<div class="tss-dd-pill">💊</div>`;
+      return `
+        <div class="tss-dd-item" role="option" data-product-id="${p.product_id}">
+          ${imgHtml}
+          <div class="tss-dd-meta">
+            <div class="tss-dd-name">${escHtml(p.product_name || "Product")}</div>
+            <div class="tss-dd-sub">${escHtml(p.trade_names || "")}</div>
+          </div>
+          <div class="tss-dd-price">View →</div>
+        </div>`;
+    }).join("");
+
+    dd.classList.add("open");
+
+    // Attach click handlers
+    dd.querySelectorAll(".tss-dd-item[data-product-id]").forEach(el => {
+      el.addEventListener("click", () => {
+        const pid     = el.getAttribute("data-product-id");
+        const product = allProducts.find(p => String(p.product_id) === String(pid));
+        if (product) selectProduct(product);
+      });
+    });
+  }
+
+  /* ── SELECT PRODUCT → FETCH VARIANTS → RENDER PANEL ─────────── */
+  async function selectProduct(product) {
+    selectedProduct    = product;
+    selectedVariants   = [];
+    selectedVariantIdx = 0;
+
+    const input = document.getElementById("tss-input");
+    if (input) input.value = product.product_name || "";
+    const clear = document.getElementById("tss-clear");
+    if (clear) clear.style.display = "flex";
+
+    closeDropdown();
+
+    const panel = document.getElementById("tss-result-panel");
+    if (!panel) return;
+
+    panel.innerHTML = `<div class="tss-loading"><span class="tss-spinner"></span>Loading variants…</div>`;
+    panel.classList.add("open");
+
+    try {
+      let product_full = product;
+      let variants     = [];
+
+      if (productCache[product.product_id]) {
+        product_full = productCache[product.product_id].product;
+        variants     = productCache[product.product_id].variants;
+      } else {
+        const [prodRes, varRes] = await Promise.all([
+          fetch(`/api/product?product_ID=${product.product_id}`),
+          fetch(`/api/variants/${product.product_id}`)
+        ]);
+
+        if (prodRes.ok) {
+          const d = await prodRes.json();
+          if (d && d.product)  product_full = d.product;
+          if (d && d.variants) variants     = d.variants;
+        }
+        if (!variants.length && varRes.ok) {
+          const vd = await varRes.json();
+          if (Array.isArray(vd)) variants = vd;
+        }
+
+        productCache[product.product_id] = { product: product_full, variants };
+      }
+
+      selectedProduct    = product_full;
+      selectedVariants   = variants;
+      selectedVariantIdx = 0;
+
+      if(Number(product_full.stocks === 1)){
+        renderResultPanel(product_full, variants);
+      }
+      else{
+        const panel = document.getElementById("tss-result-panel");
+  if (!panel) return;
+
+  panel.innerHTML = `
+    <div class="tss-prod-header">
+      <div class="tss-prod-img-placeholder"> <img src="${product_full.image_url}"/></div>
+
+      <div class="tss-prod-info">
+        <div class="tss-prod-name">
+          ${escHtml(product_full.product_name || "Product")}
+        </div>
+
+        <div class="tss-prod-brand" style="color:#dc2626;font-weight:600;">
+          Out of Stock
+        </div>
+
+        <div class="tss-prod-desc">
+          This medicine is currently unavailable. Please check back later or browse similar products.
+        </div>
+
+        <a class="tss-view-link"
+           href="product_overview.html?product_ID=${product_full.product_id}">
+          View Product Details →
+        </a>
+      </div>
+    </div>
+
+    <div class="tss-action-bar">
+      
+
+      <button class="tss-add-cart" disabled>
+        🛒 Add to Cart
+      </button>
+
+      <button class="tss-buy-now" disabled>
+        ⚡ Buy Now
+      </button>
+    </div>
+  `;
+
+  panel.classList.add("open");
+      }
+    } catch (err) {
+      console.error("[SmartSearch] fetchVariants error:", err);
+      if (panel) {
+        panel.innerHTML = `<div class="tss-no-variants">⚠️ Failed to load. <a href="product_overview.html?product_ID=${product.product_id}" style="color:#028c7e">View product page →</a></div>`;
+      }
+    }
+  }
+
+  /* ── RENDER RESULT PANEL ─────────────────────────────────────── */
+  
+  function renderResultPanel(product, variants) {
+    const panel = document.getElementById("tss-result-panel");
+    if (!panel) return;
+
+    const imgHtml = product.image_url
+      ? `<img class="tss-prod-img" src="${escHtml(product.image_url)}" alt="" onerror="this.style.display='none'">`
+      : `<div class="tss-prod-img-placeholder">💊</div>`;
+
+    const variantsHtml = variants.length
+      ? `<div class="tss-variants-section">
+           <div class="tss-variants-title">Select Pack</div>
+           <div class="tss-variants-grid">
+             ${variants.map((v, i) => {
+               const qty   = v.unit_value || "";
+               const unit  = v.unit_type  || "";
+               const pills = v.qty        || "";
+               const price = parsePrice(v.offer_price || v.price_per_box || v.price_per_pill || "");
+               const label = qty && unit ? `${qty}${unit}` : `Option ${i + 1}`;
+               return `
+                 <button class="tss-variant-btn${i === 0 ? " tss-selected" : ""}"
+                         data-vidx="${i}"
+                         onclick="window.__tssSelectVariant(${i})">
+                   <div class="tss-vb-pack">${escHtml(label)}</div>
+                   ${pills ? `<div class="tss-vb-pills">${escHtml(String(pills))} pills</div>` : ""}
+                   ${price > 0 ? `<div class="tss-vb-price">$${price.toFixed(2)}</div>` : ""}
+                 </button>`;
+             }).join("")}
+           </div>
+         </div>`
+      : `<div class="tss-no-variants">No variants available. <a href="product_overview.html?product_ID=${product.product_id}" style="color:#028c7e">View product page →</a></div>`;
+
+    const v0        = variants[0] || {};
+    const initPrice = parsePrice(v0.offer_price || v0.price_per_box || v0.price_per_pill || "");
+    const initPer   = v0.price_per_pill ? `$${parsePrice(v0.price_per_pill).toFixed(2)} per pill` : "";
+
+    panel.innerHTML = `
+      <div class="tss-prod-header">
+        ${imgHtml}
+        <div class="tss-prod-info">
+          <div class="tss-prod-name">${escHtml(product.product_name || "Product")}</div>
+          ${product.manufacturer ? `<div class="tss-prod-brand">by ${escHtml(product.manufacturer)}</div>` : ""}
+          ${product.product_description
+            ? `<div class="tss-prod-desc">${escHtml(product.product_description)}</div>` : ""}
+          <a class="tss-view-link" href="product_overview.html?product_ID=${product.product_id}">Full details →</a>
+        </div>
+      </div>
+
+      ${variantsHtml}
+
+      ${variants.length ? `
+      <div class="tss-action-bar" id="tss-action-bar">
+        <div class="tss-price-display">
+          <div class="tss-price-main" id="tss-price-main">
+            ${initPrice > 0 ? `$${initPrice.toFixed(2)}` : "Price on request"}
+          </div>
+          <div class="tss-price-per" id="tss-price-per">${initPer}</div>
+        </div>
+        <button class="tss-add-cart" id="tss-add-cart-btn" onclick="window.__tssAddToCart()">
+          🛒 Add to Cart
+        </button>
+        <button class="tss-buy-now" id="tss-buy-now-btn" onclick="window.__tssBuyNow()">
+          ⚡ Buy Now
+        </button>
+      </div>` : ""}
+    `;
+
+    panel.classList.add("open");
+  }
+
+  /* ── VARIANT SELECT ──────────────────────────────────────────── */
+  window.__tssSelectVariant = function (idx) {
+    selectedVariantIdx = idx;
+    document.querySelectorAll("#tm-smart-search .tss-variant-btn").forEach((btn, i) => {
+      btn.classList.toggle("tss-selected", i === idx);
+    });
+    const v = selectedVariants[idx];
+    if (!v) return;
+    const price   = parsePrice(v.offer_price || v.price_per_box || v.price_per_pill || "");
+    const mainEl  = document.getElementById("tss-price-main");
+    const perEl   = document.getElementById("tss-price-per");
+    if (mainEl) mainEl.textContent = price > 0 ? `$${price.toFixed(2)}` : "Price on request";
+    if (perEl)  perEl.textContent  = v.price_per_pill ? `$${parsePrice(v.price_per_pill).toFixed(2)} per pill` : "";
+  };
+
+  /* ── ADD TO CART ─────────────────────────────────────────────── */
+  async function doAddToCart() {
+    if (!selectedProduct || !selectedVariants.length) return false;
+    const v     = selectedVariants[selectedVariantIdx] || selectedVariants[0];
+    const price = parsePrice(v.offer_price || v.price_per_box || v.price_per_pill || "");
+    const mg    = v.unit_value && v.unit_type ? `${v.unit_value}${v.unit_type}` : null;
+
+    const res  = await fetch("/add-to-cart", {
+      method  : "POST",
+      headers : { "Content-Type": "application/json" },
+      body    : JSON.stringify({
+        productId  : selectedProduct.product_id,
+        categoryId : selectedProduct.category_id,
+        name       : selectedProduct.product_name,
+        quantity   : 1,
+        mg,
+        price,
+        image_url  : selectedProduct.image_url || ""
+      })
+    });
+    const data = await res.json();
+    return data.success === true;
+  }
+
+  window.__tssAddToCart = async function () {
+    const btn = document.getElementById("tss-add-cart-btn");
+    if (btn) { btn.textContent = "Adding…"; btn.disabled = true; }
+    try {
+      const ok = await doAddToCart();
+      if (ok) {
+        showToast("✅ Added to cart!");
+        try {
+          const cr  = await fetch("/api/cart/count");
+          const cd  = await cr.json();
+          if (cd.success) {
+            const badge = document.querySelector(".cart-badge");
+            const count = parseInt(cd.count) || 0;
+            localStorage.setItem("cartCount", count);
+            if (badge) {
+              badge.textContent = count;
+              badge.style.display = count > 0 ? "inline-flex" : "none";
+              badge.style.transform = "scale(1.4)";
+              setTimeout(() => { badge.style.transform = "scale(1)"; }, 280);
+            }
+          }
+        } catch (_) {}
+        if (btn) { btn.textContent = "✅ Added"; btn.style.background = "#059669"; btn.style.color = "#fff"; }
+        setTimeout(() => {
+          if (btn) { btn.textContent = "🛒 Add to Cart"; btn.style.background = ""; btn.style.color = ""; btn.disabled = false; }
+        }, 2500);
+      } else {
+        if (btn) { btn.textContent = "🛒 Add to Cart"; btn.disabled = false; }
+        showToast("❌ Could not add to cart. Try again.");
+      }
+    } catch (err) {
+      console.error("[SmartSearch] addToCart error:", err);
+      if (btn) { btn.textContent = "🛒 Add to Cart"; btn.disabled = false; }
+      showToast("❌ Server error. Please try again.");
+    }
+  };
+
+  window.__tssBuyNow = async function () {
+    const btn = document.getElementById("tss-buy-now-btn");
+    if (btn) { btn.textContent = "⏳ Please wait…"; btn.disabled = true; }
+    try {
+      const ok = await doAddToCart();
+      if (ok) {
+        window.location.href = "checkout1.html";
+      } else {
+        if (btn) { btn.textContent = "⚡ Buy Now"; btn.disabled = false; }
+        showToast("❌ Could not add to cart. Try again.");
+      }
+    } catch (err) {
+      console.error("[SmartSearch] buyNow error:", err);
+      if (btn) { btn.textContent = "⚡ Buy Now"; btn.disabled = false; }
+    }
+  };
+
+  /* ════════════════════════════════════════════════════════════════
+     ②  MEDICINE REQUEST FORM (shown when no product found)
+     ════════════════════════════════════════════════════════════════ */
+  function showRequestForm(prefillName) {
+    const panel = document.getElementById("tss-result-panel");
+    if (!panel) return;
+
+    panel.innerHTML = `
+      <div class="tss-req-form-wrap">
+        <div class="tss-req-header">
+          <div class="tss-req-icon">📋</div>
+          <div>
+            <div class="tss-req-title">Medicine not in our catalogue?</div>
+            <div class="tss-req-sub">Fill in the details below — our team will review and add it.</div>
+          </div>
+        </div>
+
+        <form id="tss-req-form" class="tss-req-form" novalidate>
+          <div class="tss-req-grid">
+            <div class="tss-req-field tss-req-full">
+              <label for="tss-req-med">Medicine Name <span class="tss-req-required">*</span></label>
+              <input id="tss-req-med" type="text" value="${escHtml(prefillName || "")}"
+                     placeholder="e.g. Ozempic 2mg" required />
+            </div>
+            <div class="tss-req-field">
+              <label for="tss-req-mg">Strength / MG <span class="tss-req-required">*</span></label>
+              <input id="tss-req-mg" type="text" placeholder="e.g. 10mg, 20mg" required />
+            </div>
+            <div class="tss-req-field">
+              <label for="tss-req-qty">Quantity Needed <span class="tss-req-required">*</span></label>
+              <input id="tss-req-qty" type="number" min="1" value="1" placeholder="e.g. 30" required />
+            </div>
+            <div class="tss-req-field">
+              <label for="tss-req-name">Your Name <span class="tss-req-required">*</span></label>
+              <input id="tss-req-name" type="text" placeholder="Full name" required />
+            </div>
+            <div class="tss-req-field">
+              <label for="tss-req-phone">Phone Number <span class="tss-req-required">*</span></label>
+              <input id="tss-req-phone" type="tel" placeholder="+1 555 000 0000" required />
+            </div>
+            <div class="tss-req-field tss-req-full">
+              <label for="tss-req-email">Email Address <span class="tss-req-required">*</span></label>
+              <input id="tss-req-email" type="email" placeholder="you@example.com" required />
+            </div>
+            
+          </div>
+
+          <div class="tss-req-footer">
+            <button type="button" class="tss-req-cancel" id="tss-req-cancel-btn">Cancel</button>
+            <button type="submit" class="tss-req-submit" id="tss-req-submit-btn">
+              📨 Send Request
+            </button>
+          </div>
+          <div class="tss-req-status" id="tss-req-status"></div>
+        </form>
+      </div>
+    `;
+
+    panel.classList.add("open");
+
+    // Cancel → clear panel
+    document.getElementById("tss-req-cancel-btn")?.addEventListener("click", () => {
+      panel.classList.remove("open");
+      panel.innerHTML = "";
+      const input = document.getElementById("tss-input");
+      if (input) { input.value = ""; input.focus(); }
+      const clear = document.getElementById("tss-clear");
+      if (clear) clear.style.display = "none";
+    });
+
+    // Submit
+    document.getElementById("tss-req-form")?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      await submitMedicineRequest();
+    });
+  }
+
+  async function submitMedicineRequest() {
+    const statusEl = document.getElementById("tss-req-status");
+    const submitBtn = document.getElementById("tss-req-submit-btn");
+
+    // Collect + validate
+    const med   = document.getElementById("tss-req-med")?.value.trim();
+    const mg    = document.getElementById("tss-req-mg")?.value.trim();
+    const qty   = document.getElementById("tss-req-qty")?.value.trim();
+    const name  = document.getElementById("tss-req-name")?.value.trim();
+    const phone = document.getElementById("tss-req-phone")?.value.trim();
+    const email = document.getElementById("tss-req-email")?.value.trim();
+    const note  = document.getElementById("tss-req-note")?.value.trim();
+
+    if (!med || !mg || !qty || !name || !phone || !email) {
+      if (statusEl) {
+        statusEl.className = "tss-req-status tss-req-error";
+        statusEl.textContent = "⚠️ Please fill in all required fields.";
+      }
+      return;
+    }
+
+    if (!email.includes("@")) {
+      if (statusEl) {
+        statusEl.className = "tss-req-status tss-req-error";
+        statusEl.textContent = "⚠️ Please enter a valid email address.";
+      }
+      return;
+    }
+
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = "Sending…"; }
+    if (statusEl)  { statusEl.className = "tss-req-status"; statusEl.textContent = ""; }
+
+    try {
+      const res = await fetch("/api/medicine-request", {
+        method  : "POST",
+        headers : { "Content-Type": "application/json" },
+        body    : JSON.stringify({
+          type        : "medicine_request",  // ← tag so employee dashboard can filter
+          medicine    : med,
+          strength_mg : mg,
+          quantity    : qty,
+          customer_name  : name,
+          customer_phone : phone,
+          customer_email : email,
+          notes       : note || "",
+          requested_at: new Date().toISOString(),
+        })
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        if (statusEl) {
+          statusEl.className = "tss-req-status tss-req-success";
+          statusEl.textContent = "✅ Request sent! Our team will contact you soon.";
+        }
+        if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = "✅ Sent"; }
+      } else {
+        throw new Error(data.error || "Unknown error");
+      }
+    } catch (err) {
+      console.error("[SmartSearch] medicine request error:", err);
+      if (statusEl) {
+        statusEl.className = "tss-req-status tss-req-error";
+        statusEl.textContent = "❌ Failed to send. Please try again.";
+      }
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = "📨 Send Request"; }
+    }
+  }
+
+  /* ── UI HELPERS ──────────────────────────────────────────────── */
+  function closeDropdown() {
+    const dd = document.getElementById("tss-dropdown");
+    if (dd) dd.classList.remove("open");
+  }
+
+  function hideResultPanel() {
+    const p = document.getElementById("tss-result-panel");
+    if (p) { p.classList.remove("open"); p.innerHTML = ""; }
+  }
+
+  function escHtml(str) {
+    return String(str || "")
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  function showToast(msg) {
+    let toast = document.getElementById("tss-toast");
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.id = "tss-toast";
+      document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 2800);
+  }
+
+  /* ── WIRE EVENTS ─────────────────────────────────────────────── */
+  function wireEvents() {
+    const input  = document.getElementById("tss-input");
+    const clear  = document.getElementById("tss-clear");
+    const submit = document.getElementById("tss-submit");
+    const dd     = document.getElementById("tss-dropdown");
+    if (!input) return;
+
+    input.addEventListener("input", () => {
+      const q = input.value.trim();
+      lastQuery = q;
+      if (clear) clear.style.display = q ? "flex" : "none";
+      hideResultPanel();
+
+      if (!q) { closeDropdown(); return; }
+      const suggestions = buildSuggestions(q);
+      renderDropdown(q, suggestions);
+    });
+
+    /* Keyboard navigation */
+    input.addEventListener("keydown", e => {
+      const items   = dd ? [...dd.querySelectorAll(".tss-dd-item")] : [];
+      const focused = dd ? dd.querySelector(".tss-dd-focused") : null;
+      const curIdx  = focused ? items.indexOf(focused) : -1;
+
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        const next = items[Math.min(curIdx + 1, items.length - 1)];
+        items.forEach(el => el.classList.remove("tss-focused"));
+        if (next) next.classList.add("tss-focused");
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        const prev = items[Math.max(curIdx - 1, 0)];
+        items.forEach(el => el.classList.remove("tss-focused"));
+        if (prev) prev.classList.add("tss-focused");
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        if (focused) {
+          focused.click(); return;
+        }
+        const q     = input.value.trim();
+        const q_low = q.toLowerCase();
+        const exact = allProducts.find(p => (p.product_name || "").toLowerCase() === q_low);
+        const first = allProducts.find(p => (p.product_name || "").toLowerCase().includes(q_low));
+        const pick  = exact || first;
+        if (pick) {
+          selectProduct(pick);
+        } else if (q) {
+          // No match at all → show request form
+          closeDropdown();
+          showRequestForm(q);
+        }
+      } else if (e.key === "Escape") {
+        closeDropdown();
+        hideResultPanel();
+      }
+    });
+
+    if (clear) {
+      clear.addEventListener("click", () => {
+        input.value = "";
+        clear.style.display = "none";
+        closeDropdown();
+        hideResultPanel();
+        selectedProduct  = null;
+        selectedVariants = [];
+        lastQuery        = "";
+        input.focus();
+      });
+    }
+
+    if (submit) {
+      submit.addEventListener("click", () => {
+        const q     = input.value.trim();
+        if (!q) return;
+        const q_low = q.toLowerCase();
+        const exact = allProducts.find(p => (p.product_name || "").toLowerCase() === q_low);
+        const first = allProducts.find(p => (p.product_name || "").toLowerCase().includes(q_low));
+        const pick  = exact || first;
+        if (pick) {
+          selectProduct(pick);
+        } else {
+          closeDropdown();
+          showRequestForm(q);
+        }
+      });
+    }
+
+    document.addEventListener("click", e => {
+      if (!e.target.closest("#tm-smart-search")) closeDropdown();
+    });
+  }
+
+  /* ── INIT ────────────────────────────────────────────────────── */
+  async function init() {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", init);
+      return;
+    }
+    const injected = injectHTML();
+    if (!injected) {
+      console.warn("[SmartSearch] #productsGrid not found — retrying in 600ms");
+      setTimeout(init, 600);
+      return;
+    }
+    wireEvents();
+    await loadProducts();
+  }
+
+  init();
+})();
     </script>
 
     <!-- ══════════════════════════════════════════════════════
