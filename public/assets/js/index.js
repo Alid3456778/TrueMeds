@@ -199,43 +199,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 // ── TRENDING PRODUCTS (GET /products?categoryID=1) ───────────────────────
 // FIX: Grid starts empty in HTML — this fully replaces innerHTML
-document.addEventListener("DOMContentLoaded", async () => {
-  const grid = document.getElementById("productsGrid");
-  if (!grid) return;
-  try {
-    const res = await fetch("/products?categoryID=1");
-    const products = await res.json();
-    if (!products || !Array.isArray(products) || products.length === 0) {
-      grid.innerHTML = `<p style="color:#999;font-size:14px;grid-column:1/-1;padding:20px 0;">No products available right now.</p>`;
-      return;
-    }
-    // console.log(products);
-    grid.innerHTML = products.slice(0, 5).map(p => {
-      const price  = parseFloat(p.offerprice) || 0;
-      const rating = Math.min(5, Math.max(0, Math.round(parseFloat(p.rating) || 0)));
-      const stars  = "★".repeat(rating) + "☆".repeat(5 - rating);
-      const imgHtml = p.image_url
-        ? `<img src="${p.image_url}" alt="${p.product_name}" onerror="this.style.display='none'" />`
-        : `<span class="product-img-placeholder">💊</span>`;
-      const safeName = (p.product_name || "").replace(/'/g, "\\'").replace(/"/g, "&quot;");
-      const safeImg  = (p.image_url   || "").replace(/'/g, "\\'");
-      return `
-        <div class="product-card"
-          onclick="window.location.href='product_overview.html?product_ID=${p.product_id}'">
-          <div class="product-img">${imgHtml}</div>
-          <div class="product-body">
-            <div class="product-name">${p.product_name || "Product"}</div>
-            ${rating > 0 ? `<div style="color:#f59e0b;font-size:12px;margin-bottom:6px;">${stars}</div>` : ""}
-            
-            
-          </div>
-        </div>`;
-    }).join("");
-  } catch (err) {
-    console.error("Error loading trending products:", err);
-    grid.innerHTML = `<p style="color:#c00;font-size:13px;grid-column:1/-1;padding:20px 0;">⚠️ Could not load products. Please refresh.</p>`;
-  }
-});
+
 
 // ── ADD TO CART (POST /add-to-cart) ──────────────────────────────────────
 // FIX: Always re-fetches badge from /api/cart/count after success

@@ -564,12 +564,7 @@
       }
 
       /* ── PRODUCT CARDS ── */
-      .products-row {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 16px;
-        min-height: 80px;
-      }
+     
       .product-card {
         border: 1px solid var(--border);
         border-radius: var(--radius-lg);
@@ -1421,8 +1416,8 @@
 
 #tm-smart-search .tss-label {
   text-align: center;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: 700;
   letter-spacing: .06em;
   text-transform: uppercase;
   color: #028c7e;
@@ -2289,28 +2284,8 @@
   </div> -->
 
     <div class="section">
-      <div class="section-header">
-        <h2 class="section-title">Premium <span>Products</span></h2>
-        <a href="categories.html?catogeriesID=1" class="view-all"
-          >View All <i class="fas fa-arrow-right"></i
-        ></a>
-      </div>
       <div class="products-row" id="productsGrid">
-        <!-- Filled by index.js from /products?categoryID=1 -->
-        <p
-          style="
-            color: #999;
-            font-size: 13px;
-            grid-column: 1/-1;
-            padding: 10px 0;
-          "
-        >
-          <i
-            class="fas fa-spinner fa-spin"
-            style="color: var(--primary); margin-right: 6px"
-          ></i
-          >Loading products...
-        </p>
+        
       </div>
     </div>
 
@@ -2785,37 +2760,15 @@
     </script>
 
     <script>
-  /**
- * smart-search.js  –  TrueMeds Google-style Inline Smart Search  v2
- * ─────────────────────────────────────────────────────────────────
- * DROP-IN: add <link> smart-search.css and <script> smart-search.js
- * after the Premium Products section closing tag in index.html.
- * Zero modification to existing files.
- *
- * ── FEATURES ──────────────────────────────────────────────────────
- * 1. Keyword → pinned product_ids  (you configure TSS_KEYWORD_PINS below)
- * 2. Keyword → category fallback   (general word → category)
- * 3. Live name-match suggestions
- * 4. Variant panel inline (select pack → Add to Cart / Buy Now)
- * 5. "Not found" flow → medicine request form → POST /api/medicine-request
- *    saved into voice_full_orders_test table, shown in employee dashboard
- */
-
+      
 (function () {
   "use strict";
 
-  /* ════════════════════════════════════════════════════════════════
-     ①  CONFIGURE HERE — keyword → specific product IDs
-        Add as many keyword groups as you want.
-        "keywords" : words that trigger this group (case-insensitive, partial match)
-        "product_ids" : exact product_id values from your DB
-        "label" : shown as group heading in dropdown
-     ════════════════════════════════════════════════════════════════ */
   const TSS_KEYWORD_PINS = [
     {
       keywords: ["pain", "ache", "relief", "painkiller", "ibuprofen", "nsaid", "aspirin", "paracetamol", "anti-inflammatory"],
       label: "Pain Relief — Top Picks",
-      product_ids: []   // ← FILL YOUR product_ids HERE
+      product_ids: []  
     },
     {
       keywords:["anti anzity"],
@@ -3638,12 +3591,7 @@
 })();
     </script>
 
-    <!-- ══════════════════════════════════════════════════════
-       index.js — loads AFTER UI script
-       Handles: Crisp, cart badge, search suggestions,
-                drag-to-scroll, testimonials, trending products,
-                add-to-cart API call
-  ═══════════════════════════════════════════════════════ -->
+   
     <script src="assets/js/index.js"></script>
     <script src="assets/js/review.js"></script>
   </body>

@@ -741,6 +741,179 @@ tbody td {
   }
 }
 
+/* Medicine Requests Panel */
+.med-req-section {
+  margin: 2rem 0;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.med-req-title-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, rgba(0, 168, 232, 0.08), transparent);
+}
+
+.med-req-heading {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.med-req-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  background: var(--danger);
+  color: white;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.med-req-refresh-btn {
+  padding: 0.6rem 1rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.med-req-refresh-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.med-req-desc {
+  padding: 0.75rem 1.5rem 0;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+#med-req-table-wrap {
+  overflow-x: auto;
+  padding: 1rem 1.5rem 1.5rem;
+}
+
+.med-req-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  background: transparent;
+}
+
+.med-req-table thead tr {
+  background: var(--main-bg);
+}
+
+.med-req-table th {
+  padding: 0.875rem 1rem;
+  text-align: left;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--border);
+  white-space: nowrap;
+}
+
+.med-req-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.2s ease;
+}
+
+.med-req-table tbody tr:hover {
+  background: rgba(0, 168, 232, 0.04);
+}
+
+.med-req-table td {
+  padding: 0.875rem 1rem;
+  color: var(--text-dark);
+  vertical-align: middle;
+  max-width: 220px;
+  word-break: break-word;
+}
+
+.med-req-table td:first-child {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.med-req-med-name {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.med-req-table a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.med-req-table a:hover {
+  text-decoration: underline;
+}
+
+.med-req-loading,
+.med-req-empty {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 2rem !important;
+  font-size: 0.95rem;
+}
+
+.med-req-resolve-btn {
+  padding: 0.5rem 0.875rem;
+  background: var(--success);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.med-req-resolve-btn:hover {
+  background: #00b47b;
+  transform: translateY(-1px);
+}
+
+.med-req-resolve-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.med-req-notes-cell {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.med-req-date {
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .sidebar {

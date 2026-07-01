@@ -2331,175 +2331,6 @@ console.log("✅ Manual order functionality loaded");
 console.log(
   "ℹ️  Include empolyee.js for additional features (dashboard data, customer tracking, etc.)"
 );
-
-// The following code for searching customer by email
-// // 🔍 Search customer by email and view their info + orders
-// document.addEventListener("DOMContentLoaded", () => {
-//   const searchBtn = document.getElementById("btn-track-email");
-//   const emailInput = document.getElementById("tracking-email");
-//   const resultsDiv = document.getElementById("email-search-results");
-//   const manualBtn = document.getElementById("fetch-customer"); // existing manual order button
-//   const manualInput = document.getElementById("manual-user-id");
-
-//   searchBtn.addEventListener("click", async () => {
-//     const email = emailInput.value.trim();
-//     if (!email) {
-//       resultsDiv.innerHTML = `<p style="color:red;">⚠️ Please enter an email address.</p>`;
-//       return;
-//     }
-
-//     resultsDiv.innerHTML = `<p>🔎 Searching...</p>`;
-
-//     try {
-//       const res = await fetch(
-//         `/api/customers/email/${encodeURIComponent(email)}`
-//       );
-//       const data = await res.json();
-
-//       if (!data.success) {
-//         resultsDiv.innerHTML = `<p style="color:red;">❌ ${data.message}</p>`;
-//         return;
-//       }
-
-//       const c = data.customer;
-//       const orders = data.orders;
-
-//       let ordersHTML = orders.length
-//         ? `
-//         <table style="width:100%;border-collapse:collapse;margin-top:1rem;">
-//           <thead>
-//             <tr style="background:#222;color:#fff;">
-//               <th style="padding:8px;border:1px solid #444;">Order ID</th>
-//               <th style="padding:8px;border:1px solid #444;">Total</th>
-//               <th style="padding:8px;border:1px solid #444;">Shipping</th>
-//               <th style="padding:8px;border:1px solid #444;">Date</th>
-//               <th style="padding:8px;border:1px solid #444;">Status</th>
-//               <th style="padding:8px;border:1px solid #444;">Actions</th>
-//             </tr>
-//           </thead>
-//           <tbody>
-//             ${orders
-//               .map(
-//                 (o) => `
-//               <tr style="text-align:center;background:#fff;">
-//                 <td style="padding:6px;border:1px solid #ccc;">${
-//                   o.order_id
-//                 }</td>
-//                 <td style="padding:6px;border:1px solid #ccc;">$${
-//                   o.total_amount
-//                 }</td>
-//                 <td style="padding:6px;border:1px solid #ccc;">$${
-//                   o.shipping
-//                 }</td>
-//                 <td style="padding:6px;border:1px solid #ccc;">${new Date(
-//                   o.created_at
-//                 ).toLocaleDateString()}</td>
-//                 <td style="padding:6px;border:1px solid #ccc;">${
-//                   o.payment_status || "N/A"
-//                 }</td>
-//                 <td style="padding:6px;border:1px solid #ccc;">
-//                   <button class="view-items" data-id="${
-//                     o.order_id
-//                   }" style="padding:4px 8px;background:#007bff;color:white;border:none;border-radius:4px;cursor:pointer;">View Items</button>
-//                 </td>
-//               </tr>
-//               <tr id="items-${
-//                 o.order_id
-//               }" style="display:none;background:#f9f9f9;">
-//                 <td colspan="6" style="padding:10px;">
-//                   <div class="items-container">Loading...</div>
-//                 </td>
-//               </tr>`
-//               )
-//               .join("")}
-//           </tbody>
-//         </table>`
-//         : "<p>No orders found for this customer.</p>";
-
-//       resultsDiv.innerHTML = `
-//         <div style="background:#f8f8f8;padding:1rem;border-radius:8px;">
-//           <h3>Customer Info</h3>
-//           <p><strong>Name:</strong> ${c.first_name} ${c.last_name}</p>
-//           <p><strong>Email:</strong> ${c.email}</p>
-//           <p><strong>Phone:</strong> ${c.phone || "-"}</p>
-//           <p><strong>Address:</strong> ${c.street_address}, ${c.city}, ${
-//         c.state
-//       }, ${c.zip_code}</p>
-//           <button id="manual-order-email" style="margin-top:10px;background:#28a745;color:white;padding:6px 10px;border:none;border-radius:4px;cursor:pointer;">
-//             <i class="fas fa-plus-circle"></i> Manual Order
-//           </button>
-//           <h3 style="margin-top:1rem;">Orders</h3>
-//           ${ordersHTML}
-//         </div>`;
-
-//       // 🟢 Add manual order button click (auto-fill customer)
-//       document
-//         .getElementById("manual-order-email")
-//         .addEventListener("click", () => {
-//           manualInput.value = c.id; // auto-fill user ID
-//           manualBtn.click(); // trigger existing manual order popup
-//           document
-//             .querySelector("#manual-order-popup")
-//             .scrollIntoView({ behavior: "smooth" });
-//         });
-
-//       // 🟢 Add order item toggle functionality
-//       document.querySelectorAll(".view-items").forEach((btn) => {
-//         btn.addEventListener("click", async () => {
-//           const orderId = btn.dataset.id;
-//           const row = document.getElementById(`items-${orderId}`);
-//           const container = row.querySelector(".items-container");
-
-//           if (row.style.display === "none") {
-//             row.style.display = "table-row";
-
-//             try {
-//               const itemRes = await fetch(`/api/order-items_email/${orderId}`);
-//               const itemData = await itemRes.json();
-
-//               if (itemData.success && itemData.items.length > 0) {
-//                 container.innerHTML = `
-//                   <table style="width:100%;border-collapse:collapse;">
-//                     <thead>
-//                       <tr style="background:#eee;">
-//                         <th style="padding:5px;border:1px solid #ccc;">Name</th>
-//                         <th style="padding:5px;border:1px solid #ccc;">MG</th>
-//                         <th style="padding:5px;border:1px solid #ccc;">Qty</th>
-//                         <th style="padding:5px;border:1px solid #ccc;">Price</th>
-//                       </tr>
-//                     </thead>
-//                     <tbody>
-//                       ${itemData.items
-//                         .map(
-//                           (i) => `
-//                         <tr>
-//                           <td style="padding:5px;border:1px solid #ccc;">${i.name}</td>
-//                           <td style="padding:5px;border:1px solid #ccc;">${i.mg}</td>
-//                           <td style="padding:5px;border:1px solid #ccc;">${i.quantity}</td>
-//                           <td style="padding:5px;border:1px solid #ccc;">$${i.price}</td>
-//                         </tr>`
-//                         )
-//                         .join("")}
-//                     </tbody>
-//                   </table>`;
-//               } else {
-//                 container.innerHTML = "<p>No items found for this order.</p>";
-//               }
-//             } catch (err) {
-//               container.innerHTML =
-//                 "<p style='color:red;'>Error fetching items.</p>";
-//             }
-//           } else {
-//             row.style.display = "none";
-//           }
-//         });
-//       });
-//     } catch (err) {
-//       console.error("Error fetching customer by email:", err);
-//       resultsDiv.innerHTML = `<p style="color:red;">⚠️ Failed to fetch data.</p>`;
-//     }
-//   });
-// });
 /**
  * employee-medicine-requests.js
  * ──────────────────────────────────────────────────────────────────
@@ -2534,7 +2365,7 @@ console.log(
       <section class="med-req-section" id="med-req-wrap">
         <div class="med-req-title-bar">
           <h2 class="med-req-heading">
-            💊 Medicine Requests
+            Medicine Requests
             <span class="med-req-badge" id="med-req-count">…</span>
           </h2>
           <button class="med-req-refresh-btn" id="med-req-refresh">
@@ -2557,7 +2388,6 @@ console.log(
                 <th>Customer</th>
                 <th>Email</th>
                 <th>Phone</th>
-                <th>Notes</th>
                 <th>Requested At</th>
                 <th>Action</th>
               </tr>
@@ -2577,129 +2407,6 @@ console.log(
   function injectStyles() {
     if (document.getElementById("med-req-styles")) return;
     const style = document.createElement("style");
-    style.id = "med-req-styles";
-    style.textContent = `
-      .med-req-section {
-        margin: 32px 0;
-        background: #fff;
-        border: 1.5px solid #e2e8f0;
-        border-radius: 14px;
-        overflow: hidden;
-        box-shadow: 0 2px 16px rgba(0,0,0,.06);
-      }
-      .med-req-title-bar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 18px 22px 14px;
-        border-bottom: 1px solid #f0f0f0;
-        background: #f8fafc;
-      }
-      .med-req-heading {
-        font-size: 16px;
-        font-weight: 800;
-        color: #212121;
-        margin: 0;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-      .med-req-badge {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 22px;
-        height: 22px;
-        padding: 0 6px;
-        background: #e03e3e;
-        color: #fff;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 700;
-      }
-      .med-req-refresh-btn {
-        padding: 7px 14px;
-        background: #028c7e;
-        color: #fff;
-        border: none;
-        border-radius: 7px;
-        font-size: 13px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background .2s;
-      }
-      .med-req-refresh-btn:hover { background: #016f63; }
-      .med-req-desc {
-        padding: 10px 22px 0;
-        font-size: 13px;
-        color: #888;
-        margin: 0;
-      }
-      #med-req-table-wrap {
-        overflow-x: auto;
-        padding: 14px 22px 20px;
-      }
-      .med-req-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 13px;
-      }
-      .med-req-table thead tr {
-        background: #1e293b;
-        color: #fff;
-      }
-      .med-req-table th {
-        padding: 10px 12px;
-        text-align: left;
-        font-weight: 600;
-        white-space: nowrap;
-      }
-      .med-req-table tbody tr {
-        border-bottom: 1px solid #f0f0f0;
-        transition: background .15s;
-      }
-      .med-req-table tbody tr:hover { background: #f8fafc; }
-      .med-req-table td {
-        padding: 10px 12px;
-        color: #333;
-        vertical-align: middle;
-        max-width: 180px;
-        word-break: break-word;
-      }
-      .med-req-table td:first-child { color: #94a3b8; font-weight: 600; }
-      .med-req-med-name {
-        font-weight: 700;
-        color: #028c7e !important;
-      }
-      .med-req-loading {
-        text-align: center;
-        color: #94a3b8;
-        padding: 30px !important;
-        font-size: 14px;
-      }
-      .med-req-empty {
-        text-align: center;
-        color: #94a3b8;
-        padding: 30px !important;
-        font-size: 14px;
-      }
-      .med-req-resolve-btn {
-        padding: 5px 10px;
-        background: #059669;
-        color: #fff;
-        border: none;
-        border-radius: 6px;
-        font-size: 12px;
-        font-weight: 600;
-        cursor: pointer;
-        white-space: nowrap;
-        transition: background .2s;
-      }
-      .med-req-resolve-btn:hover { background: #047857; }
-      .med-req-resolve-btn:disabled { opacity:.5; cursor:default; }
-      .med-req-notes-cell { color: #888; font-style: italic; }
-      .med-req-date { color: #94a3b8; white-space: nowrap; }
-    `;
     document.head.appendChild(style);
   }
 
@@ -2742,7 +2449,6 @@ console.log(
           <td>${escHtml(r.customer_name)}</td>
           <td><a href="mailto:${escHtml(r.customer_email)}">${escHtml(r.customer_email)}</a></td>
           <td>${escHtml(r.customer_phone)}</td>
-          <td class="med-req-notes-cell">${r.notes ? escHtml(r.notes) : "—"}</td>
           <td class="med-req-date">${formatDate(r.created_at)}</td>
           <td>
             <button class="med-req-resolve-btn"
