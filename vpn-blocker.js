@@ -380,7 +380,10 @@ function isPrivateOrLocalIp(ip) {
 }
 
 function getClientIp(req) {
+  // Cloudflare (and some other CDNs) always set this to the real visitor IP,
+  // regardless of whether Nginx is configured to unmask it in X-Forwarded-For.
   let ip = (
+    req.headers["cf-connecting-ip"] ||
     req.headers["x-forwarded-for"]?.split(",")[0] ||
     req.socket.remoteAddress ||
     req.connection?.remoteAddress ||
