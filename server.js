@@ -47,6 +47,15 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get("/debug-ip", (req, res) => {
+  res.json({
+    "cf-connecting-ip": req.headers["cf-connecting-ip"] || null,
+    "x-forwarded-for": req.headers["x-forwarded-for"] || null,
+    "x-real-ip": req.headers["x-real-ip"] || null,
+    remoteAddress: req.socket.remoteAddress,
+  });
+});
+
 // VPN + India geo-blocking (must be mounted BEFORE any routes so it
 // actually protects them -- see vpn-blocker.js for how it works).
 app.use(vpnCountryBlocker);

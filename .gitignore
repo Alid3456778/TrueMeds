@@ -1,4 +1,2 @@
 # Dependencies
 /node_modules
-vpn-data/*.json
-data/ip-cache.json
