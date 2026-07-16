@@ -24,7 +24,7 @@ function selectPayment(method) {
   if (method === "Zelle") {
     qr_text_id.textContent = "Yet Not Available";
     qr.src = "./assets/image/";
-  }  else if (method === "Venmo") {
+  } else if (method === "Venmo") {
     qr_text_id.textContent = "Yet Not Available";
     // qr.src = "./assets/image/venom.jpg";
   }
