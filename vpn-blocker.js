@@ -55,8 +55,8 @@ const axios = require("axios");
 // ============================================================
 const MANUALLY_ALLOWED_IPS = [
   // "203.0.113.10",
-  "106.193.178.21",
-  "49.36.105.0",
+  "106.193.0.0/16",
+  "49.36.0.0/16",
 ];
 
 // ============================================================
@@ -109,6 +109,30 @@ function ipToLong(ip) {
     n = (n << 8) + v;
   }
   return n >>> 0;
+}
+
+function ipMatchesCidr(ip, cidr) {
+  const [networkIp, prefixStr] = cidr.split("/");
+  const prefix = Number(prefixStr);
+
+  const ipLong = ipToLong(ip);
+  const networkLong = ipToLong(networkIp);
+
+  if (
+    ipLong === null ||
+    networkLong === null ||
+    !Number.isInteger(prefix) ||
+    prefix < 0 ||
+    prefix > 32
+  ) {
+    return false;
+  }
+
+  const mask = prefix === 0
+    ? 0
+    : (0xffffffff << (32 - prefix)) >>> 0;
+
+  return (ipLong & mask) === (networkLong & mask);
 }
 
 function parseCidrLine(line) {
@@ -236,9 +260,11 @@ function loadJson(file, fallback) {
 const allowedIpSet = new Set();
 
 function isValidIpFormat(ip) {
-  // Accepts IPv4 and basic IPv6 — just enough validation to catch typos
-  // (extra spaces, missing octets, stray characters) without crashing.
-  return /^(\d{1,3}\.){3}\d{1,3}$/.test(ip) || ip.includes(":");
+  return (
+    /^(\d{1,3}\.){3}\d{1,3}$/.test(ip) ||
+    /^(\d{1,3}\.){3}\d{1,3}\/([0-9]|[12][0-9]|3[0-2])$/.test(ip) ||
+    ip.includes(":")
+  );
 }
 
 (function loadAllowedIps() {
@@ -410,9 +436,15 @@ async function vpnCountryBlocker(req, res, next) {
     }
 
     // 3) Manual employee/admin whitelist -- always wins, no cookies, no cache needed
-    if (allowedIpSet.has(ip)) {
-      return next();
-    }
+    if (
+  allowedIpSet.has(ip) ||
+  [...allowedIpSet].some(
+    (allowedIp) =>
+      allowedIp.includes("/") && ipMatchesCidr(ip, allowedIp)
+  )
+) {
+  return next();
+}
 
     // 4) Cookie shortcuts (avoids even a Map lookup on repeat requests)
     if (req.cookies.access_blocked === "true") {
