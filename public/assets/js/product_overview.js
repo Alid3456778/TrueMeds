@@ -64,7 +64,7 @@ async function fetchProductDetails() {
       const d1 = await r1.json();
       if (d1 && d1.data) {
         product = d1.data;
-        console.log("✅ Product loaded:", product.product_name);
+        // console.log("✅ Product loaded:", product.product_name);
       }
     }
 
@@ -87,7 +87,7 @@ async function fetchProductDetails() {
     if (rv.ok) {
       const dv = await rv.json();
       variants = Array.isArray(dv) ? dv : [];
-      console.log("✅ Variants loaded:", variants.length);
+      // console.log("✅ Variants loaded:", variants.length);
     }
 
     currentProduct  = product;
@@ -829,3 +829,55 @@ function setupCarousel() {
   });
   observer.observe(carousel, { childList: true });
 }
+ // ── TABS ──────────────────────────────────────────────────────────────
+  document.querySelectorAll(".tab-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+      btn.classList.add("active");
+      document.getElementById(`tab-${btn.dataset.tab}`)?.classList.add("active");
+    });
+  });
+
+  // ── MOBILE MENU ───────────────────────────────────────────────────────
+  document.getElementById("menuToggle")?.addEventListener("click", () => {
+    document.getElementById("mobileMenu").classList.add("open");
+    document.body.style.overflow = "hidden";
+  });
+  document.getElementById("mobClose")?.addEventListener("click", () => {
+    document.getElementById("mobileMenu").classList.remove("open");
+    document.body.style.overflow = "";
+  });
+  document.getElementById("mobOverlay")?.addEventListener("click", () => {
+    document.getElementById("mobileMenu").classList.remove("open");
+    document.body.style.overflow = "";
+  });
+
+  // ── SCROLL TOP ────────────────────────────────────────────────────────
+  const scrollBtn = document.getElementById("scrollTop");
+  window.addEventListener("scroll", () => {
+    scrollBtn?.classList.toggle("visible", window.scrollY > 400);
+  });
+  scrollBtn?.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+  // ── WISHLIST ──────────────────────────────────────────────────────────
+  let isWishlisted = false;
+  function toggleWishlist() {
+    isWishlisted = !isWishlisted;
+    const btn = document.getElementById("wishlistBtn");
+    btn.classList.toggle("wishlisted", isWishlisted);
+    btn.querySelector("i").className = isWishlisted ? "fas fa-heart" : "far fa-heart";
+  }
+
+  // ── DELIVERY CHECK ────────────────────────────────────────────────────
+  function checkDelivery() {
+    const pin = document.getElementById("pinInput").value.trim();
+    const res = document.getElementById("deliveryResult");
+    if (pin.length !== 6 || isNaN(pin)) {
+      res.innerHTML = `<span style="color:#e00">Enter a valid 6-digit pincode</span>`; return;
+    }
+    res.innerHTML = `<span style="color:var(--text-lt)">Checking…</span>`;
+    setTimeout(() => {
+      res.innerHTML = `<span style="color:var(--green)"><i class="fas fa-check-circle"></i> Delivery available — <strong>3–5 Business Days</strong></span>`;
+    }, 800);
+  }
