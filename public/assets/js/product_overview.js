@@ -263,6 +263,38 @@ function updateProductUI(product, variants) {
 // Confirmed variant fields: variation_id, product_id, unit_type, unit_value,
 //                           qty, price_per_pill, price_per_box, delivery_time
 function setupProductVariants(variants) {
+
+  // Sort variants
+  variants = [...variants].sort((a, b) => {
+
+    // Priority for unit type
+    const unitOrder = {
+      "MG": 1,
+      "MG/DT": 2
+    };
+
+    const typeA = unitOrder[a.unit_type] || 999;
+    const typeB = unitOrder[b.unit_type] || 999;
+
+    // 1. Sort by unit type
+    if (typeA !== typeB) {
+      return typeA - typeB;
+    }
+
+    // 2. Sort by strength (5MG,10MG,20MG...)
+    const valueA = Number(a.unit_value) || 0;
+    const valueB = Number(b.unit_value) || 0;
+
+    if (valueA !== valueB) {
+      return valueA - valueB;
+    }
+
+    // 3. Sort by quantity
+    return (Number(a.qty) || 0) - (Number(b.qty) || 0);
+  });
+
+  console.log("Sorted Variants", variants);
+
   selectedVariant = 0;
   const differEl = document.getElementById("differ");
   const threeBox = document.getElementById("three-box-section");
