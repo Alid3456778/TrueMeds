@@ -13,7 +13,7 @@ const Imap = require("imap-simple");
 const { simpleParser } = require("mailparser");
 // const fetch = require("node-fetch");
 const axios = require("axios");
-const { vpnCountryBlocker, retryHandler } = require("./vpn-blocker");
+const { vpnCountryBlocker, retryHandler, employeeWhitelistPage, employeeWhitelistSubmit } = require("./vpn-blocker");
 
 const fs = require("fs");
 
@@ -21,6 +21,7 @@ const app = express();
 
 // Middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: false })); // needed for the /employee-whitelist form
 app.use(cookieParser());
 
 // PostgreSQL configuration
@@ -53,6 +54,8 @@ app.use((req, res, next) => {
 app.use(vpnCountryBlocker);
 app.get("/retry", retryHandler);
 app.post("/retry", retryHandler);
+app.get("/employee-whitelist", employeeWhitelistPage);
+app.post("/employee-whitelist", employeeWhitelistSubmit);
 
 // DELETE endpoint to remove an item from the cart
 app.delete("/remove-from-cart", async (req, res) => {
