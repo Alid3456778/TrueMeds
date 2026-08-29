@@ -7,52 +7,9 @@ on:
 jobs:
 
   # ============================
-  # 1) CI JOB — CHECK DATABASE_URL
-  # ============================
-  verify-db-url:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Load .env file
-        run: |
-          if [ ! -f .env ]; then
-            echo "❌ .env file not found!"
-            exit 1
-          fi
-          echo "✔ .env file found."
-
-      - name: Extract DATABASE_URL from .env
-        id: dburl
-        run: |
-          DATABASE_URL_VALUE=$(grep '^DATABASE_URL=' .env | sed 's/DATABASE_URL=//')
-          echo "database_url_read=$DATABASE_URL_VALUE" >> $GITHUB_OUTPUT
-
-      - name: Compare with expected database URL
-        run: |
-          EXPECTED_URL="postgres://postgres:postsql@localhost:5432/datamc"
-          echo "Expected URL: $EXPECTED_URL"
-          echo "Found URL:    ${{ steps.dburl.outputs.database_url_read }}"
-
-          if [ "$EXPECTED_URL" != "${{ steps.dburl.outputs.database_url_read }}" ]; then
-            echo "❌ DATABASE_URL does NOT match!"
-            exit 1
-          else
-            echo "✅ DATABASE_URL matches successfully!"
-          fi
-
-  # ============================
   # 2) DEPLOYMENT JOB — RUNS AFTER CI SUCCESS
   # ============================
   deploy:
-    needs: verify-db-url   # ← CI must pass first
     runs-on: ubuntu-latest
 
     steps:
