@@ -1,7 +1,6 @@
 
       /* ── GLOBAL ── */
-      :root {
-        /* BRAND */
+      /* :root {
         --primary-blue: #1f7ae0;
         --primary-green: #4caf50;
         --primary-gradient: linear-gradient(135deg, #1f7ae0, #4caf50);
@@ -13,7 +12,6 @@
         --secondary: #4caf50;
         --accent: #36a56a;
 
-        /* UI */
         --bg-light: #f8fafc;
         --bg-white: #ffffff;
 
@@ -30,7 +28,39 @@
         --radius-lg: 14px;
 
         --font: "Inter", sans-serif;
-      }
+      } */
+
+      :root {
+  /* BRAND (Halloween Overhaul) */
+  --primary-blue: #ff7518;        /* Vivid Pumpkin Orange */
+  --primary-green: #9f00ff;       /* Electric Wicked Purple */
+  --primary-gradient: linear-gradient(135deg, #ff7518, #9f00ff); /* Orange to Purple Spooky Glow */
+
+  --primary: #ff7518;             /* Primary Accent (Pumpkin Orange) */
+  --primary-dark: #cc5216;        /* Deep Burnt Orange for Hovers/Active states */
+  --primary-light: #2c2520;       /* Soft warm-dark tint for alert/badge backgrounds */
+
+  --secondary: #9f00ff;           /* Secondary Accent (Wicked Purple) */
+  --accent: #39ff14;              /* Toxic Slime Green (Perfect pop color for small badges/links) */
+
+  /* UI (Dark Mode Conversion for Spooky Vibe) */
+  --bg-light: #121016;            /* Eerie Dark Charcoal with a hint of purple */
+  --bg-white: #1e1b24;            /* Raised Surface/Card Background (Deep Haunted Gray) */
+
+  --text-dark: #f4f4f9;           /* Ghost White for main headlines (High contrast) */
+  --text-medium: #b3aebf;         /* Muted Silver-Ash for readable body text */
+  --text-light: #767082;          /* Faded Tombstone Gray for captions and metadata */
+
+  --border: #2d2836;              /* Subtle dark border to seamlessly separate elements */
+
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.4);      /* Deeper shadows for dark elements */
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.6);   /* Richer ambient glow shadow */
+
+  /* Structural Tokens (Preserved) */
+  --radius: 8px;
+  --radius-lg: 14px;
+  --font: "Inter", sans-serif;
+}
       *,
       *::before,
       *::after {
@@ -342,8 +372,8 @@
 
       /* ── HERO BANNER ── */
       .hero {
-        background: #f8f9fa;
-        padding: 20px;
+        /* background: #f8f9fa;
+        padding: 20px; */
       }
       .hero-inner {
         max-width: 1280px;
@@ -351,9 +381,9 @@
       }
       .hero-banner-img {
         width: 100%;
-        border-radius: var(--radius-lg);
+        /* border-radius: var(--radius-lg); */
         overflow: hidden;
-        box-shadow: var(--shadow-md);
+        /* box-shadow: var(--shadow-md); */
         display: block;
         cursor: pointer;
       }
@@ -366,7 +396,7 @@
       .hero-banner-placeholder {
         width: 100%;
         /* height: 250px; */
-        background: linear-gradient(135deg, var(--primary) 0%, #03b09f 100%);
+        /* background: linear-gradient(135deg, var(--primary) 0%, #03b09f 100%); */
         border-radius: var(--radius-lg);
         display: flex;
         flex-direction: column;
@@ -1370,7 +1400,7 @@
   font-weight: 700;
   letter-spacing: .06em;
   text-transform: uppercase;
-  color: #028c7e;
+  color: var(--primary);
   margin-bottom: 10px;
 }
 
@@ -1380,7 +1410,7 @@
   display: flex;
   align-items: center;
   background: #fff;
-  border: 2px solid #e2e8f0;
+  border: 2px solid var(--border);
   border-radius: 50px;
   box-shadow: 0 4px 24px rgba(2,140,126,.10);
   transition: border-color .2s, box-shadow .2s;
@@ -1388,7 +1418,7 @@
 }
 
 #tm-smart-search .tss-bar:focus-within {
-  border-color: #028c7e;
+  border-color: var(--primary);
   box-shadow: 0 4px 28px rgba(2,140,126,.18);
 }
 
@@ -1429,7 +1459,7 @@
 
 #tm-smart-search .tss-submit {
   flex-shrink: 0;
-  background: #028c7e;
+  background: var(--primary);
   color: #fff;
   border: none;
   border-radius: 0 48px 48px 0;
@@ -1533,7 +1563,7 @@
 #tm-smart-search .tss-dd-price {
   font-size: 13px;
   font-weight: 700;
-  color: #028c7e;
+  color: var(--primary);
   flex-shrink: 0;
 }
 
@@ -1623,7 +1653,7 @@
   display: inline-block;
   margin-top: 6px;
   font-size: 12px;
-  color: #028c7e;
+  color: var(--primary);
   font-weight: 600;
   text-decoration: none;
 }
@@ -1639,7 +1669,7 @@
 #tm-smart-search .tss-variants-title {
   font-size: 12px;
   font-weight: 700;
-  color: #555;
+  color: var(--primary);
   letter-spacing: .05em;
   text-transform: uppercase;
   margin-bottom: 12px;
@@ -1664,13 +1694,11 @@
 }
 
 #tm-smart-search .tss-variant-btn:hover {
-  border-color: #028c7e;
-  background: #f0faf9;
+  border-color: var(--primary);
 }
 
 #tm-smart-search .tss-variant-btn.tss-selected {
-  border-color: #028c7e;
-  background: #e8f5f4;
+  border-color: var(--primary);
 }
 
 #tm-smart-search .tss-variant-btn .tss-vb-pack {
@@ -1679,7 +1707,7 @@
   color: #212121;
 }
 
-#tm-smart-search .tss-variant-btn.tss-selected .tss-vb-pack { color: #028c7e; }
+#tm-smart-search .tss-variant-btn.tss-selected .tss-vb-pack { color: var(--primary); }
 
 #tm-smart-search .tss-variant-btn .tss-vb-pills {
   font-size: 11px;
@@ -1691,7 +1719,7 @@
 #tm-smart-search .tss-variant-btn .tss-vb-price {
   font-size: 12px;
   font-weight: 700;
-  color: #028c7e;
+  color: var(--primary);
   margin-top: 3px;
 }
 
@@ -1725,7 +1753,7 @@
 #tm-smart-search .tss-buy-now {
   padding: 0 26px;
   height: 46px;
-  background: #028c7e;
+  background: var(--primary);
   color: #fff;
   border: none;
   border-radius: 10px;
@@ -1740,15 +1768,15 @@
   white-space: nowrap;
 }
 
-#tm-smart-search .tss-buy-now:hover:not(:disabled) { background: #016f63; }
+#tm-smart-search .tss-buy-now:hover:not(:disabled) { background: var(--primary-dark); }
 #tm-smart-search .tss-buy-now:disabled { opacity: .65; cursor: default; }
 
 #tm-smart-search .tss-add-cart {
   padding: 0 22px;
   height: 46px;
   background: #fff;
-  color: #028c7e;
-  border: 2px solid #028c7e;
+  color: var(--primary);
+  border: 2px solid var(--primary);
   border-radius: 10px;
   font-size: 14px;
   font-weight: 700;

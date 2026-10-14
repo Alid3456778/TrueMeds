@@ -39,6 +39,39 @@
   /* ── TYPOGRAPHY ── */
   --font: 'Inter', sans-serif;
 }
+
+:root {
+  /* BRAND (Halloween Overhaul) */
+  --primary-blue: #ff7518;        /* Vivid Pumpkin Orange */
+  --primary-green: #9f00ff;       /* Electric Wicked Purple */
+  --primary-gradient: linear-gradient(135deg, #ff7518, #9f00ff); /* Orange to Purple Spooky Glow */
+
+  --primary: #ff7518;             /* Primary Accent (Pumpkin Orange) */
+  --primary-dark: #cc5216;        /* Deep Burnt Orange for Hovers/Active states */
+  --primary-light: #2c2520;       /* Soft warm-dark tint for alert/badge backgrounds */
+
+  --secondary: #9f00ff;           /* Secondary Accent (Wicked Purple) */
+  --accent: #39ff14;              /* Toxic Slime Green (Perfect pop color for small badges/links) */
+
+  /* UI (Dark Mode Conversion for Spooky Vibe) */
+  --bg: #121016;            /* Eerie Dark Charcoal with a hint of purple */
+  --white: #1e1b24;            /* Raised Surface/Card Background (Deep Haunted Gray) */
+
+  --text: #f4f4f9;           /* Ghost White for main headlines (High contrast) */
+  --text-md: #b3aebf;         /* Muted Silver-Ash for readable body text */
+  --text-lt: #767082;          /* Faded Tombstone Gray for captions and metadata */
+
+  --border: #2d2836;              /* Subtle dark border to seamlessly separate elements */
+
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.4);      /* Deeper shadows for dark elements */
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.6);   /* Richer ambient glow shadow */
+
+  /* Structural Tokens (Preserved) */
+  --radius: 8px;
+  --radius-lg: 14px;
+  --font: "Inter", sans-serif;
+}
+
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: var(--font); color: var(--text); background: var(--bg); overflow-x: hidden; }
     a { text-decoration: none; color: inherit; }
@@ -248,7 +281,7 @@
         top: calc(100% + 6px);
         left: 0;
         right: 0;
-        background: #fff;
+        background: var(--bg);
         border: 1px solid var(--border);
         border-radius: var(--radius);
         box-shadow: var(--shadow-md);

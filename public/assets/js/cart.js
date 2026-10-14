@@ -452,7 +452,7 @@ async function initSearch() {
           span.textContent = p.product_name;
           li.appendChild(img); li.appendChild(span);
           li.addEventListener('click', () => {
-            window.location.href = `productoverview.html?productID=${p.product_id}`;
+            window.location.href = `product_overview.html?product_ID=${p.product_id}`;
           });
           sugBox.appendChild(li);
         });

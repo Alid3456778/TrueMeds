@@ -263,7 +263,7 @@ function updateProductUI(product, variants) {
 // Confirmed variant fields: variation_id, product_id, unit_type, unit_value,
 //                           qty, price_per_pill, price_per_box, delivery_time
 function setupProductVariants(variants) {
-
+  // console.log("Original Variants", variants);
   // Sort variants
   variants = [...variants].sort((a, b) => {
 
@@ -308,26 +308,40 @@ function setupProductVariants(variants) {
         </span>
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:8px" id="variantBtns">
-        ${variants.map((v, i) => {
-          const qty      = v.unit_value  || "";
-          const unit     = v.unit_type   || "";
-          const pills    = v.qty         || "";
-          const boxPrice = parseVariantPrice(v.price_per_box);
-          const label    = qty && unit ? `${qty}${unit}` : `Option ${i + 1}`;
+  ${variants.map((v, i) => {
+    const qty      = v.unit_value  || "";
+    const unit     = v.unit_type   || "";
+    const pills    = v.qty         || "";
+    const boxPrice = parseVariantPrice(v.price_per_box);
+    const offerPrice = parseVariantPrice(v.offer_price);
+    const label    = qty && unit ? `${qty}${unit}` : `Option ${i + 1}`;
 
-          return `
-            <button onclick="selectVariant(${i})" id="vbtn-${i}"
-              style="padding:10px 14px;border:2px solid ${i === 0 ? "#028c7e" : "#ddd"};
-                     border-radius:10px;background:${i === 0 ? "#e8f5f4" : "#fff"};
-                     color:${i === 0 ? "#028c7e" : "#333"};cursor:pointer;
-                     font-size:13px;font-weight:700;transition:all .2s;
-                     text-align:center;min-width:80px;line-height:1.4">
-              <div>${label}</div>
-              ${pills ? `<div style="font-size:11px;color:#888;font-weight:400;margin-top:2px">${pills} pills</div>` : ""}
-              ${boxPrice > 0 ? `<div style="font-size:12px;color:#028c7e;font-weight:700;margin-top:3px">$${boxPrice.toFixed(2)}</div>` : ""}
-            </button>`;
-        }).join("")}
+    // Determine how to display the price based on whether an offer price exists
+    let priceHtml = "";
+    if (offerPrice > 0 && boxPrice > 0) {
+      priceHtml = `<div style="font-size:12px;margin-top:3px">
+        <span style="text-decoration:line-through;color:#999;font-size:11px;margin-right:4px">$${boxPrice.toFixed(2)}</span>
+        <span style="color:#028c7e;font-weight:700">$${offerPrice.toFixed(2)}</span>
       </div>`;
+    } else if (boxPrice > 0) {
+      priceHtml = `<div style="font-size:12px;color:var(--primary);font-weight:700;margin-top:3px">$${boxPrice.toFixed(2)}</div>`;
+    } else if (offerPrice > 0) {
+      priceHtml = `<div style="font-size:12px;color:var(--primary);font-weight:700;margin-top:3px">$${offerPrice.toFixed(2)}</div>`;
+    }
+
+    return `
+      <button onclick="selectVariant(${i})" id="vbtn-${i}"
+        style="padding:10px 14px;border:2px solid ${i === 0 ? "var(--primary)" : "var(--border)"};
+               border-radius:10px;background:${i === 0 ? "var(--primary-light)" : "var(--bg-white)"};
+               color:${i === 0 ? "var(--primary)" : "var(--text-dark)"};cursor:pointer;
+               font-size:13px;font-weight:700;transition:all .2s;
+               text-align:center;min-width:80px;line-height:1.4">
+        <div>${label}</div>
+        ${pills ? `<div style="font-size:11px;color:#888;font-weight:400;margin-top:2px">${pills} pills</div>` : ""}
+        ${priceHtml}
+      </button>`;
+  }).join("")}
+</div>`;
   }
 
   renderVariantPrice(variants[0]);
@@ -335,24 +349,24 @@ function setupProductVariants(variants) {
   if (threeBox) {
     threeBox.innerHTML = `
       <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px">
-        <div style="display:flex;align-items:center;border:1.5px solid #ddd;border-radius:8px;overflow:hidden">
+        <div style="display:flex;align-items:center;border:1.5px solid var(--border);border-radius:8px;overflow:hidden">
           <button onclick="changeQty(-1)"
-            style="width:40px;height:44px;background:#f8f9fa;border:none;font-size:20px;font-weight:600;cursor:pointer;color:#333">−</button>
+            style="width:40px;height:44px;background:var(--bg-light);border:none;font-size:20px;font-weight:600;cursor:pointer;color:var(--text-dark)">−</button>
           <input type="number" id="qtyInput" value="1" min="1" max="99" readonly
-            style="width:48px;height:44px;border:none;border-left:1px solid #ddd;border-right:1px solid #ddd;
-                   text-align:center;font-size:15px;font-weight:600;outline:none;background:#fff" />
+            style="width:48px;height:44px;border:none;border-left:1px solid var(--border);border-right:1px solid var(--border);
+                   text-align:center;font-size:15px;font-weight:600;outline:none;background:var(--bg-white)" />
           <button onclick="changeQty(1)"
-            style="width:40px;height:44px;background:#f8f9fa;border:none;font-size:20px;font-weight:600;cursor:pointer;color:#333">+</button>
+            style="width:40px;height:44px;background:var(--bg-light);border:none;font-size:20px;font-weight:600;cursor:pointer;color:var(--text-dark)">+</button>
         </div>
         <button id="addCartBtn" onclick="addToCart()"
-          style="flex:1;min-width:140px;height:44px;background:#028c7e;color:#fff;border:none;
+          style="flex:1;min-width:140px;height:44px;background:var(--primary);color:#fff;border:none;
                  border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;
                  display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s">
           🛒 Add to Cart
         </button>
         <button onclick="buyNow()"
-          style="flex:1;min-width:140px;height:44px;background:#fff;color:#028c7e;
-                 border:2px solid #028c7e;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer">
+          style="flex:1;min-width:140px;height:44px;background:var(--bg-white);color:var(--primary);
+                 border:2px solid var(--primary);border-radius:8px;font-size:14px;font-weight:700;cursor:pointer">
           ⚡ Buy Now
         </button>
       </div>`;
@@ -388,25 +402,25 @@ function renderVariantPrice(v) {
 
   priceEl.innerHTML = `
     <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:8px">
-      <span style="font-size:34px;font-weight:800;color:#212121;line-height:1">
+      <span style="font-size:34px;font-weight:800;color:var(--text);line-height:1">
         ${perBox > 0 ? `$${perBox.toFixed(2)}` : perPill > 0 ? `$${perPill.toFixed(2)}` : "Price on request"}
       </span>
     </div>
 
     ${perPill > 0 ? `
-      <div style="display:inline-flex;align-items:center;gap:6px;background:#e8f5f4;
+      <div style="display:inline-flex;align-items:center;gap:6px;background:var(--primary-light);
                   padding:5px 14px;border-radius:20px;margin-bottom:10px">
-        <span style="font-size:14px;font-weight:700;color:#028c7e">$${perPill.toFixed(2)}</span>
-        <span style="font-size:12px;color:#555;font-weight:500">per pill</span>
+        <span style="font-size:14px;font-weight:700;color:var(--primary)">$${perPill.toFixed(2)}</span>
+        <span style="font-size:12px;color:var(--text-light);font-weight:500">per pill</span>
       </div>` : ""}
 
     ${qty || pills ? `
-      <div style="font-size:13px;color:#666;margin-bottom:6px;display:flex;align-items:center;gap:8px">
-        ${qty && unit ? `<span style="background:#f0f0f0;padding:3px 10px;border-radius:5px;font-weight:600;color:#333;font-size:13px">${qty}${unit}</span>` : ""}
-        ${pills       ? `<span style="background:#f0f0f0;padding:3px 10px;border-radius:5px;font-weight:600;color:#333;font-size:13px">${pills} pills</span>` : ""}
+      <div style="font-size:13px;color:var(--text-light);margin-bottom:6px;display:flex;align-items:center;gap:8px">
+        ${qty && unit ? `<span style="background:var(--bg-light);padding:3px 10px;border-radius:5px;font-weight:600;color:var(--text-dark);font-size:13px">${qty}${unit}</span>` : ""}
+        ${pills       ? `<span style="background:var(--bg-light);padding:3px 10px;border-radius:5px;font-weight:600;color:var(--text-dark);font-size:13px">${pills} pills</span>` : ""}
       </div>` : ""}
 
-    <div style="font-size:12px;color:#aaa;margin-bottom:4px">Inclusive of all taxes</div>`;
+    <div style="font-size:12px;color:var(--text-light);margin-bottom:4px">Inclusive of all taxes</div>`;
 }
 
 function changeQty(delta) {
@@ -419,7 +433,11 @@ function changeQty(delta) {
 async function addToCart() {
   if (!currentProduct) return;
   const v     = currentVariants[selectedVariant];
-  const price = v ? parseVariantPrice(v.price_per_box || v.price_per_pill || "") : 0;
+  // const price = v ? parseVariantPrice(v.price_per_box || v.price_per_pill || "") : 0;
+  // Check for an offer price first; if valid, use it. Otherwise, fall back to box/pill price.
+  const offerPrice = v ? parseVariantPrice(v.offer_price) : 0;
+  const regularPrice = v ? parseVariantPrice(v.price_per_box || v.price_per_pill || "") : 0;
+  const price = offerPrice > 0 ? offerPrice : regularPrice;
   const btn   = document.getElementById("addCartBtn");
 
   if (btn) { btn.innerHTML = "⏳ Adding…"; btn.disabled = true; }
@@ -521,47 +539,47 @@ function renderReviews(reviews, productId) {
     ${reviews.map(r => `
       <div style="padding:16px 0;border-bottom:1px solid #f5f5f5">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
-          <div style="width:36px;height:36px;border-radius:50%;background:#e8f5f4;color:#028c7e;
+          <div style="width:36px;height:36px;border-radius:50%;background:var(--primary-light);color:var(--primary);
                       display:flex;align-items:center;justify-content:center;
                       font-weight:700;font-size:15px;flex-shrink:0">
             ${(r.name || "A").charAt(0).toUpperCase()}
           </div>
           <div style="flex:1">
-            <div style="font-weight:600;font-size:14px;color:#212121">${r.name || "Anonymous"}</div>
-            ${r.verified ? `<div style="font-size:11px;color:#059669;font-weight:500">✔ Verified Buyer</div>` : ""}
+            <div style="font-weight:600;font-size:14px;color:var(--text-dark)">${r.name || "Anonymous"}</div>
+            ${r.verified ? `<div style="font-size:11px;color:var(--success);font-weight:500">✔ Verified Buyer</div>` : ""}
           </div>
-          <span style="font-size:12px;color:#aaa">
+          <span style="font-size:12px;color:var(--text-light)">
             ${r.created_at ? new Date(r.created_at).toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"}) : ""}
           </span>
         </div>
-        <div style="color:#f59e0b;font-size:14px;margin-bottom:6px">${starsHtml(parseFloat(r.rating || 0))}</div>
-        <p style="font-size:13px;color:#555;line-height:1.65;margin:0">${r.review_text || ""}</p>
+        <div style="color:var(--accent);font-size:14px;margin-bottom:6px">${starsHtml(parseFloat(r.rating || 0))}</div>
+        <p style="font-size:13px;color:var(--text-medium);line-height:1.65;margin:0">${r.review_text || ""}</p>
       </div>`).join("")}
 
-    <div style="margin-top:28px;padding:22px;background:#f8f9fa;border-radius:12px;border:1px solid #eee">
-      <div style="font-size:16px;font-weight:700;color:#212121;margin-bottom:16px">Write a Review</div>
-      <label style="font-size:13px;font-weight:600;color:#333;display:block;margin-bottom:8px">Your Rating</label>
+    <div style="margin-top:28px;padding:22px;background:var(--bg-light);border-radius:12px;border:1px solid var(--border)">
+      <div style="font-size:16px;font-weight:700;color:var(--text-dark);margin-bottom:16px">Write a Review</div>
+      <label style="font-size:13px;font-weight:600;color:var(--text-dark);display:block;margin-bottom:8px">Your Rating</label>
       <div id="starPicker" style="display:flex;gap:8px;font-size:30px;cursor:pointer;margin-bottom:14px">
         ${[1,2,3,4,5].map(n => `<span onclick="setReviewStar(${n})"
-          style="color:#d1d5db;transition:color .15s;user-select:none">★</span>`).join("")}
+          style="color:var(--text-light);transition:color .15s;user-select:none">★</span>`).join("")}
       </div>
       <input id="reviewName" type="text" placeholder="Your name"
-        style="width:100%;padding:10px 12px;border:1.5px solid #e0e0e0;border-radius:8px;
+        style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;
                font-size:13px;margin-bottom:10px;outline:none;box-sizing:border-box;font-family:inherit"
-        onfocus="this.style.borderColor='#028c7e'" onblur="this.style.borderColor='#e0e0e0'" />
+        onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'" />
       <input id="reviewEmail" type="email" placeholder="Your email (to verify purchase)"
-        style="width:100%;padding:10px 12px;border:1.5px solid #e0e0e0;border-radius:8px;
+        style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;
                font-size:13px;margin-bottom:10px;outline:none;box-sizing:border-box;font-family:inherit"
-        onfocus="this.style.borderColor='#028c7e'" onblur="this.style.borderColor='#e0e0e0'" />
+        onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'" />
       <textarea id="reviewText" rows="3" placeholder="Share your experience with this product…"
-        style="width:100%;padding:10px 12px;border:1.5px solid #e0e0e0;border-radius:8px;
+        style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;
                font-size:13px;margin-bottom:12px;outline:none;box-sizing:border-box;
                font-family:inherit;resize:vertical"
-        onfocus="this.style.borderColor='#028c7e'" onblur="this.style.borderColor='#e0e0e0'"></textarea>
+        onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border)'"></textarea>
       <button onclick="submitReview(${productId})"
-        style="padding:11px 28px;background:#028c7e;color:#fff;border:none;border-radius:8px;
+        style="padding:11px 28px;background:var(--primary);color:#fff;border:none;border-radius:8px;
                font-size:14px;font-weight:700;cursor:pointer;transition:background .2s"
-        onmouseover="this.style.background='#016d62'" onmouseout="this.style.background='#028c7e'">
+        onmouseover="this.style.background='var(--primary-dark)'" onmouseout="this.style.background='var(--primary)'"">
         Submit Review
       </button>
       <p id="reviewMsg" style="font-size:13px;margin-top:10px;display:none;font-weight:500"></p>
@@ -571,7 +589,7 @@ function renderReviews(reviews, productId) {
 function setReviewStar(val) {
   reviewStarVal = val;
   document.querySelectorAll("#starPicker span").forEach((s, i) => {
-    s.style.color = i < val ? "#f59e0b" : "#d1d5db";
+    s.style.color = i < val ? "var(--accent)" : "var(--text-light)";
   });
 }
 
