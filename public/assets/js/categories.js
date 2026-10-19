@@ -140,10 +140,13 @@ function applyFiltersAndRender() {
   if (sort === "name")       list.sort((a, b) => (a.productname||"").localeCompare(b.productname||""));
 
   filteredList = list;
-
+  // console.log("Filterd list is ",filteredList);
+  filteredList = [...filteredList].sort(
+          (a, b) => Number(b.stocks) - Number(a.stocks),
+        );
   const countEl = document.getElementById("categoryCount");
   if (countEl) countEl.textContent = `${filteredList.length} product${filteredList.length !== 1 ? "s" : ""} found`;
-
+  
   currentPage = 1;
   renderPage();
 }
@@ -158,9 +161,6 @@ function renderPage() {
 // ── RENDER PRODUCT CARDS ─────────────────────────────────────────────────
 // Uses server field names: productid, productname, imageurl, offerprice, tradenames, rating, categoryid
 function renderCards(products) {
-  products = [...products].sort(
-          (a, b) => Number(b.stocks) - Number(a.stocks),
-        );
   const grid = document.getElementById("productsGrid");
   if (!grid) return;
 
