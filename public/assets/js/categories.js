@@ -158,6 +158,9 @@ function renderPage() {
 // ── RENDER PRODUCT CARDS ─────────────────────────────────────────────────
 // Uses server field names: productid, productname, imageurl, offerprice, tradenames, rating, categoryid
 function renderCards(products) {
+  products = [...products].sort(
+          (a, b) => Number(b.stocks) - Number(a.stocks),
+        );
   const grid = document.getElementById("productsGrid");
   if (!grid) return;
 
